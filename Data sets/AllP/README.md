@@ -11,7 +11,7 @@
 8. **Raw**: the extracted APA-reported result.
 9. Result.Table: contains information on whether an extracted *p*-value was part of a table or not, where '1' = *p*-value was part of a table, and '0'= *p*-value was not part of a table.
 10. Reported.Not.Relevant: in the following cases, extracted results which were reported as being p-values were not deemed relevant:
-- an extracted p-values was not related to a specific result, but was mentioned in the article to indicate which significance levels were used.
+    - an extracted *p*-value was not related to a specific result, but was mentioned in the article to indicate which significance levels were used.
 
 
 
