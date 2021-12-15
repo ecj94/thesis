@@ -39,5 +39,9 @@ If only *b*, *SE*, and/or *p*-values were extracted, this variable has the value
 25. dec_pval_rep: number of decimals of the reported *p*-value.
 26. Computed: *p*-value as recalculated manually.
 27. P_one_sided_chi:
-28.	**Error**: indicates whether a reported result is erroneous or not.
-29. **DecisionError**: indicates whether a reported result was erroneous in such a way that a wrong conclusion regarding significance was made, assuming *α* = .05.
+28.	Error: indicates whether a reported result is erroneous or not.
+29. DecisionError: indicates whether a reported result was erroneous in such a way that a wrong conclusion regarding significance was made, assuming *α* = .05.
+30. OneTailed: indicates whether one-sided testing was done for *p*-values and reproducible results, where 'TRUE' = yes, 'FALSE' = no, and 'UNKNOWN' was assigned if it was unknown whether one-sided or two-sided testing was done.
+31: Marg.Sig: indicates whether a *p*-value in the range (.05 - .10] was considered marginally significant by authors , where '1' = yes, '0'= no, and 'NA' = result was not a *p*-value in the range (.05 - .10]. We decided that a *p*-value was assigned marginal significance by the authors if:
+    - the expressions margin* or approach* were mentioned in relation to its significance, thereby following Ohlsson Collentine et al. (2019).
+    -
