@@ -11,7 +11,10 @@
 8. **Raw**: the extracted APA-reported result.
 9. Result.Table: contains information on whether an extracted *p*-value was part of a table or not, where '1' = *p*-value was part of a table, and '0'= *p*-value was not part of a table.
 10. Reported.Not.Relevant: in the following cases, extracted results which were reported as being p-values were not deemed relevant:
-    - an extracted *p*-value was not related to a specific result, but was mentioned in the article to indicate which significance levels were used.
-
-
+    - an extracted *p*-value was not related to a specific result, but was mentioned in the article to indicate which significance levels were used or to refer to multiple results.
+    - an extracted *p*-value was actually not a *p*-value.
+    - an extracted *p*-value is a duplicate of another extracted *p*-value.
+    - There was one case in which the *p*-value was reported as 'Ns' and 'Ns' did not mean non-significant, but meant 'numbers'.
+11.	Not.Reported: contains information on whether a result that was extracted could be found in linked 1 to 1 to information in the article the article, where '1' = no and '0' = yes. If an extracted result scored '0', it was excluded from analyses.
+12. 20. Result.Hypothesis: indicates whether an extracted result is (part of) the test of an explicitly stated hypothesis. This variable is coded such that '1' = yes, '0' = no, and 'NA' = result was either reported, but not deemed relevant, or was not reported.
 
