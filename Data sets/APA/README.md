@@ -1,4 +1,6 @@
-'*APA*' contains all information extracted by the R statcheck package (Epskamp and Nuijten 2015) from all articles of the 2014-2016 volumes of *ASR*, *AJS*, *SQ*, *JMF*, and *CHQ*, plus manually added information. Variables created by statcheck are indicated below by a boldfaced variable name. The variables in '*APA*' are:
+# READme '*APA*'
+
+'*APA*' contains all fully APA-reported results extracted by the R statcheck package (Epskamp and Nuijten 2015) from all articles of the 2014-2016 volumes of *ASR*, *AJS*, *SQ*, *JMF*, and *CHQ*, plus manually added information. Variables created by statcheck are indicated below by a boldfaced variable name. The variables in '*APA*' are:
 
 1. Article_numb: each article from which information was retrieved was given a number, such that analyses at the article level could easily be done.
 2. Article: full name of the article.
