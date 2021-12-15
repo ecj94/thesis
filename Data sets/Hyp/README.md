@@ -16,7 +16,28 @@
     - *F*
     - *z*
     - *r*
-    - OR (odds ratio)
-    - HZ
-If only *b*, *SE*, and/or *p*-values were extracted, this variable has the value 'NA'.
-10. 
+    - HZ (hazard)
+    - IRR (incidence rate ratio)
+    - PP
+    - Wald
+If only *b*, *SE*, and/or *p*-values were extracted, this variable has the value 'NA'. Odds ratios (OR) are mentioned here, since recalculations of *p*-values based on odds ratios different from those based on regression coefficients.
+10. b: regression coefficient or odds ratio.
+11. SE: standard error.
+12. t_stat: value of the test statistic. note that these are filled in only for  *t*-values, *χ*<sup>2</sup>-values, *F*-values, *r*-values and *z*-values.
+13. n: the sample size as retrieved from the model the result is from. In case of multilevel models, the sample size of the lowest level was filled in here.
+14. IVs: numbers of independent variables as retrieved or manually counted from the model the result is from.
+15. df_1: first degrees of freedom.
+16. df_2: second degrees of freedom.
+17. Reported.Comparison: reported comparison of the *p*-value or reproducible result, which can be '=', '<', '>', or 'ns'. 
+18. Reported.P.Value: *p*-value as reported in the article.
+19. lb_b:
+20. ub_b:
+21. lb_se:
+22. ub_se:
+23. lb_stat:
+24. ub_stat:
+25. dec_pval_rep: number of decimals of the reported *p*-value.
+26. Computed: *p*-value as recalculated manually.
+27. P_one_sided_chi:
+28.	**Error**: indicates whether a reported result is erroneous or not.
+29. **DecisionError**: indicates whether a reported result was erroneous in such a way that a wrong conclusion regarding significance was made, assuming *α* = .05.
