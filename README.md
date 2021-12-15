@@ -8,7 +8,6 @@ Multiple aspects of statistical reporting practices in sociology were studied in
 - bump in *p*-values
 - marginal significance
 
-\
 
 ### Data sets
 For different topics, different data sets were used. Here is a list of the different data sets and what kind of information they contain:
