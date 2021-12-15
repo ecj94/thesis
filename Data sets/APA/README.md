@@ -1,4 +1,4 @@
-'APA' contains all information extracted by the R statcheck package from all articles of the 2014-2016 volumes of *ASR*, *AJS*, *SQ*, *JMF*, and *CHQ*, plus analytical and explanatory information added by the authors. Variables created by statcheck are indicated below by a boldfaced variable name. The variables in the data set are:
+'APA' contains all information extracted by the R statcheck package (Epskamp and Nuijten 2015) from all articles of the 2014-2016 volumes of *ASR*, *AJS*, *SQ*, *JMF*, and *CHQ*, plus analytical and explanatory information added by the authors. Variables created by statcheck are indicated below by a boldfaced variable name. The variables in the data set are:
 
 1. Article_numb: each article from which information was retrieved was given a number, such that analyses at the article level could easily be done.
 2. Article: full name of the article.
@@ -19,4 +19,4 @@
 17. **OneTailedInTxt**: indicates whether one of the following words were found in the article's text: "sided", "tailed", and/or "directional". If so, a reported result was considered directional, i.e., it was assumed that a one-sided significance test was performed for this result.
 18. **APAfactor**: proportion of *p*-values that belongs to a fully APA reported result for each article.
 19. Result.Hypothesis: indicates whether an extracted result is (part of) the test of an explicitly stated hypothesis. This variable is coded such that '1' = yes, '0' = no, and 'NA' = result belongs to a table, not to the text of an article.
-20. Comments: contains other, relevant information on individual results.
+20. Comments: contains other, relevant information on individual results. Here, it is indicated whether a result was a model fit statistic. These results were taken into account, but results belonging to tables were not. These were indicated as 'NA' in Result.Hypothesis for this reason.
