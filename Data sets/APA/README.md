@@ -5,7 +5,7 @@
 3. Author(s): surname(s) of the author(s) of the articles.
 4. Journal: full name of the journal the article was published in.
 5. Year: year of publication of the article.
-6. **Statistic**: information on which type of statistic has been extracted by statcheck. Statistics that were extracted were *t*-values, \chi^2-values, *F*-values, and *z*-values. 
+6. **Statistic**: information on which type of statistic has been extracted by statcheck. Statistics that were extracted were *t*-values, $\chi$^2-values, *F*-values, and *z*-values. 
 7. **df1**: first degree of freedom
 8. **df2**: second degree of freedom
 9. **Test.Comparison**: contains only '=' signs, since the purpose of recalculating results is to see whether recalculated *p*-values are equal to their reported counterparts.
