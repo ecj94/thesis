@@ -11,12 +11,12 @@
 7. Number of hypotheses: number of explicitly stated hypotheses mentioned in the article before results are presented.
 8. Belongs to hypothesis: number of the hypothesis the result belongs to.
 9. **Statistic**: contains information on which type of test statistic has been extracted. In this case, statistics that were extracted were:
-  - *t*
-  - *χ*<sup>2</sup>
-  - *F*
-  - *z*
-  - *r*
-  - OR (odds ratio)
-  - 
+    - *t*
+    - *χ*<sup>2</sup>
+    - *F*
+    - *z*
+    - *r*
+    - OR (odds ratio)
+    - HZ
 If only *b*, *SE*, and/or *p*-values were extracted, this variable has the value 'NA'.
-10. b: regression coefficient or,
+10. 
