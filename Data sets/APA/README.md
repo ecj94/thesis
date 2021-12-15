@@ -5,16 +5,16 @@
 3. Author(s): surname(s) of the author(s) of the articles.
 4. Journal: full name of the journal the article was published in.
 5. Year: year of publication of the article.
-6. **Statistic**: contains information on which type of statistic has been extracted by ‘statcheck’. In this case, statistics that were extracted were t-values, $\chi X$^2^-values, F-values, and z-values. 
+6. **Statistic**: contains information on which type of statistic has been extracted by statcheck. In this case, statistics that were extracted were *t*-values, *χ*^2^-values, *F*-values, and *z*-values. 
 7. **df1**: first degree of freedom
 8. **df2**: second degree of freedom
 9. **Test.Comparison**: contains only '=' signs, since the purpose of recalculating results is to see whether recalculated *p*-values are equal to their reported counterparts.
 11. **Reported.Comparison**: reported comparison of the fully APA-reported result, which can be '=', '<', '>', or 'ns. 
-12. **Reported**: p-value as reported in the article.
-13. **Computed**: p-value as recalculated by statcheck.
+12. **Reported**: *p*-value as reported in the article.
+13. **Computed**: *p*-value as recalculated by statcheck.
 14. **Raw**: the extracted APA-reported result.
 15.	**Error**: indicates whether a reported result is erroneous or not.
-16. **DecisionError**: indicates whether a reported result was erroneous in such a way that a wrong conclusion regarding significance was made, assuming *??* = .05.
+16. **DecisionError**: indicates whether a reported result was erroneous in such a way that a wrong conclusion regarding significance was made, assuming *α* = .05.
 17. **OneTail**: indicates whether one-tailed or two-tailed significance testing was performed.
 18. **OneTailedInTxt**: indicates whether one of the following words were found in the article's text: "sided", "tailed", and/or "directional". If so, a reported result was considered directional, i.e., it was assumed that a one-sided significance test was performed for this result.
 19. **APAfactor**: proportion of *p*-values that belongs to a fully APA reported result for each article.
