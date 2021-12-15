@@ -7,6 +7,7 @@ Multiple aspects of statistical reporting practices in sociology were studied in
 - publication bias
 - bump in *p*-values
 - marginal significance
+
 \
 
 ### Data sets
