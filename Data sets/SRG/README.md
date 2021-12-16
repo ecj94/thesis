@@ -20,4 +20,7 @@
     - Multiple options (one must be chosen): authors had to follow one of multiple (parts of) style guidelines.
     - Multiple allowed: authors could use multiple style guidelines.
     - Unknown: there was no mention of any internal or external guidelines that authors were required or allowed to follow.
+3. Use external guidelines: indicates whether a journal required or allowed authors to use external style guidelines, where '1' = yes, '0'= no.
+4. Link: link to the submission guidelines of the journal.
+5. Other information: contains text from which it was referred that authors were required or allowed to use (a) certain style guideline(s), as well as links to documents/webpages containing specific guidelines.
     
