@@ -1,0 +1,287 @@
+/*** This stylesheet is specifically used to override the main css file (head_1_3_35.css). And is to be used for customizations to specific elements. ***/
+
+.know .jumbotron-pubpage .journal-meta
+{ display: table; position: relative; height: 232px; width: 790px; }
+
+.know .jumbotron-short .journal-meta
+{ display: table; position: relative; height: 115px; width: 790px; }
+
+input[type="submit"] {
+  margin-top: 20px;
+  width: auto;
+  height: 32px;
+  background: #155F83;
+  border: 0;
+  cursor: pointer;
+  padding: 5px;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Noto Sans', sans-serif;
+  -webkit-transition-property: background;
+  -moz-transition-property: background;
+  -ms-transition-property: background;
+  -o-transition-property: background;
+  transition-property: background;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -ms-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease;
+  -moz-transition-timing-function: ease;
+  -ms-transition-timing-function: ease;
+  -o-transition-timing-function: ease;
+  transition-timing-function: ease;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+table.articleEntry {
+  padding-bottom: 28px;
+  border-spacing: 0px;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+/* START changes by MRB to style Article Metrics widget */
+div.articleMetricsContainer div.content h2 {
+  display: none;
+}
+
+div.articleMetricsContainer div.content div.title {
+  display: inline;
+  font-weight: bold;
+  padding-right: 0.5em;
+}
+
+div.articleMetricsContainer div.views div.circle {
+  display: inline;
+}
+
+div.articleMetricsContainer div.views div.title:after,
+div.articleMetricsContainer div.citations div.title:after {
+  content:":";
+}
+div.articleMetricsContainer div.citations a.crossRef span {
+  display: none;
+}
+div.articleMetricsContainer div.citations a.crossRef span.value {
+  display: inline;
+}            
+
+div.articleMetricsContainer div.altmetric-container div.title {
+  display: none;
+}
+div.articleMetricsContainer div.altmetric-container div.metrics-badge {
+  padding: 1em 0;
+}
+
+div.articleMetricsContainer div.metricsAbout {
+  display: none;
+}
+/* END changes by MRB to style Article Metrics widget */
+
+/* UCHICAGO-1156 change for multi search widget */
+.multiSearchWidget .mostRead ul li {
+	margin: 10px;
+}
+.multiSearchWidget .mostRead .date {
+	display:none;
+}
+
+/* JOURNAL: DIA - UCHICAGO 1192 Jumbotron and menu change*/
+.dia .body-emphasis,
+.dia .bgcolor,
+.dia .literatumListOfIssuesWidget .decade > a.open {
+ background: #0076bf;
+}
+.dia .header-emphasis,
+.dia .local-navigation,
+.dia .menuXml .primaryNav {
+ background: #165982;
+}
+/*UCHICAGO-1279 date padding*/
+.date {
+	padding-left: 48px;
+}
+
+/*UCHICAGO-1301 */
+a.mini-search {
+	font-size: 12px;
+}
+
+/*UCHICAGO-1168 color change request */
+/* JOURNAL: JCS */
+.jcs .body-emphasis,
+.jcs .bgcolor,
+.jcs .literatumListOfIssuesWidget .decade > a.open {
+  background: #155F83;
+}
+.jcs .header-emphasis,
+.jcs .local-navigation,
+.jcs .menuXml .primaryNav {
+  background: #0F425C;
+}
+.jcs .subject,
+.jcs .header-regular {
+  color: #0F425C;
+}
+
+/*UCHICAGO-1168 color change request */
+/* JOURNAL: basor */
+.basor .body-emphasis,
+.basor .bgcolor,
+.basor .literatumListOfIssuesWidget .decade > a.open {
+  background: #155F83;
+}
+.basor .header-emphasis,
+.basor .local-navigation,
+.basor .menuXml .primaryNav {
+  background: #0F425C;
+}
+.basor .subject,
+.basor .header-regular {
+  color: #0F425C;
+}
+
+/*UCHICAGO-1168 color change request */
+/* JOURNAL: hau */
+.hau .body-emphasis,
+.hau .bgcolor,
+.hau .literatumListOfIssuesWidget .decade > a.open {
+  background: #155F83;
+}
+.hau .header-emphasis,
+.hau .local-navigation,
+.hau .menuXml .primaryNav {
+  background: #0F425C;
+}
+.hau .subject,
+.hau .header-regular {
+  color: #0F425C;
+}
+
+/*UCHICAGO-1168 color change request */
+/* JOURNAL: jaah */
+.jaah .body-emphasis,
+.jaah .bgcolor,
+.jaah .literatumListOfIssuesWidget .decade > a.open {
+  background: #155F83;
+}
+.jaah .header-emphasis,
+.jaah .local-navigation,
+.jaah .menuXml .primaryNav {
+  background: #0F425C;
+}
+.jaah .subject,
+.jaah .header-regular {
+  color: #0F425C;
+}
+
+/*UCHICAGO-1168 color change request */
+/* JOURNAL: nea */
+.nea .body-emphasis,
+.nea .bgcolor,
+.nea .literatumListOfIssuesWidget .decade > a.open {
+  background: #155F83;
+}
+.nea .header-emphasis,
+.nea .local-navigation,
+.nea .menuXml .primaryNav {
+  background: #0F425C;
+}
+.nea .subject,
+.nea .header-regular {
+  color: #0F425C;
+}
+
+/*UCHICAGO-1168 color change request */
+/* JOURNAL: pog */
+.pog .body-emphasis,
+.pog .bgcolor,
+.pog .literatumListOfIssuesWidget .decade > a.open {
+  background: #155F83;
+}
+.pog .header-emphasis,
+.pog .local-navigation,
+.pog .menuXml .primaryNav {
+  background: #0F425C;
+}
+.pog .subject,
+.pog .header-regular {
+  color: #0F425C;
+}
+
+/*UCHICAGO-1168 color change request */
+/* JOURNAL: shad */
+.shad .body-emphasis,
+.shad .bgcolor,
+.shad .literatumListOfIssuesWidget .decade > a.open {
+  background: #155F83;
+}
+.shad .header-emphasis,
+.shad .local-navigation,
+.shad .menuXml .primaryNav {
+  background: #0F425C;
+}
+.shad .subject,
+.shad .header-regular {
+  color: #0F425C;
+}
+
+/*UCHICAGO-1168 color change request */
+/* JOURNAL: sps */
+.sps .body-emphasis,
+.sps .bgcolor,
+.sps .literatumListOfIssuesWidget .decade > a.open {
+  background: #155F83;
+}
+.sps .header-emphasis,
+.sps .local-navigation,
+.sps .menuXml .primaryNav {
+  background: #0F425C;
+}
+.sps .subject,
+.sps .header-regular {
+  color: #0F425C;
+}
+
+/*UCHICAGO-1168 color change request */
+/* JOURNAL: twc */
+.twc .body-emphasis,
+.twc .bgcolor,
+.twc .literatumListOfIssuesWidget .decade > a.open {
+  background: #155F83;
+}
+.twc .header-emphasis,
+.twc .local-navigation,
+.twc .menuXml .primaryNav {
+  background: #0F425C;
+}
+.twc .subject,
+.twc .header-regular {
+  color: #0F425C;
+}
+
+/* START changes by MRB to fix alignment and spacing */
+/* of NLM_def-list tables (used for glossaries)      */
+.NLM_def-list td.td_term {
+  padding-top: 8px;
+  vertical-align: top;
+}
+.NLM_def-list td.td_def {
+  padding-top: 8px;
+  vertical-align: top;
+}
+.NLM_def-list td.td_def p {
+  margin: 0;
+  padding: 0;
+}
+.NLM_def-list td.td_def p + p {
+  padding-top: 8px;
+}
+table.NLM_def-list {
+  margin-bottom: 24px;
+}
+/* END changes by MRB for NLM_def-list tables        */
