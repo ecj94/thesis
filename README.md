@@ -18,8 +18,8 @@ For different topics, different data sets were used. Here is a list of the diffe
 - Article inclusion: data set containing information on which articles from the 2014-2016 volumes of *ASR*, *AJS*, *SQ*, *CHQ* were included in 'Hyp'.
 
 
-**References**
-Clarivate Analytics’ Web of Science. (2016). Journal citation reports: Sociology, 2016.
-  com.proxy.library.uu.nl/JCRJournalHomeAction.
-Epskamp, S., & Nuijten, M. B. (2016). Statcheck: Extract statistics from articles and recompute p values. Retrieved from   
-  https://cran.r-project.org/src/contrib/Archive/statcheck/
+**References**\
+Clarivate Analytics’ Web of Science. (2016). Journal citation reports: Sociology, 2016.\
+&nbsp;&nbsp;&nbsp;&nbsp;com.proxy.library.uu.nl/JCRJournalHomeAction.\
+Epskamp, S., & Nuijten, M. B. (2016). Statcheck: Extract statistics from articles and recompute p values. Retrieved from\  
+&nbsp;&nbsp;&nbsp;&nbsp;https://cran.r-project.org/src/contrib/Archive/statcheck/
