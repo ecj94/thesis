@@ -30,15 +30,15 @@ If only *b*, *SE*, and/or *p*-values were extracted, this variable has the value
 16. df_2: second degrees of freedom.
 17. Reported.Comparison: reported comparison of the *p*-value or reproducible result. Categories Present in the data set are '=', '<', '>', '&GreaterEqual;', or 'ns'. 
 18. Reported.P.Value: *p*-value as reported in the article.
-19. lb_b: lower bound of *b*. This is the smallest *b*-value from which the actually reported *b* could have been correctly rounded. E.g., if *b* = 3.11, then lb_b = 3.105. This value Was only Used if there was no test statistic (*t*, *χ*<sup>2</sup>, *F*, *z*, or *r*) reported.
-20. ub_b: lower bound of *b*. This is the largest *b*-value from which the actually reported *b* could have been correctly rounded. E.g., if *b* = 3.11, then ub_b = 3.115. This value Was only Used if there was no test statistic (*t*, *χ*<sup>2</sup>, *F*, *z*, or *r*) reported.
-21. lb_se: lower bound of SE. This is the smallest SE-value from which the actually reported *b* could have been correctly rounded. E.g., if SE = 3.11, then lb_se = 3.105. This value Was only Used if there was no test statistic (*t*, *χ*<sup>2</sup>, *F*, *z*, or *r*) reported.
-22. ub_se:
-23. lb_stat:
-24. ub_stat:
+19. lb_b: lower bound of *b*. This is the smallest *b*-value from which the actually reported *b* could have been correctly rounded. E.g., if *b* = 3.11, then lb_b = 3.105. This value was only used if there was no test statistic (*t*, *χ*<sup>2</sup>, *F*, *z*, or *r*) reported.
+20. ub_b: upper bound of *b*. This is the largest *b*-value from which the actually reported *b* could have been correctly rounded. E.g., if *b* = 3.11, then ub_b = 3.115. This value was only used if there was no test statistic (*t*, *χ*<sup>2</sup>, *F*, *z*, or *r*) reported.
+21. lb_se: lower bound of SE. This is the smallest SE-value from which the actually reported *b* could have been correctly rounded. E.g., if SE = 2.11, then lb_se = 2.105. This value was only used if there was no test statistic (*t*, *χ*<sup>2</sup>, *F*, *z*, or *r*) reported.
+22. ub_se: upper bound of SE. This is the largest SE-value from which the actually reported *b* could have been correctly rounded. E.g., if SE = 2.11, then lb_se = 2.115. This value was only used if there was no test statistic (*t*, *χ*<sup>2</sup>, *F*, *z*, or *r*) reported.
+23. lb_stat: lower bound of test statistic. This is the smallest test statistic value from which the actually reported test statistic could have been correctly rounded. E.g., if *t*(61) = 3.11, then lb_stat = 3.105.
+24. ub_stat: ub_stat: upper bound of test statistic. This is the largest test statistic value from which the actually reported test statistic could have been correctly rounded. E.g., if *t*(61) = 3.11, then ub_stat = 3.115.
 25. dec_pval_rep: number of decimals of the reported *p*-value.
 26. Computed: *p*-value as recalculated manually.
-27. P_one_sided_chi:
+27. P_one_sided_chi: there are results for which it was unclear whether they were one-sided or two-sided. We initially assumed that two-sided testing was used, but also tested if these results, when erroneous under two-sided testing, were not erroneous when using one-sided testing.???
 28.	Error: indicates whether a reported result is erroneous or not.
 29. DecisionError: indicates whether a reported result was erroneous in such a way that a wrong conclusion regarding significance was made, assuming *α* = .05.
 30. OneTailed: indicates whether one-sided testing was done for *p*-values and reproducible results, where 'TRUE' = yes, 'FALSE' = no, and 'UNKNOWN' was assigned if it was unknown whether one-sided or two-sided testing was done.  
