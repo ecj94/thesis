@@ -1,6 +1,6 @@
-# READme '*Hyp*'
+# READme 'Hyp'
 
-'*Hyp*' contains all *p*-values and reproducible results related to explicitly stated hypotheses from all articles of the 2014-2016 volumes of *ASR*, *AJS*, and *SQ*. The variables in '*Hyp*' are:
+'Hyp' contains all *p*-values and reproducible results related to explicitly stated hypotheses from all articles of the 2014-2016 volumes of *ASR*, *AJS*, and *SQ*. The variables in 'Hyp' are:
 
 1. Article_numb: each article from which information was retrieved was given a number, such that analyses at the article level could easily be done.
 2. Article: full name of the article.
@@ -28,11 +28,11 @@ If only *b*, *SE*, and/or *p*-values were extracted, this variable has the value
 14. IVs: numbers of independent variables as retrieved or manually counted from the model the result is from.
 15. df_1: first degrees of freedom.
 16. df_2: second degrees of freedom.
-17. Reported.Comparison: reported comparison of the *p*-value or reproducible result, which can be '=', '<', '>', or 'ns'. 
+17. Reported.Comparison: reported comparison of the *p*-value or reproducible result. Categories Present in the data set are '=', '<', '>', '&GreaterEqual;', or 'ns'. 
 18. Reported.P.Value: *p*-value as reported in the article.
-19. lb_b:
-20. ub_b:
-21. lb_se:
+19. lb_b: lower bound of *b*. This is the smallest *b*-value from which the actually reported *b* could have been correctly rounded. E.g., if *b* = 3.11, then lb_b = 3.105. This value Was only Used if there was no test statistic (*t*, *χ*<sup>2</sup>, *F*, *z*, or *r*) reported.
+20. ub_b: lower bound of *b*. This is the largest *b*-value from which the actually reported *b* could have been correctly rounded. E.g., if *b* = 3.11, then ub_b = 3.115. This value Was only Used if there was no test statistic (*t*, *χ*<sup>2</sup>, *F*, *z*, or *r*) reported.
+21. lb_se: lower bound of SE. This is the smallest SE-value from which the actually reported *b* could have been correctly rounded. E.g., if SE = 3.11, then lb_se = 3.105. This value Was only Used if there was no test statistic (*t*, *χ*<sup>2</sup>, *F*, *z*, or *r*) reported.
 22. ub_se:
 23. lb_stat:
 24. ub_stat:
