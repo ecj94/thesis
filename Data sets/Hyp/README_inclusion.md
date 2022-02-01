@@ -10,4 +10,4 @@
 7. Res_hyp: Indicates whether an article had at least one *p*-value or reproducible result which were related to an explicitly stated hypothesis or not, where '1' = yes and '0' = no.
 8. Selected: indicates whether an article was included in '*Hyp*', where '1' = yes and '0' = no.
 9. Number: number of the selected article. If an article was not selected, this variable had a value 'NA'. 
-10. Comments:
+10. Comments: comment explaining exclusion of an article reporting *z*-value intervals instead of *p*-values.
