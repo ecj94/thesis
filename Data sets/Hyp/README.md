@@ -28,7 +28,7 @@ If only *b*, *SE*, and/or *p*-values were extracted, this variable has the value
 14. IVs: numbers of independent variables as retrieved or manually counted from the model the result is from.
 15. df_1: first degrees of freedom.
 16. df_2: second degrees of freedom.
-17. Reported.Comparison: reported comparison of the *p*-value or reproducible result. Categories Present in the data set are '=', '<', '>', '&GreaterEqual;', or 'ns'. 
+17. Reported.Comparison: reported comparison of the *p*-value or reproducible result. Categories are '=', '<', '>', '&GreaterEqual;', or 'ns'. 
 18. Reported.P.Value: *p*-value as reported in the article.
 19. lb_b: lower bound of *b*. This is the smallest *b*-value from which the actually reported *b* could have been correctly rounded. E.g., if *b* = 3.11, then lb_b = 3.105. This value was only used if there was no test statistic (*t*, *χ*<sup>2</sup>, *F*, *z*, or *r*) reported.
 20. ub_b: upper bound of *b*. This is the largest *b*-value from which the actually reported *b* could have been correctly rounded. E.g., if *b* = 3.11, then ub_b = 3.115. This value was only used if there was no test statistic (*t*, *χ*<sup>2</sup>, *F*, *z*, or *r*) reported.
@@ -41,7 +41,7 @@ If only *b*, *SE*, and/or *p*-values were extracted, this variable has the value
 27. P_one_sided_chi: there are results for which it was unclear whether they were one-sided or two-sided. We initially assumed that two-sided testing was used, but also tested if these results, when erroneous under two-sided testing, were not erroneous when using one-sided testing.???
 28.	Error: indicates whether a reported result is erroneous or not.
 29. DecisionError: indicates whether a reported result was erroneous in such a way that a wrong conclusion regarding significance was made, assuming *α* = .05.
-30. OneTailed: indicates whether one-sided testing was done for *p*-values and reproducible results, where 'TRUE' = yes, 'FALSE' = no, and 'UNKNOWN' was assigned if it was unknown whether one-sided or two-sided testing was done.  
+30. OneTailed: indicates whether one-sided testing was done for *p*-values and reproducible results, where 'TRUE' = yes, 'FALSE' = no, and 'UNKNOWN' was assigned if it was unknown whether one-sided or two-sided testing was done.
 31: Marg.Sig: indicates whether a *p*-value in the range (.05 - .10] was considered marginally significant by authors , where '1' = yes, '0'= no, and 'NA' = result was not a *p*-value in the range (.05 - .10]. We decided that a *p*-value was assigned marginal significance by the authors if:
     - the expressions margin* or approach* were mentioned in relation to its significance, following Ohlsson Collentine et al. (2019).
     - for *p*-values in tables, we considered significance levels of *p* < .10 in captions of tables to be assignment of marginal significance. 
