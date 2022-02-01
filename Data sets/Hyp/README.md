@@ -28,7 +28,7 @@ If only *b*, *SE*, and/or *p*-values were extracted, this variable has the value
 14. IVs: numbers of independent variables as retrieved or manually counted from the model the result is from.
 15. df_1: first degrees of freedom.
 16. df_2: second degrees of freedom.
-17. Reported.Comparison: reported comparison of the *p*-value or reproducible result. Categories Present in the data set are '=', '<', '>', '&GreaterEqual;', or 'ns'. 
+17. Reported.Comparison: reported comparison of the *p*-value or reproducible result. Categories are '=', '<', '>', '&GreaterEqual;', or 'ns'. 
 18. Reported.P.Value: *p*-value as reported in the article.
 19. lb_b: lower bound of *b*. This is the smallest *b*-value from which the actually reported *b* could have been correctly rounded. E.g., if *b* = 3.11, then lb_b = 3.105. This value was only used if there was no test statistic (*t*, *χ*<sup>2</sup>, *F*, *z*, or *r*) reported.
 20. ub_b: upper bound of *b*. This is the largest *b*-value from which the actually reported *b* could have been correctly rounded. E.g., if *b* = 3.11, then ub_b = 3.115. This value was only used if there was no test statistic (*t*, *χ*<sup>2</sup>, *F*, *z*, or *r*) reported.
