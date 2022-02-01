@@ -38,8 +38,7 @@ If only *b*, *SE*, and/or *p*-values were extracted, this variable has the value
 24. ub_stat: ub_stat: upper bound of test statistic. This is the largest test statistic value from which the actually reported test statistic could have been correctly rounded. E.g., if *t*(61) = 3.11, then ub_stat = 3.115.
 25. dec_pval_rep: number of decimals of the reported *p*-value.
 26. **Computed**: *p*-value as recalculated manually.
-27. P_one_sided_chi: there are results for which it was unclear whether they were one-sided or two-sided. We initially assumed that two-sided testing was used, but also tested if these results, when erroneous under two-sided testing, were not erroneous when using one-sided testing.???
-28.	**Error**: indicates whether a reported result is erroneous or not.
+27. **Error**: indicates whether a reported result is erroneous or not.
 29. **DecisionError**: indicates whether a reported result was erroneous in such a way that a wrong conclusion regarding significance was made, assuming *α* = .05.
 30. OneTailed: indicates whether one-sided testing was done for *p*-values and reproducible results, where 'TRUE' = yes, 'FALSE' = no, and 'UNKNOWN' was assigned if it was unknown whether one-sided or two-sided testing was done.
 31: Marg.Sig: indicates whether a *p*-value in the range (.05 - .10] was considered marginally significant by authors , where '1' = yes, '0'= no, and 'NA' = result was not a *p*-value in the range (.05 - .10]. We decided that a *p*-value was assigned marginal significance by the authors if:
