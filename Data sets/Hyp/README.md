@@ -1,5 +1,25 @@
 # READme 'Hyp'
 
+In this map, two data sets can be found: 
+1. 'Hyp', which contains all manually retrieved *p*-values and reproducible results related to explicitly stated hypotheses from all articles of the 2014-2016 volumes of *ASR*, *AJS*, and *SQ*.
+2. 'Article inclusion', which contains information on the inclusion process of articles of the 2014-2016 volumes of *ASR*, *AJS*, and *SQ* in 'Hyp'.
+
+
+## Article inclusion
+The variables in this data set are:
+Article: name(s) of the author(s) of the article, shortened (NOTE: this will change to full list of authors).
+Journal: name of the journal the article was published in.
+Year: year of publication of the article.
+Issue: issue in which the article was published.
+Hypotheses: indicates whether an article contains at least one explicitly stated hypothesis, where '1' = yes and '0' = no.
+Req_stat: article contains at least one p-value or reproducible result related to an explicitly stated hypothesis.
+Res_hyp: Indicates whether an article had at least one p-value or reproducible result which were related to an explicitly stated hypothesis or not, where '1' = yes and '0' = no.
+Selected: indicates whether an article was included in 'Hyp', where '1' = yes and '0' = no.
+Number: number of the selected article. If an article was not selected, this variable had a value 'NA'.
+Comments: comment explaining exclusion of an article reporting z-value intervals instead of p-values.
+
+
+## 'Hyp'
 'Hyp' contains all *p*-values and reproducible results related to explicitly stated hypotheses from all articles of the 2014-2016 volumes of *ASR*, *AJS*, and *SQ*. The variables in 'Hyp' are:
 
 1. Article_numb: each article from which information was retrieved was given a number, such that analyses at the article level could easily be done.
