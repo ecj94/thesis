@@ -87,7 +87,7 @@ write.table(outp_jrnl_tot_sre, "C:/Users/Elise/Documents/Master MSBBSS/year 2/Ma
 
 Reading the Excel-file containing the information obtained when extracting fully APA-reported results using statcheck and some extra information that was added manually into R (n = 505 from 76 articles). 
 ```{r loading APA and recoding certain variables, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-Sre_all_jrnl <- read_excel("C:/Users/EliseSchramkowski/Documents/Master's thesis/Literature/Statistical reporting errors/Statistical reporting errors all journals_29-10.xlsx") # loading the data set
+Sre_all_jrnl <- read_excel("C:/Users/EliseSchramkowski/Documents/Master's thesis/Excel/APA.xlsx") # loading the data set
 nrow(Sre_all_jrnl) #n = 524
 Sre_all_jrnl_u <- Sre_all_jrnl[!duplicated(Sre_all_jrnl$Article_numb), ] #removing duplicates to obtain the number of articles
 nrow(Sre_all_jrnl_u) #n = 80
@@ -293,7 +293,17 @@ exp(cbind(coef(decerr_hyp), confint(decerr_hyp))) #odds ratios
 # 3. Data set 'AllP'
 Reading the Excel-file with the information obtained when extracting *p*-values using statcheck and information that was added manually in Excel. 
 ```{r loading AllP, echo=TRUE, message=FALSE, warning=FALSE, EVAL = FALSE}
-Pval_all_jrnl <- read_excel("C:/Users/EliseSchramkowski/Documents/Master's thesis/Excel/P-values all journals_marg09-09-2021.xlsx", col_types = c("numeric", "text", "text", "text", "text", "text", "text", "numeric", "text", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "numeric", "text", "text"))
+Pval_all_jrnl <- read_excel("C:/Users/EliseSchramkowski/Documents/Master's thesis/Excel/AllP.xlsx", col_types = c(
+#Article_numb, Article, Author(s), Journal
+"numeric", "text", "text", "text", 
+#Year, Statistic, Reported.Comparison, Reported.P.Value
+"numeric", "text", "text", "numeric",
+#Raw, Result.Table, Reported.Not.Relevant, Not.Reported
+"text", "numeric", "numeric", "numeric",
+#Model.fit, Result.Hypothesis, Marg.Sig, Phrase in which mentioned
+"numeric", "numeric", "numeric", "text", 
+#explicitly stated hypothesis, Comments
+"text", "text"))
 Pval_all_jrnl <- subset(Pval_all_jrnl, Article_numb >= 0) #only taking into account results with an article number (others are blank rows)
 AllP_nd <- Pval_all_jrnl[!duplicated(Pval_all_jrnl$Article_numb), ] #calculating number of articles
 nrow(AllP_nd) #there are 471 articles in the data set
@@ -890,7 +900,13 @@ exp(cbind(coef(marg_sign), confint(marg_sign))) #odds ratios
 Inclusion process of the articles. The 2014-2016 volumes of *ASR*, *AJS*, and *SQ* contained 322 articles. After our selection procedure, 93 articles were used in our final data set 'Hyp'.
 ```{r inclusion of articles, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 #Calling the data set with information on all articles.
-Hyp_art <- read_excel("/Users/EliseSchramkowski/Documents/Master's thesis/Final data/article level newest version 29-06-2021.xlsx", col_types = c("text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric")) 
+Hyp_art <- read_excel("/Users/EliseSchramkowski/Documents/Master's thesis/Excel/inclusion_Hyp.xlsx", col_types = c(
+#Article, Author(s), Journal, Year
+"text", "text", "text", "numeric", 
+#Issue, Hypotheses, Req_stat, Res_hyp
+"numeric", "numeric", "numeric", "numeric", 
+#Selected, Number, Comments
+"numeric", "numeric", "text")) 
 Hyp_art <- subset(Hyp_art, Year > 2013 & Year < 2017) #removing blank rows 
 nrow(Hyp_art) #n = 322
 Hyp_art_journal <- table(Hyp_art$Journal) #all articles split up by journal
