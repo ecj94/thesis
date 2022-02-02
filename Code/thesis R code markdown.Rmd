@@ -31,12 +31,12 @@ install.packages("grDevices")
 install.packages("mosaic")
 ```
 ```{r loading packages, warning=FALSE, message = FALSE, echo = FALSE}
-library('readxl') 
+library('readxl') #reading in .xlsx files
 library('car')
 library('knitr') #creating nice tables
 library('kableExtra') #creating nice tables
 
-library('ggplot2')
+library('ggplot2') #creating plots
 library('gridExtra')
 library('ggtext')
 library('gridtext')
@@ -45,7 +45,7 @@ library('grDevices')
 library("cowplot") #adding a label to the final plot
 library("ggpubr") #putting together the ggplots
 library('rlang')
-library('dplyr')
+library('dplyr') #using pipes
 library('mosaic')
 ```
 \
@@ -912,7 +912,24 @@ Hyp_art_hyp1_stat_journal <- table(Hyp_art_hyp1_stat$Journal) #articles split by
 ## 4.2  Manual retrieval of results     
 Calling 'Hyp'.
 ```{r loading Hyp, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-Hyp <- read_excel("/Users/EliseSchramkowski/Documents/Master's thesis/Excel/Hypotheses 07-12-2021.xlsx", col_types = c("numeric", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",  "numeric", "numeric", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "numeric", "text", "text", "text", "text", "text"))
+Hyp <- read_excel("/Users/EliseSchramkowski/Documents/Master's thesis/Excel/Hyp.xlsx", col_types = c(
+#Article_numb, Article, Author(s), Journal
+"numeric", "text", "text", "text", 
+#Year, Issue, Number of hypotheses, Belongs to hypothesis
+"numeric", "numeric", "numeric", "numeric", 
+#Statistic, b, se, s_stat
+"text", "numeric", "numeric", "numeric", 
+#n, IVs, df_1,df_2
+"numeric", "numeric",  "numeric", "numeric", 
+#Reported.Comparison, Reported.P.Value, lb_b, ub_b 
+"text", "numeric", "numeric", "numeric",
+"numeric", "numeric", "numeric", "numeric", 
+#dec_pval_rep, Computed, P_one_sided_chi, Error
+"numeric", "numeric", "numeric", "numeric", 
+#DecisionError, OneTailed, Marg.sig, Hypothesis
+"numeric", "text", "numeric", "text", 
+#Information from text article used, Comment
+"text", "text"))
 nrow(Hyp) #n = 4881
 ```
 \
