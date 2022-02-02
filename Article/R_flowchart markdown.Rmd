@@ -7,7 +7,15 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 ```{r}
-
+##Articles with explicitly stated hypotheses
+#total
+(100/322)*100
+#ASR
+(56/139)*100
+#AJS
+(29/105)*100
+#SQ
+(15/78)*100
 
 
 ##Articles with required statistics (i.e., articles with at least one reported p-value or reproducible result)
