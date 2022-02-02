@@ -20,6 +20,9 @@ The variables in this data set are:
 
 
 ## 'Hyp'
+
+*Note: this file is still undergoing (small) changes due to checking its content for accuracy. Results that are based on it should be treated as preliminary results.*
+
 'Hyp' contains all *p*-values and reproducible results related to explicitly stated hypotheses from all articles of the 2014-2016 volumes of *ASR*, *AJS*, and *SQ*. The variables in 'Hyp' are:
 
 1. Article_numb: each article from which information was retrieved was given a number, such that analyses at the article level could easily be done.
