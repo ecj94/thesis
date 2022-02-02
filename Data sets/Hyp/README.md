@@ -2,10 +2,10 @@
 
 In this map, two data sets can be found: 
 1. 'Hyp', which contains all manually retrieved *p*-values and reproducible results related to explicitly stated hypotheses from all articles of the 2014-2016 volumes of *ASR*, *AJS*, and *SQ*.
-2. 'Article inclusion', which contains information on the inclusion process of articles of the 2014-2016 volumes of *ASR*, *AJS*, and *SQ* in 'Hyp'.
+2. Article inclusion 'Hyp', which contains information on the inclusion process of articles of the 2014-2016 volumes of *ASR*, *AJS*, and *SQ* in 'Hyp'.
 
 
-## 'Article inclusion'
+## Article inclusion 'Hyp'
 The variables in this data set are:
 1. Article: name(s) of the author(s) of the article, shortened (NOTE: this will change to full list of authors).
 2.a Journal: name of the journal the article was published in.
