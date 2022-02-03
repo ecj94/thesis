@@ -898,29 +898,109 @@ exp(cbind(coef(marg_sign), confint(marg_sign))) #odds ratios
 ## 4.1 Inclusion of articles       
 
 Inclusion process of the articles. The 2014-2016 volumes of *ASR*, *AJS*, and *SQ* contained 322 articles. After our selection procedure, 93 articles were used in our final data set 'Hyp'.
-```{r inclusion of articles, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
+```{r inclusion of articles, warning=FALSE, message = FALSE, echo = TRUE}
 #Calling the data set with information on all articles.
 Hyp_art <- read_excel("/Users/EliseSchramkowski/Documents/Master's thesis/Excel/inclusion_Hyp.xlsx", col_types = c(
 #Article, Author(s), Journal, Year
 "text", "text", "text", "numeric", 
-#Issue, Hypotheses, Req_stat, Res_hyp
+#Issue, Hypotheses, Req_stat, 
 "numeric", "numeric", "numeric", "numeric", 
 #Selected, Number, Comments
 "numeric", "numeric", "text")) 
 Hyp_art <- subset(Hyp_art, Year > 2013 & Year < 2017) #removing blank rows 
 nrow(Hyp_art) #n = 322
 Hyp_art_journal <- table(Hyp_art$Journal) #all articles split up by journal
+Hyp_art_journal
 
 #Numbers of articles with listed hypotheses
 Hyp_art_hyp1 <- subset(Hyp_art, Hypotheses == 1) #all articles with listed hypotheses
-nrow(Hyp_art_hyp1) #n = 100
+nrow(Hyp_art_hyp1) #n = 99
 Hyp_art_hyp1_journal <- table(Hyp_art_hyp1$Journal) #articles split by journal
+Hyp_art_hyp1_journal
 
 #Numbers of articles with listed hypotheses and at least one required statistic
 Hyp_art_hyp1_stat <- subset(Hyp_art_hyp1, Req_stat == 1) #all articles with >= 1 required statistic
-nrow(Hyp_art_hyp1_stat) #n = 93
+nrow(Hyp_art_hyp1_stat) #n = 91
 Hyp_art_hyp1_stat_journal <- table(Hyp_art_hyp1_stat$Journal) #articles split by journal
+Hyp_art_hyp1_stat_journal
 ```
+\
+
+```{r percentages selection process articles Hyp}
+##Articles with explicitly stated hypotheses
+#total = 30.7%
+(99/322)*100
+#ASR = 39.6%
+(55/139)*100
+#AJS = 27.6%
+(29/105)*100
+#SQ = 19.2%
+(15/78)*100
+
+
+##Articles with required statistics (i.e., articles with at least one reported p-value or reproducible result)
+#total = 28.3%
+(91/322)*100
+#ASR = 37.4% 
+(52/139)*100
+#AJS = 24.8%
+(26/105)*100
+#SQ = 16.7%
+(13/78)*100
+```
+
+```{r flowchart selection process articles Hyp, warning=FALSE, message = FALSE, include=knitr::is_html_output()}
+library(DiagrammeR) #package to create flowchart
+
+grViz("digraph{
+
+      graph[rankdir = LR]
+  
+      node[shape = rectangle]
+  
+      subgraph cluster_0 {
+        graph[shape = rectangle]
+        style = rounded
+       
+        label = 'Total number of articles\\n (n = 322)'
+        node[shape = rectangle, margin = 0.25]
+        A[label = 'ASR = 139', fixedsize = true, width = 1.35, height = 0.7]
+        B[label = 'AJS = 105', fixedsize = true, width = 1.35, height = 0.7]
+        C[label = 'SQ = 78', fixedsize = true, width = 1.35, height = 0.7]
+      }
+  
+      subgraph cluster_1 {
+         graph[shape = rectangle]
+         style = rounded
+         
+         label = 'Articles with explicitly stated hypotheses\\n (n = 99, 30.7%)'
+         node[shape = rectangle, margin = 0.25]
+         D[label = 'ASR = 55 (39.6%)', fixedsize = true, width = 1.8, height = 0.7]
+         E[label = 'AJS = 29 (27.6%)', fixedsize = true, width = 1.8, height = 0.7]
+         F[label = 'SQ = 15 (19.2%)', fixedsize = true, width = 1.8, height = 0.7]
+      }
+      
+      subgraph cluster_2 {
+        graph[shape = rectangle]
+        style = rounded
+       
+        label = 'Articles with required statistics\\n (n = 91, 28.3%)'
+        node[shape = rectangle, margin = 0.25]
+        G[label = 'ASR = 52 (37.4%)', fixedsize = true, width = 1.8, height = 0.7]
+        H[label = 'AJS = 26 (24.8%)', fixedsize = true, width = 1.8, height = 0.7]
+        I[label = 'SQ = 13 (16.7%)', fixedsize = true, width = 1.8, height = 0.7]
+      }
+      
+      edge[color = black, arrowhead = vee, arrowsize = 1.25]
+      A -> D
+      B -> E
+      C -> F
+      D -> G
+      E -> H
+      F -> I
+           }")
+```
+
 \
 \
 \

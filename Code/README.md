@@ -1,21 +1,10 @@
-# Thesis statistical reporting practices in sociology
+# R Code
 
-### Topics
-Multiple aspects of statistical reporting practices in sociology were studied in this thesis:
-- statistical reporting guidelines
-- statistical reporting errors
-- publication bias/*p*-hacking
-- bump in *p*-values
-- marginal significance
+The .Rmd file in this map contains the code used to obtain the results in our study for 'APA', 'AllP', and 'Hyp'. The layout of the file looks somewhat like this:
+1. Preliminary procedures (loading packages, extracting results from articles using statcheck)
+2. Data set 'AllP': contains the descriptive results  on publication bias, the bump in *p*-values and marginal significance included in the article in table form, as well as histograms of publication bias and the bump in *p*-values.
+3. Data set 'APA': 
 
-
-### Data sets
-For different topics, different data sets were used. Here is a list of the different data sets and what kind of information they contain:
-- 'SRG': contains information on statistical reporting guidelines for sociology journals mentioned in Clarivate Analytics' Web of Science (2016). More specifically, it contains information on (1) the guidelines to which journals request authors' adherence and (2)  guidelines authors are allowed to follow by journals. This data set was created to see how many sociology journals request that authors use the APA manual, and thus, the APA statistical reporting guidelines.
-- 'APA': contains all fully APA-reported results as retrieved from the 2014-2016 volumes of *ASR*, *AJS*, *SQ*, *CHQ*, and *JMF* by Epskamp & Nuijten's R package statcheck. 'APA' was used to study statistical reporting errors.
-- 'AllP': contains all reported *p*-values as retrieved from the 2014-2016 volumes of *ASR*, *AJS*, *SQ*, *CHQ*, and *JMF* by Epskamp & Nuijten's R package statcheck. 'AllP' was used to study publication bias, the 'bump' in *p*-values, and marginal significance.
-- 'Hyp': contains all manually retrieved *p*-values and reproducible results related to explicitly stated hypotheses. These data were retrieved from the 2014-2016 volumes of *ASR*, *AJS*, and *SQ* and were used to study statistical reporting errors, publication bias, the 'bump' in *p*-values, and marginal significance.
-- Article inclusion: contains information on which articles from the 2014-2016 volumes of *ASR*, *AJS*, *SQ*, *CHQ* were included in 'Hyp'.
 
 
 **References**\
