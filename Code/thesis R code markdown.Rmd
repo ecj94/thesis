@@ -1008,7 +1008,7 @@ Hyp <- read_excel("/Users/EliseSchramkowski/Documents/Master's thesis/Excel/Hyp.
 "numeric", "text", "numeric", "text", 
 #Information from text article used, Comment
 "text", "text"))
-nrow(Hyp) #n = 4881
+nrow(Hyp) #n = 4929
 ```
 \
 
@@ -1080,7 +1080,7 @@ nrow(Hyp_f) #n = 16
 
 #Subset of all results with r-statistics.
 Hyp_r <- subset(Hyp_i, Statistic == 9) 
-nrow(Hyp_r) #n = 4
+nrow(Hyp_r) #n = 52
 ```
 \
 \
@@ -1151,6 +1151,31 @@ Hyp_eq_t <- Hyp_eq_t %>% mutate(Comp_above = ifelse(Reported.P.Value > Comp_ub_r
 Hyp_eq_t <- Hyp_eq_t %>% mutate(Error = ifelse(Comp_below == 0 & Comp_above == 0, 0, 1)) 
 #DecisionError if Reported.P.Value <= .05 and Computed > .05, or vice versa.
 Hyp_eq_t <- Hyp_eq_t %>% mutate(DecisionError = ifelse((Reported.P.Value <= 0.05 & Computed > 0.05)|(Reported.P.Value > 0.05 & Computed <= 0.05), 1, 0)) 
+```
+\
+\
+
+### *4.3.2 Recalculating p-values based on r-values*
+
+Creating relevant subsets and recalculating *p*-values for results with *r*-values and *df*.
+```{r recalculating p-values with '<' based on r-statistics, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
+nrow_Hyp_r <- nrow(Hyp_r) #object for the number of columns 
+
+#Determining whether a p-value is one-sided or two-sided.
+for (i in 1:nrow_Hyp_r){
+  {Hyp_r$Computed[i] <- (2*pt(-abs(Hyp_r$t_stat[i]), Hyp_r$df_1[i]))}}
+options(scipen = 999)
+
+#Subset of results with Reported.Comparison '<'.
+Hyp_r_sml <- subset(Hyp_r, Reported.Comparison == 1) 
+nrow(Hyp_r_sml) #n = 32
+
+#Error if Reported.P.Value >= Computed.
+Hyp_r_sml <- Hyp_r_sml %>% mutate(Error = ifelse(Reported.P.Value >= Computed, 0, 1)) 
+mean(as.numeric(Hyp_r_sml$Error)) #n = 1???
+#DecisionError if Reported.P.Value <= .05 and Computed > .05.
+Hyp_r_sml <- Hyp_r_sml %>% mutate(DecisionError = ifelse(Reported.P.Value <= .05 & Computed > .05, 1, 0)) 
+mean(as.numeric(Hyp_r_sml$DecisionError)) #n = 1???
 ```
 \
 \
