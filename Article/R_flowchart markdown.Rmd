@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##Articles with required statistics (i.e., articles with at least one reported p-value or reproducible result)
 #total
-(93/322)*100
+(91/322)*100
 #ASR
 (53/139)*100
 #AJS
@@ -47,7 +47,7 @@ grViz("digraph{
        
         label = 'Total number of articles\\n (n = 322)'
         node[shape = rectangle, margin = 0.25]
-        A[label = '*ASR* = 139', fixedsize = true, width = 1.35, height = 0.7]
+        A[label = 'ASR = 139', fixedsize = true, width = 1.35, height = 0.7]
         B[label = 'AJS = 105', fixedsize = true, width = 1.35, height = 0.7]
         C[label = 'SQ = 78', fixedsize = true, width = 1.35, height = 0.7]
       }
@@ -67,7 +67,7 @@ grViz("digraph{
         graph[shape = rectangle]
         style = rounded
        
-        label = 'Articles with required statistics\\n (n = 93, 28.9%)'
+        label = 'Articles with required statistics\\n (n = 91, 28.3%)'
         node[shape = rectangle, margin = 0.25]
         G[label = 'ASR = 53 (32.1%)', fixedsize = true, width = 1.8, height = 0.7]
         H[label = 'AJS = 26 (24.8%)', fixedsize = true, width = 1.8, height = 0.7]

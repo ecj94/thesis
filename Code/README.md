@@ -1,14 +1,23 @@
 # R Code
 
 The .Rmd file in this map contains the code used to obtain the results in our study for 'APA', 'AllP', and 'Hyp'. The layout of the file looks somewhat like this:
-1. Preliminary procedures (loading packages, extracting results from articles using statcheck)
-2. Data set 'AllP': contains the descriptive results  on publication bias, the bump in *p*-values and marginal significance included in the article in table form, as well as histograms of publication bias and the bump in *p*-values.
-3. Data set 'APA': 
-
+1. Preliminary procedures:
+  - loading packages, among which statcheck (Epskamp & Nuijten, 2016)
+  - extracting results from articles using statcheck
+2. Data set 'APA', which contains the following information retrieved using statcheck:
+  - statistical reporting errors: descriptive results (tables), testing H1 and H2
+3. Data set 'AllP', which contains the following information retrieved using 'statcheck:
+   - publication bias: descriptive results (tables, histograms), testing H3
+   - bump in *p*-values: descriptive results (tables, histograms)
+   - marginal significance presented: descriptive results (tables), testing H4
+4. Data set 'Hyp', which contains manually retrieved information on *p*-values and reproducible results related to explicitly stated hypotheses:
+   - selection process articles 'Hyp', with flowchart 
+   - statistical reporting errors: descriptive results (tables)
+   - publication bias: descriptive results (tables, histogram)
+   - bump in *p*-values: descriptive results (tables, histogram)
+   - ,arginal significance: descriptive results (tables) 
 
 
 **References**\
-Clarivate Analytics’ Web of Science. (2016). Journal citation reports: Sociology, 2016.\
-&nbsp;&nbsp;&nbsp;&nbsp;com.proxy.library.uu.nl/JCRJournalHomeAction.\
 Epskamp, S., & Nuijten, M. B. (2016). Statcheck: Extract statistics from articles and recompute p values. Retrieved\  
 &nbsp;&nbsp;&nbsp;&nbsp;from https://cran.r-project.org/src/contrib/Archive/statcheck/

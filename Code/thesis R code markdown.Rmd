@@ -12,41 +12,23 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # 1. Preliminary procedures
 
-Requesting packages used later on in this R file.
-```{r installing packages, warning=FALSE, message = FALSE, eval = FALSE}
-install.packages("readxl") #reading .xlsx files into R
-#install.packages("xlsx") #reading
-
-install.packages("statcheck") #automatically retrieving p-values and fully APA-reported statistical results
-install.packages("devtools") #used to retrieve the github version of statcheck
-
-install.packages("dplyr") #using pipes
-
-install.packages("car")
-install.packages("ggplot2")  #making plots
-install.packages("gridExtra") #putting multiple plots together in one figure
-install.packages("grDevices")
-#install.packages("cowplot")
-#install.packages("ggpubr")
-install.packages("mosaic")
-```
+Loading packages used later on in this R file.
 ```{r loading packages, warning=FALSE, message = FALSE, echo = FALSE}
+#General
 library('readxl') #reading in .xlsx files
-library('car')
+library('car') #logistic regressions
 library('knitr') #creating nice tables
 library('kableExtra') #creating nice tables
-
-library('ggplot2') #creating plots
-library('gridExtra')
-library('ggtext')
-library('gridtext')
-library('grid')
-library('grDevices')
-library("cowplot") #adding a label to the final plot
-library("ggpubr") #putting together the ggplots
-library('rlang')
 library('dplyr') #using pipes
-library('mosaic')
+
+#Plots
+#library('ggplot2') #creating plots
+library('gridExtra') #arranging tables
+library('ggtext') #adapting title size plot
+library('gridtext') #adapting text above figure containing multiple plots
+library('grid') #font (size) options in grid.arrange function
+library("cowplot") #adding a label to the final containing multiple plots
+library("ggpubr") #putting together ggplots
 ```
 \
 
@@ -56,7 +38,7 @@ devtools::install_github("MicheleNuijten/statcheck")
 ```
 \
 
-Extracting p-values and fully APA-reported results from all collected articles. 
+Extracting *p*-values and fully APA-reported results from all collected articles. 
 ```{r extracting p-values and fully APA-reported results from articles, warning=FALSE, message = FALSE, eval = FALSE}
 #Object with path all articles (minus those from the 2015 volume of CHQ, see below).
 jrnls_tot <- "C:/Users/Elise/Documents/Master MSBBSS/year 2/Master's thesis/Literature/Articles/All jrnls_05_02" 
@@ -87,25 +69,25 @@ write.table(outp_jrnl_tot_sre, "C:/Users/Elise/Documents/Master MSBBSS/year 2/Ma
 
 Reading the Excel-file containing the information obtained when extracting fully APA-reported results using statcheck and some extra information that was added manually into R (n = 505 from 76 articles). 
 ```{r loading APA and recoding certain variables, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-Sre_all_jrnl <- read_excel("C:/Users/EliseSchramkowski/Documents/Master's thesis/Excel/APA.xlsx") # loading the data set
-nrow(Sre_all_jrnl) #n = 524
-Sre_all_jrnl_u <- Sre_all_jrnl[!duplicated(Sre_all_jrnl$Article_numb), ] #removing duplicates to obtain the number of articles
-nrow(Sre_all_jrnl_u) #n = 80
+APA <- read_excel("C:/Users/EliseSchramkowski/Documents/Master's thesis/Excel/APA.xlsx") # loading the data set
+nrow(APA) #n = 524
+APA_u <- APA[!duplicated(APA$Article_numb), ] #removing duplicates to obtain the number of articles
+nrow(APA_u) #n = 80
 options(scipen = 999)
 
 #Changing values assigned to variables in the data file.
-Sre_all_jrnl$Error[Sre_all_jrnl$Error == "TRUE"] <- 1 #assigning '1' to inconsistent reported results
-Sre_all_jrnl$Error[Sre_all_jrnl$Error == "FALSE"] <- 0 #assigning '0' to consistent reported results 
-Sre_all_jrnl$DecisionError[Sre_all_jrnl$DecisionError == "TRUE"] <- 1 #assigning '1' to grossly inconsistent reported results
-Sre_all_jrnl$DecisionError[Sre_all_jrnl$DecisionError == "FALSE"] <- 0 #assigning '0' to reported results which are not grossly inconsistent
+APA$Error[APA$Error == "TRUE"] <- 1 #assigning '1' to inconsistent reported results
+APA$Error[APA$Error == "FALSE"] <- 0 #assigning '0' to consistent reported results 
+APA$DecisionError[APA$DecisionError == "TRUE"] <- 1 #assigning '1' to grossly inconsistent reported results
+APA$DecisionError[APA$DecisionError == "FALSE"] <- 0 #assigning '0' to reported results which are not grossly inconsistent
 
 #Assigning numbers to the different categories of the variable 'Reported.Comparison'.
-Sre_all_jrnl$Reported.Comparison[which(Sre_all_jrnl$Reported.Comparison == "=")] <- 4
-Sre_all_jrnl$Reported.Comparison[which(Sre_all_jrnl$Reported.Comparison == "<")] <- 1
-Sre_all_jrnl$Reported.Comparison[which(Sre_all_jrnl$Reported.Comparison == ">")] <- 5
-Sre_all_jrnl$Reported.Comparison[which(Sre_all_jrnl$Reported.Comparison == "ns")] <- 3
+APA$Reported.Comparison[which(APA$Reported.Comparison == "=")] <- 4
+APA$Reported.Comparison[which(APA$Reported.Comparison == "<")] <- 1
+APA$Reported.Comparison[which(APA$Reported.Comparison == ">")] <- 5
+APA$Reported.Comparison[which(APA$Reported.Comparison == "ns")] <- 3
 
-APA <- subset(Sre_all_jrnl, Result.Hypothesis >= 0 & Result.Hypothesis <= 1) #subset all relevant results
+APA <- subset(APA, Result.Hypothesis >= 0 & Result.Hypothesis <= 1) #subset all relevant results
 nrow(APA) #n = 505
 
 #Assigning labels to the different categories of 'Result.Hypothesis'.
@@ -293,7 +275,7 @@ exp(cbind(coef(decerr_hyp), confint(decerr_hyp))) #odds ratios
 # 3. Data set 'AllP'
 Reading the Excel-file with the information obtained when extracting *p*-values using statcheck and information that was added manually in Excel. 
 ```{r loading AllP, echo=TRUE, message=FALSE, warning=FALSE, EVAL = FALSE}
-Pval_all_jrnl <- read_excel("C:/Users/EliseSchramkowski/Documents/Master's thesis/Excel/AllP.xlsx", col_types = c(
+AllP <- read_excel("C:/Users/EliseSchramkowski/Documents/Master's thesis/Excel/AllP.xlsx", col_types = c(
 #Article_numb, Article, Author(s), Journal
 "numeric", "text", "text", "text", 
 #Year, Statistic, Reported.Comparison, Reported.P.Value
@@ -304,8 +286,8 @@ Pval_all_jrnl <- read_excel("C:/Users/EliseSchramkowski/Documents/Master's thesi
 "numeric", "numeric", "numeric", "text", 
 #explicitly stated hypothesis, Comments
 "text", "text"))
-Pval_all_jrnl <- subset(Pval_all_jrnl, Article_numb >= 0) #only taking into account results with an article number (others are blank rows)
-AllP_nd <- Pval_all_jrnl[!duplicated(Pval_all_jrnl$Article_numb), ] #calculating number of articles
+AllP <- subset(AllP, Article_numb >= 0) #only taking into account results with an article number (others are blank rows)
+AllP_nd <- AllP[!duplicated(AllP$Article_numb), ] #calculating number of articles
 nrow(AllP_nd) #there are 471 articles in the data set
 ```
 \
@@ -313,20 +295,20 @@ nrow(AllP_nd) #there are 471 articles in the data set
 Changing values assigned to variables in the data file.
 ```{r recoding variables AllP, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 #Assigning numeric values to the types of reported comparisons.
-Pval_all_jrnl$Reported.Comparison[which(Pval_all_jrnl$Reported.Comparison == "=")] <- 4
-Pval_all_jrnl$Reported.Comparison[which(Pval_all_jrnl$Reported.Comparison == "<")] <- 1
-Pval_all_jrnl$Reported.Comparison[which(Pval_all_jrnl$Reported.Comparison == ">")] <- 5
-Pval_all_jrnl$Reported.Comparison[which(Pval_all_jrnl$Reported.Comparison == "ns")] <- 3
+AllP$Reported.Comparison[which(AllP$Reported.Comparison == "=")] <- 4
+AllP$Reported.Comparison[which(AllP$Reported.Comparison == "<")] <- 1
+AllP$Reported.Comparison[which(AllP$Reported.Comparison == ">")] <- 5
+AllP$Reported.Comparison[which(AllP$Reported.Comparison == "ns")] <- 3
 #Assigning labels to the categories of 'Result.Hypothesis'.
-Pval_all_jrnl$Result.Hypothesis[which(Pval_all_jrnl$Result.Hypothesis == 0)] <- "Result not related to hypothesis"
-Pval_all_jrnl$Result.Hypothesis[which(Pval_all_jrnl$Result.Hypothesis == 1)] <- "Result related to hypothesis"
+AllP$Result.Hypothesis[which(AllP$Result.Hypothesis == 0)] <- "Result not related to hypothesis"
+AllP$Result.Hypothesis[which(AllP$Result.Hypothesis == 1)] <- "Result related to hypothesis"
 ```
 \
 
 Selecting only those p-values that were retrieved from the text of the articles, and studying from how many articles they were retrieved. For information on types of reported *p*-values not taken into consideration, the reader is referred to the readme file accompanying the 'AllP' Excel file. 
 ```{r studying # of results in text and corresponding # of articles, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 #Selecting all relevant results.
-AllP <- subset(Pval_all_jrnl, Result.Table == 0 & Reported.Not.Relevant == 0 & Not.Reported == 0) 
+AllP <- subset(AllP, Result.Table == 0 & Reported.Not.Relevant == 0 & Not.Reported == 0) 
 nrow(AllP) #n = 2960
 #Calculating number of articles.
 AllP_nd <- AllP[!duplicated(AllP$Article_numb), ] 
@@ -904,7 +886,7 @@ Hyp_art <- read_excel("/Users/EliseSchramkowski/Documents/Master's thesis/Excel/
 #Article, Author(s), Journal, Year
 "text", "text", "text", "numeric", 
 #Issue, Hypotheses, Req_stat, 
-"numeric", "numeric", "numeric", "numeric", 
+"numeric", "numeric", "numeric",
 #Selected, Number, Comments
 "numeric", "numeric", "text")) 
 Hyp_art <- subset(Hyp_art, Year > 2013 & Year < 2017) #removing blank rows 
