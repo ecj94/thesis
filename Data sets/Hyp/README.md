@@ -5,7 +5,7 @@ In this map, two data sets can be found:
 2. Article inclusion 'Hyp', which contains information on the inclusion process of articles of the 2014-2016 volumes of *ASR*, *AJS*, and *SQ* in 'Hyp'.
 
 
-## Article inclusion 'Hyp'
+## inclusion_Hyp
 The variables in this data set are:
 1. Article: name(s) of the author(s) of the article, shortened (NOTE: this will change to full list of authors).
 2.a Journal: name of the journal the article was published in.
