@@ -17,8 +17,8 @@ The .Rmd file in this map contains the code used to obtain the results in our st
    - bump in *p*-values: descriptive results (tables, histogram)
    - marginal significance: descriptive results (tables) 
 
-Note: 
-<sup>1</sup> Information on this part still has to be added for it to be complete.
+Note:  
+<sup>1</sup> Information on this part still has to be added for it to be complete.  
 <sup>2</sup> Information on the recalculation of certain *r*-values still has to be added. Thus, results from 'Hyp' should only be considered preliminary results.
 
 **References**\
