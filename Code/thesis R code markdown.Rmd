@@ -1157,13 +1157,14 @@ Hyp_eq_t <- Hyp_eq_t %>% mutate(DecisionError = ifelse((Reported.P.Value <= 0.05
 
 ### *4.3.2 Recalculating p-values based on r-values*
 
-Creating relevant subsets and recalculating *p*-values for results with *r*-values and *df*.
+Creating relevant subsets and recalculating *p*-values for results with *r*-values and *df*. For this purpose, *t*-values first have to be calculated, which can then be used in the pt() formula to calculate the *p*-values corresponding with bivariate correlations.
 ```{r recalculating p-values with '<' based on r-statistics, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 nrow_Hyp_r <- nrow(Hyp_r) #object for the number of columns 
 
-#Determining whether a p-value is one-sided or two-sided.
+#Recalculating two-sided p-values.
 for (i in 1:nrow_Hyp_r){
-  {Hyp_r$Computed[i] <- (2*pt(-abs(Hyp_r$t_stat[i]), Hyp_r$df_1[i]))}}
+  {Hyp_r$t_stat[i] <- (Hyp_r$b[i] * sqrt(Hyp_r$df_1[i])) / sqrt(1-Hyp_r$b[i]^2)
+   Hyp_r$Computed[i] <- (2*pt(-abs(Hyp_r$t_stat[i]), Hyp_r$df_1[i]))}}
 options(scipen = 999)
 
 #Subset of results with Reported.Comparison '<'.
@@ -1172,10 +1173,24 @@ nrow(Hyp_r_sml) #n = 32
 
 #Error if Reported.P.Value >= Computed.
 Hyp_r_sml <- Hyp_r_sml %>% mutate(Error = ifelse(Reported.P.Value >= Computed, 0, 1)) 
-mean(as.numeric(Hyp_r_sml$Error)) #n = 1???
+mean(as.numeric(Hyp_r_sml$Error)) #n = 0
 #DecisionError if Reported.P.Value <= .05 and Computed > .05.
 Hyp_r_sml <- Hyp_r_sml %>% mutate(DecisionError = ifelse(Reported.P.Value <= .05 & Computed > .05, 1, 0)) 
-mean(as.numeric(Hyp_r_sml$DecisionError)) #n = 1???
+mean(as.numeric(Hyp_r_sml$DecisionError)) #n = 0
+```
+Determining whether there are errors and decision errors among results which have *p*-values reported as non-significant.
+```{r assigning (decision) errors for nonsignificant results based on r-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
+#Non-significant results
+Hyp_r_ns <- subset(Hyp_r, Reported.Comparison == 3) #subset results reported as non-significant
+nrow(Hyp_r_ns) #n = 16
+
+#Since a (decision) error can only occur if a result that was reported as non-significant is significant, a value of 1 is assigned if the Computed <= .05, and a value of 0 is assigned if Computed > .05.
+Hyp_r_ns$Error[which(Hyp_r_ns$Computed > 0.05)] <- "0"
+Hyp_r_ns$DecisionError[which(Hyp_r_ns$Computed > 0.05)] <- "0"
+Hyp_r_ns$Error[which(Hyp_r_ns$Computed <= 0.05)] <- "1"
+Hyp_r_ns$DecisionError[which(Hyp_r_ns$Computed <= 0.05)] <- "1"
+mean(as.numeric(Hyp_r_ns$Error)) #n = 0
+mean(as.numeric(Hyp_r_ns$DecisionError)) #n = 0
 ```
 \
 \
@@ -1455,6 +1470,17 @@ nrow(as.data.frame(Hyp_t_mrgd)) #n = 10
 mean(as.numeric(Hyp_t_mrgd$Error)) #0.1
 mean(as.numeric(Hyp_t_mrgd$DecisionError)) #0
 ```
+Merging the data sets containing results with reported *r*-values and *df*.
+```{r merging data sets of results with t-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
+#Merging data sets with results that have reported comparisons '=' and '<'.
+Hyp_r_mrgd <- merge(Hyp_r_sml, Hyp_r_ns, all = TRUE) #merging 
+nrow(as.data.frame(Hyp_r_mrgd)) #n = 48
+mean(as.numeric(Hyp_r_mrgd$Error)) #0
+mean(as.numeric(Hyp_r_mrgd$DecisionError)) #0
+```
+\
+
+
 \
 
 Merging the data sets containing results with reported *z*-values.
@@ -1511,10 +1537,15 @@ Hyp_tzf_mrgd <- merge(Hyp_tz_mrgd, Hyp_f_mrgd, all.x = TRUE, all.y = TRUE)
 nrow(Hyp_tzf_mrgd) #n = 288
 
 #Merging data sets containing results with (1) t-values, z-values and F-values and (2) chi2-values.  
-Hyp_fin <- merge(Hyp_tzf_mrgd, Hyp_chi_mrgd, all.x = TRUE, all.y = TRUE)
-nrow(Hyp_fin) #n = 351
-mean(as.numeric(Hyp_fin$Error))*100 #0.07122507
-mean(as.numeric(Hyp_fin$DecisionError))*100 #0.01424501
+Hyp_tzfc <- merge(Hyp_tzf_mrgd, Hyp_chi_mrgd, all.x = TRUE, all.y = TRUE)
+nrow(Hyp_tzfc) #n = 351
+
+#Merging data sets containing results with (1) t-values, z-values, F-values and chi2-values and (2) r-values.
+Hyp_fin <- merge(Hyp_tzfc, Hyp_r_mrgd, all.x = TRUE, all.y = TRUE)
+nrow(Hyp_fin) #n = 399
+mean(as.numeric(Hyp_fin$Error))*100 #6.3% 
+mean(as.numeric(Hyp_fin$DecisionError))*100 #1.3%
+
 ```
 \
 \
@@ -1525,10 +1556,10 @@ In 'Hyp', there are results for which it was not clear whether they were one-sid
 options(scipen=999)
 #Selecting results for which it was clear whether one-sided or two-sided testing was done, or which were not erroneous.
 Hyp_unkn_corr <- subset(Hyp_fin, OneTailed != 0 | Error != 1) 
-nrow(Hyp_unkn_corr) #n = 334
+nrow(Hyp_unkn_corr) #n = 381
 #Selecting results that possibly have been deemed erroneous because we incorrectly assumed they were two-tailed.
 Hyp_unkn_err <- subset(Hyp_fin, OneTailed == 0 & Error == 1) 
-nrow(Hyp_unkn_err) #n = 17
+nrow(Hyp_unkn_err) #n = 18
 
 #We take into consideration the possibility that p-values might be one-tailed rather than two-tailed. In this way, we can see if results are erroneous when we assume they are one-tailed.
 Hyp_unkn_err$OneTailed[which(Hyp_unkn_err$OneTailed=="0")] <- "1" #one-sided testing 
@@ -1598,15 +1629,15 @@ Merging the data sets containing results that are erroneous and results that are
 ```{r final merge, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 Hyp_all_err <- merge(Hyp_err_mrgd, Hyp_unkn_corr, all = TRUE) #merging data sets
 
-#The number of erroneous results is 18 (5.1%).
+#The number of erroneous results is 17 (4.3%).
 sum(Hyp_all_err$Error == 1)
 mean(as.numeric(Hyp_all_err$Error))*100
 
-#The number of decision errors is 3 (0.9%).
+#The number of decision errors is 3 (0.8%).
 sum(Hyp_all_err$DecisionError == 1)
 mean(as.numeric(Hyp_all_err$DecisionError))*100
 
-#Results in this data set were retrieved from 19 articles.
+#Results in this data set were retrieved from 20 articles.
 Hyp_err_no_dupl <- Hyp_all_err[!duplicated(Hyp_all_err[,c("Article_numb")]),]
 nrow(Hyp_err_no_dupl)
 ```
