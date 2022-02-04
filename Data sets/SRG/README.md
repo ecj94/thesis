@@ -1,13 +1,13 @@
-# READme '*SRG*'
+# READme 'SRG'
 
-'*SRG*' contains information on which guidelines sociology journals from Clarivate Analytics' Web of Science (2016) requested or allowed authors to adhere. Our goal was to study how many journals request adherence to the APA statistical reporting guidelines, which were to our knowledge the only statistical reporting guidelines used in sociology journals at the time of data collection. 
+'SRG' contains information on which guidelines sociology journals from Clarivate Analytics' Web of Science (2016) requested or allowed authors to adhere. Our goal was to study how many journals request adherence to the APA statistical reporting guidelines, which were to our knowledge the only statistical reporting guidelines used in sociology journals at the time of data collection. 
 
 ## Information from journals' websites
 This folder contains information retrieved from sociology journals' websites on submission guidelines. This information consists of html-pages and pdf-files.
 
 
-## Data set '*SRG*' 
-'*SRG*' contains the following variables:
+## Data set 'SRG' 
+'SRG' contains the following variables:
 1. Journal: name of the journal
 2. Guidelines the journal requested authors to adhere or allowed authors to adhere to:
     - APA full: journal requests authors to adhere to the full APA manual, which includes the APA statistical reporting guidelines.
