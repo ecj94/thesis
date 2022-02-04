@@ -22,3 +22,8 @@
 19. **APAfactor**: proportion of *p*-values that belongs to a fully APA reported result for each article.
 20. Result.Hypothesis: indicates whether an extracted result is (part of) the test of an explicitly stated hypothesis. This variable is coded such that '1' = yes, '0' = no, and 'NA' = result belongs to a table, not to the text of an article.
 21. Comments: contains other, relevant information on individual results. Here, it is indicated whether a result was a model fit statistic. These results were taken into account, but results belonging to tables were not. These were indicated as 'NA' in Result.Hypothesis for this reason.
+
+
+## References
+Epskamp, S., & Nuijten, M. B. (2016). Statcheck: Extract statistics from articles and recompute p values. Retrieved from
+&nbsp;&nbsp;&nbsp;&nbsp;https://cran.r-project.org/src/contrib/Archive/statcheck/
