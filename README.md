@@ -21,5 +21,5 @@ For different topics, different data sets were used. Here is a list of the diffe
 **References**\
 Clarivate Analytics’ Web of Science. (2016). Journal citation reports: Sociology, 2016.\
 &nbsp;&nbsp;&nbsp;&nbsp;com.proxy.library.uu.nl/JCRJournalHomeAction.\
-Epskamp, S., & Nuijten, M. B. (2016). Statcheck: Extract statistics from articles and recompute p values. Retrieved\  
+Epskamp, S., & Nuijten, M. B. (2016). Statcheck: Extract statistics from articles and recompute p values. Retrieved    
 &nbsp;&nbsp;&nbsp;&nbsp;from https://cran.r-project.org/src/contrib/Archive/statcheck/
