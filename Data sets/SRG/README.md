@@ -8,7 +8,7 @@ This folder contains information retrieved from sociology journals' websites on 
 
 ## Data set 'SRG' 
 'SRG' contains the following variables:
-1. Journal: name of the journal
+1. Journal: name of the journal.
 2. Guidelines the journal requested authors to adhere or allowed authors to adhere to:
     - APA full: journal requests authors to adhere to the full APA manual, which includes the APA statistical reporting guidelines.
     - APA partly: journal requests authors to adhere to parts of the APA manual. In this case, this did not include he APA statistical reporting guidelines.
