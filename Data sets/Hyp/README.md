@@ -70,3 +70,9 @@ If only *b*, *SE*, and/or *p*-values were extracted, this variable has the value
 31. Hypothesis: phrasing of the explicitly stated hypothesis from the article.
 32. Information from text article used: information from the text of the article used to determine that a result was related to an explicitly stated hypothesis.
 33. Comment:
+
+
+## References
+Ohlsson Collentine, Anton, Marcel A. L. M. Van Assen M. and Chris H. J. 	
+Hartgerink. 2019. “The prevalence of marginally significant  
+&nbsp;&nbsp;&nbsp;&nbsp;results in psychology over time.” *Psychological science*, *30*(4): 576-586.
