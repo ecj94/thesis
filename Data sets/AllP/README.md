@@ -23,4 +23,8 @@
 16. Explicitly stated hypothesis: contains the phrasing of the explicitly stated hypothesis, or is 'NA' when there was no explicitly stated hypothesis.
 17. Comments:
 
+## References
+Ohlsson Collentine, Anton, Marcel A. L. M. Van Assen M. and Chris H. J. 	
+Hartgerink. 2019. “The prevalence of marginally significant 
+    results in psychology over time.” *Psychological science*, *30**(4): 576-586.
 
