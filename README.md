@@ -15,7 +15,7 @@ For different topics, different data sets were used. Here is a list of the diffe
 - 'APA': contains all fully APA-reported results as retrieved from the 2014-2016 volumes of *ASR*, *AJS*, *SQ*, *CHQ*, and *JMF* by Epskamp & Nuijten's R package statcheck. 'APA' was used to study statistical reporting errors.
 - 'AllP': contains all reported *p*-values as retrieved from the 2014-2016 volumes of *ASR*, *AJS*, *SQ*, *CHQ*, and *JMF* by Epskamp & Nuijten's R package statcheck. 'AllP' was used to study publication bias, the 'bump' in *p*-values, and marginal significance.
 - 'Hyp': contains all manually retrieved *p*-values and reproducible results related to explicitly stated hypotheses. These data were retrieved from the 2014-2016 volumes of *ASR*, *AJS*, and *SQ* and were used to study statistical reporting errors, publication bias, the 'bump' in *p*-values, and marginal significance. *Note: this file is still undergoing (small) changes due to checking its content for accuracy. Results that are based on it should be treated as preliminary results.*
-- inclusion_Hyp: contains information on which articles from the 2014-2016 volumes of *ASR*, *AJS*, *SQ*, *CHQ* were included in 'Hyp'.
+- inclusion_Hyp: contains information on which articles from the 2014-2016 volumes of *ASR*, *AJS*, and *SQ* were included in 'Hyp'.
 
 
 **References**\
