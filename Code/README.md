@@ -10,7 +10,7 @@ The .Rmd file in this map contains the code used to obtain the results in our st
    - publication bias: descriptive results (tables, histograms), testing H3
    - bump in *p*-values: descriptive results (tables, histograms)
    - marginal significance presented: descriptive results (tables), testing H4
-4. Data set 'Hyp', which contains manually retrieved information on *p*-values and reproducible results related to explicitly stated hypotheses:**
+4. Data set 'Hyp', which contains manually retrieved information on *p*-values and reproducible results related to explicitly stated hypotheses:<sup>2</sup>
    - selection process articles 'Hyp', with flowchart 
    - statistical reporting errors: descriptive results (tables)**
    - publication bias: descriptive results (tables, histogram)
