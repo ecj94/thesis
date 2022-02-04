@@ -1471,7 +1471,7 @@ mean(as.numeric(Hyp_t_mrgd$Error)) #0.1
 mean(as.numeric(Hyp_t_mrgd$DecisionError)) #0
 ```
 Merging the data sets containing results with reported *r*-values and *df*.
-```{r merging data sets of results with t-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
+```{r merging data sets of results with r-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 #Merging data sets with results that have reported comparisons '=' and '<'.
 Hyp_r_mrgd <- merge(Hyp_r_sml, Hyp_r_ns, all = TRUE) #merging 
 nrow(as.data.frame(Hyp_r_mrgd)) #n = 48
