@@ -25,6 +25,6 @@
 
 ## References
 Ohlsson Collentine, Anton, Marcel A. L. M. Van Assen M. and Chris H. J. 	
-Hartgerink. 2019. “The prevalence of marginally significant 
+Hartgerink. 2019. “The prevalence of marginally significant  
 &nbsp;&nbsp;&nbsp;&nbsp;results in psychology over time.” *Psychological science*, *30*(4): 576-586.
 
