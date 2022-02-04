@@ -25,5 +25,5 @@
 
 
 ## References
-Epskamp, S., & Nuijten, M. B. (2016). Statcheck: Extract statistics from articles and recompute p values. Retrieved from
+Epskamp, S., & Nuijten, M. B. (2016). Statcheck: Extract statistics from articles and recompute p values. Retrieved from  
 &nbsp;&nbsp;&nbsp;&nbsp;https://cran.r-project.org/src/contrib/Archive/statcheck/
