@@ -10,14 +10,16 @@ The .Rmd file in this map contains the code used to obtain the results in our st
    - publication bias: descriptive results (tables, histograms), testing H3
    - bump in *p*-values: descriptive results (tables, histograms)
    - marginal significance presented: descriptive results (tables), testing H4
-4. Data set 'Hyp', which contains manually retrieved information on *p*-values and reproducible results related to explicitly stated hypotheses:
+4. Data set 'Hyp', which contains manually retrieved information on *p*-values and reproducible results related to explicitly stated hypotheses:**
    - selection process articles 'Hyp', with flowchart 
-   - statistical reporting errors: descriptive results (tables)
+   - statistical reporting errors: descriptive results (tables)**
    - publication bias: descriptive results (tables, histogram)
    - bump in *p*-values: descriptive results (tables, histogram)
    - marginal significance: descriptive results (tables) 
 
-Note: * Information on this part still has to be added for it to be complete.
+Note: 
+* Information on this part still has to be added for it to be complete.
+** Information on the recalculation of certain *r*-values still has to be added. Thus, results from 'Hyp' should only be considered preliminary results.
 
 **References**\
 Epskamp, S., & Nuijten, M. B. (2016). Statcheck: Extract statistics from articles and recompute p values. Retrieved\  
