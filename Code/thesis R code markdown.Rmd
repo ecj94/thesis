@@ -14,7 +14,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Loading packages used later on in this R file.
 ```{r loading packages, warning=FALSE, message = FALSE, echo = FALSE}
-#General
 library('readxl') #reading in .xlsx files
 library('car') #logistic regressions
 library('knitr') #creating nice tables
@@ -69,7 +68,13 @@ write.table(outp_jrnl_tot_sre, "C:/Users/Elise/Documents/Master MSBBSS/year 2/Ma
 
 Reading the Excel-file containing the information obtained when extracting fully APA-reported results using statcheck and some extra information that was added manually into R (n = 505 from 76 articles). 
 ```{r loading APA and recoding certain variables, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-APA <- read_excel("C:/Users/EliseSchramkowski/Documents/Master's thesis/Excel/APA.xlsx") # loading the data set
+#Setting working directory
+setwd("C:/Users/EliseSchramkowski/Documents/Master's thesis/project/thesis")
+getwd()
+setwd("./Data")
+getwd()
+
+APA <- read_excel("./APA/APA.xlsx") # loading the data set
 nrow(APA) #n = 524
 APA_u <- APA[!duplicated(APA$Article_numb), ] #removing duplicates to obtain the number of articles
 nrow(APA_u) #n = 80
@@ -105,7 +110,7 @@ APA$Comp_n <- as.numeric(APA$Computed) #converting recalculated p-values to nume
 ## 2.1 Errors
 ### 2.1.1 *Descriptive information errors*
 Tables on errors for each category and for results in total.
-```{r tables on errors (AllP), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
+```{r tables on errors (APA), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 #Errors and journals
 jrnl_err_t <- xtabs(~ Journal+Error, data=APA) #frequency table
 jrnl_err_t <- addmargins(jrnl_err_t ,margin=2) #adding row margins
@@ -275,7 +280,14 @@ exp(cbind(coef(decerr_hyp), confint(decerr_hyp))) #odds ratios
 # 3. Data set 'AllP'
 Reading the Excel-file with the information obtained when extracting *p*-values using statcheck and information that was added manually in Excel. 
 ```{r loading AllP, echo=TRUE, message=FALSE, warning=FALSE, EVAL = FALSE}
-AllP <- read_excel("C:/Users/EliseSchramkowski/Documents/Master's thesis/Excel/AllP.xlsx", col_types = c(
+#Setting working directory
+setwd("C:/Users/EliseSchramkowski/Documents/Master's thesis/project/thesis")
+getwd()
+setwd("./Data")
+getwd()
+
+#Reading in 'AllP'
+AllP <- read_excel("./AllP/AllP.xlsx", col_types = c(
 #Article_numb, Article, Author(s), Journal
 "numeric", "text", "text", "text", 
 #Year, Statistic, Reported.Comparison, Reported.P.Value
@@ -990,7 +1002,12 @@ grViz("digraph{
 ## 4.2  Manual retrieval of results     
 Calling 'Hyp'.
 ```{r loading Hyp, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-Hyp <- read_excel("/Users/EliseSchramkowski/Documents/Master's thesis/Excel/Hyp.xlsx", col_types = c(
+setwd("C:/Users/EliseSchramkowski/Documents/Master's thesis/project/thesis")
+getwd()
+setwd("./Data")
+getwd()
+
+Hyp <- read_excel("./Hyp & inclusion_Hyp/Hyp.xlsx", col_types = c(
 #Article_numb, Article, Author(s), Journal
 "numeric", "text", "text", "text", 
 #Year, Issue, Number of hypotheses, Belongs to hypothesis

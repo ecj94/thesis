@@ -1,0 +1,645 @@
+---
+title: 'The reporting of statistical results in sociology: a systematic review'
+author: "Elise Schramkowski"
+date: "31-01-2022"
+bibliography: ref_thesis.bib 
+csl: apa.csl
+output:
+  pdf_document: 
+    latex_engine: xelatex
+    fig_caption: yes
+header-includes:
+  - \usepackage{setspace}\doublespacing #double spacing throughout the document
+  - \usepackage{caption} #customizing captions of tables
+  - \usepackage{float} #do not remove, has something to do with tables/figures being floating objects
+  - \usepackage{cprotect}
+  - \usepackage{fvextra}
+  - \usepackage{textcomp}
+  - \usepackage{amssymb}
+  - \usepackage{amsmath}
+fontsize: 12pt
+spacing: double
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+\pagenumbering{gobble} 
+\pagebreak
+
+# Abstract  
+High quality of reported results in scientific articles is vital for providing scientific and nonscientific communities with correct information on studied phenomena. In this article, the quality of different aspects of reported results in sociology is studied. Firstly, the adherence to statistical reporting guidelines by 143 sociology journals was studied. Furthermore, the presence of statistical reporting errors, publication bias, a ‘bump’ in just significant *p*-values and marginal significance among results of papers were studied. For this purpose, data were collected from the 2014-2016 volumes of five sociology journals, from which information was retrieved automatically using the package statcheck [@statcheck122]. Furthermore, information on these topics was retrieved manually for the 2014-2016 volumes of three of these journals, which were previously used in a study by @Gerber2008 on publication bias in sociology. It was found that only 13 of these journals (9.1%) adhered to statistical reporting guidelines. No convincing evidence of the presence of publication bias and a ‘bump’ in *p*-values was found. Marginal significance was rather prevalent, especially when manually studying all results of articles related to explicitly stated hypotheses: then, marginal significance was assigned to 81.5% of results with *p*-values in the range (.05 - .10]. Across our data, more than 40% of articles contained at least one *p*-values in this range to which marginal significance was assigned. 
+\pagenumbering{arabic} 
+\
+
+**Keywords**
+statcheck, publication bias, statistical reporting errors, marginal significance, statistical reporting guidelines
+\pagebreak
+
+Statistical results in social science papers provide scientific and nonscientific communities with essential information about the social world. Therefore, examining statistical reporting standards and the quality of reported statistical results is highly relevant. Statistical results should comply with the following standards. Firstly, they should provide sufficient information for reproduction; this will make it easier for readers to assess the reported results of a study critically [@Simera]. Secondly, statistical results should not contain errors, because errors reflect inaccuracies in research and can lead to incorrect statistical conclusions, placing readers at risk of being misinformed about the nature of studied phenomena. Finally, the reporting of statistical results in papers should be standardized at least within disciplines to enable authors to communicate them clearly and to enable critical evaluation of the quality of reported results. In this systematic review, we examined several aspects of reported results quality in sociology, namely the adherence to statistical reporting guidelines, the prevalence of statistical reporting errors, evidence of publication bias and *p*-hacking, a ‘bump’ in just significant *p*-values, and *p*-values reported as marginally significant.\
+&nbsp;&nbsp;&nbsp;&nbsp;It has been suggested that the presence of statistical reporting guidelines in a discipline might lead to less reporting errors [@Lang]. Furthermore, absence of clear statistical reporting guidelines leads to authors providing insufficient information when reporting statistics, which makes critical assessment of their results difficult [@Simera]. This suggests authors use statistical reporting guidelines when this is required by the journals they submit their papers to. In contrast with other disciplines (e.g., psychology), no general statistical reporting guidelines have been developed within sociology. Different sociology journals require authors to adhere to different style guidelines, such as the American Psychological Association (APA), American Sociological Association (ASA), Chicago, Harvard, and Oxford style guidelines. Of these style guidelines, only the APA guidelines contain statistical reporting guidelines. We examined which journals request authors to adopt these guidelines to evaluate if insufficient and incorrect reporting of results in sociology could be explained by sociology journals not requesting the use of clear statistical reporting guidelines.\
+&nbsp;&nbsp;&nbsp;&nbsp;Statistical reporting errors, also called inconsistencies, occur when there is an inconsistency between the following parameters of a reported result: the test statistic, (if used) the degrees of freedom (*df*), and the *p*-value. Inconsistencies are undesirable for two reasons. Firstly, they reflect inaccuracies in reported results. Secondly, they can lead to changes in statistical conclusions based on null hypothesis significance testing (NHST). This can cause audiences to inadvertently decide a true effect exists, or that it does not exist. If an inconsistency leads to changes in statistical conclusions, it is called a gross inconsistency. An example of an inconsistent APA-reported result is ‘*t*(50) = 1.88, *p* = .056’, since *t*(50) = 1.88 implies *p* = .066. An example of a gross inconsistency is ‘*t*(50) = 1.99, *p* = .049’, suggesting a statistically significant result, but *t*(50) = 1.99 implies *p* = .052, which implies that the null-hypothesis should not be rejected. Another example of a gross inconsistency is ‘*t*(50) = 2.05, *p* = .055’. To our knowledge, no research on the prevalence of statistical reporting errors in sociology has been conducted at present. However, research in psychology suggests that 4% to 10% of results are inconsistently reported [@Wicherts; @Nuijten2016]. Gross inconsistencies have been found in 0.8%-2.5% of reported results [e.g., @Veldkamp; @Nuijten2016; @Hartgerink2016]. @Nuijten2016 found that gross inconsistencies occur relatively often in statistically significant reported results; due to gross inconsistencies, the percentage of significant *p*-values they found among recalculated *p*-values was 2.2 percentage points lower than that found among reported *p*-values (it went from 76.6% to 74.4%). Similarly, @Hartgerink2016 found that of all *p*-values reported as *p* = .05, 67.45% was actually larger than .05. This could point to authors using *p*-hacking and incorrect *p*-value rounding to obtain (false) significance [@John; @Hartgerink2016; @Nuijten2016]. We studied the prevalence of statistical reporting errors manually as well as by using the R package statcheck [@statcheck122], which checks the consistency of fully APA-reported results. The APA guidelines on reporting statistical results should be used by at least those sociology journals that follow the general APA guidelines.\
+&nbsp;&nbsp;&nbsp;&nbsp;Publication bias is the phenomenon that statistically significant results are published relatively more often than non-significant ones. It is one of the suboptimal research/publishing practices that can lead to a relatively high prevalence of just significant *p*-values. In various fields of scientific research, especially in the social and biomedical sciences, publication bias has been found to some extent [e.g., @Dickersin; @Easterbrook; @Fanelli; @Masicampo; @Franco2014; @DeWinter; @Franco2016]. Potential causes of a high prevalence of just significant *p*-values are questionable research practices (QRPs) known as *p*-hacking [@Hartgerink2016; @John; @Lakens2015a; @Masicampo] and the use of researcher degrees of freedom [@Simmons], in which one collects or selects data and/or analyzes results until statistical significance is obtained. Just significant *p*-values can be defined as *p*-values in the range just below the most frequently used threshold for determining significance, *p* = .05. The presence of publication bias and *p*-hacking in sociology was studied by @Gerber2008, who looked at statistical results corresponding to hypotheses in all three volumes of the sociology journals American Sociological Review (*ASR*), American Journal of Sociology (*AJS*) and Sociological Quarterly (*SQ*) from 2003-2006. They compared, among others, the difference in the number of *z*-values in an interval that closely approximates the *p*-value interval (.04-.05], and an interval that closely approximates the *p*-value interval (.05-.06]. They found that the frequency of results corresponding to the *p*-value interval (.04-.05] was 3.25 to 4 times higher than that corresponding to the *p*-value interval (.05-.06], presenting strong evidence of publication bias. A similar method was used by @Masicampo in psychology and @DeWinter across disciplines. They studied just significant *p*-values in the range (.04-.05] and just non-significant *p*-values in the range (.05 - .06]. We studied these *p*-value ranges, and, following @Gerber2008, the *p*-value ranges (.03 - .05] and (.05 - .07], since larger intervals provide higher power for tests on publication bias.\
+&nbsp;&nbsp;&nbsp;&nbsp;A non-monotonic increase or a ‘bump’ in *p*-values is
+also characterised by a predominance of just significant *p*-values, and can be said to occur when there are more *p*-values in the interval (.04-.05] than in the interval (.03-.04]. It is evidence of *p*-hacking, as publication bias cannot result in a ‘bump’ in *p*-values. Most discipline-specific research on a ‘bump’ in *p*-values has been conducted in psychology, where some studies focusing on *p*-values in the interval (.04-.05] claimed to have found evidence of a ‘bump’ [@Masicampo; @Leggett]. However, according to @Lakens2015b, these studies had not modeled their *p*-value distributions correctly, as they did not take possible publication bias into account. Relatedly, @Hartgerink2016 showed that *p*-hacking does not result in a ‘bump’ if true effect sizes are medium (Cohen’s *d* = 0.5) or larger. Although this shows that the absence of a ‘bump’ is no evidence of absence of *p*-hacking, the presence of a ‘bump’ can only be explained by *p*-hacking. Following @Hartgerink2016, we studied the presence of a ‘bump’ using the intervals (.04 - .05] versus (.03 - .04] and (.03 - .05] versus (.01 - .03]. Larger intervals were again used because they may provide higher testing power, although power may also decrease because *p*-values slightly larger than .01 will be much more prevalent than *p*-values of .05 in case of true nonzero effects [@Hartgerink2016].\
+&nbsp;&nbsp;&nbsp;&nbsp;We also examined the prevalence of results reported as marginally significant in sociology. The reporting of marginally significant results occurs when authors argue that statistically non-significant results (*p* > .05) provide evidence of nonzero true effects, although one can argue they have low evidential value [@Benjamin; @OhlssonCollentine; @Pritschet]. Thus, arguing non-significant results represent true effects may result in (unwarranted) false positives. Since this can lead to audiences assuming a true effect exists while evidence for it is slight, marginally significant *p*-values can be considered undesirable. *P*-values reported as marginally significant can mainly be found in the *p*-value range (.05-.10]; @Pritschet found that of *p*-values that are reported as marginally significant in psychology, 92.6% were in this interval. @OhlssonCollentine found that almost 40% of all in this *p*-value interval retrieved from the text of 44,200 articles of 70 psychology journals were reported as marginally significant. They also found that almost 20% of articles reporting *p*-values contained at least one *p*-value in interval (.05-.10] that was reported as marginally significant. As for studies on assignment of marginal significance in sociology, @Leahey found that in 10% of articles from two unnamed top sociology journals from 1995-2000, a significance level of low evidential value of *p* < .10 was used.\
+&nbsp;&nbsp;&nbsp;&nbsp;We examined the prevalence of statistical reporting errors, publication bias/*p*-hacking, a ‘bump’ in *p*-values, and *p*-values reported as marginally significant among results of explicitly stated hypotheses (hypotheses referred to in the paper’s text as hypotheses to be tested) and among results not related to explicitly stated hypotheses. For statistical reporting errors, publication bias/*p*-hacking, and *p*-values reported as marginally significant, we formally tested whether there were differences in the prevalence of these phenomena between results of explicitly stated hypotheses and other results. One would hope that at least reported results of explicitly stated hypotheses would be without inaccuracies through careful checking by authors before submission and by reviewers and editors before accepting a paper. On the other hand, as publication bias/*p*-hacking is assumed to primarily operate on results corresponding to main hypotheses in papers [@Gerber2006], one would expect the prevalence of (gross) inconsistencies, a ‘bump’ in *p*-values, and marginal significance to be higher among results corresponding to explicitly stated hypotheses. More specifically, we hypothesized the following:
+\
+
+*H1: The prevalence of statistical reporting inconsistencies is larger among results of explicitly stated hypotheses than among results not related to explicitly stated hypotheses.*
+\
+
+*H2: The prevalence of gross statistical reporting inconsistencies is larger among results of explicitly stated hypotheses than among results not related to explicitly stated hypotheses.*
+\
+
+*H3: The discrepancy between the amount of p-values in the interval (.04-.05] and the amount of p-values in the interval (.05-.06] among results of explicitly stated hypotheses is larger than among results not related to explicitly stated hypotheses.*
+\
+
+*H4: The prevalence of p-values in the interval (.05 - .10] reported as marginally significant among results of explicitly stated hypotheses is higher than that among results not related to explicitly stated hypotheses.*
+\
+
+We did not construct a hypothesis regarding a possible ‘bump’ in *p*-values. Due to sample sizes generally being larger in sociology than in psychology, statistical power has been suggested to be relatively higher in sociology [@Sedlmeier; @Cohen]. Assuming the same distribution of examined true effects in both fields, higher statistical power implies lower *p*-values on average in sociology. Therefore, and because evidence of a ‘bump’ in psychology is weak at best, we expected neither a ‘bump’ in *p*-values in sociology in general, nor a difference in the presence or size of a ‘bump’ between results related to hypotheses and results not related to hypotheses.
+\
+\
+
+# Method
+## Data sources
+For our study on statistical reporting guidelines, we consulted @WOS to create a data set of sociology journals called 'SRG' ('Statistical Reporting Guidelines'). For each journal in 'SRG', we verified whether it adhered to the APA statistical reporting guidelines or not.\
+&nbsp;&nbsp;&nbsp;&nbsp;For our study on statistical reporting errors, publication bias/*p*-hacking, the ‘bump’ in *p*-values, and marginal significance, we collected data from articles of several journals. Since statcheck only retrieves and recalculates fully APA-reported results, we collected articles from two journals from @WOS that require APA statistical reporting: Cornell Hospitality Quarterly (*CHQ*) and Journal of Marriage and Family (*JMF*). These were the highest impact factor journals among sociology journals requiring APA statistical reporting from which statcheck could extract results: *CHQ* ranked first with 2.657, *JMF* third with 2.238^[Initially, we had collected articles from *CHQ* and Work and Occupations (*WOX*), which had the second highest impact factor (2.355). However, extracting results from *WOX* articles using statcheck was not possible due to compatibility issues. For an unknown reason, no results could be extracted from neither the HTML nor PDF versions of *WOX* articles.]. We studied all 310 articles from the 2014-2016 volumes of *CHQ* and *JMF* (100 and 210 articles, respectively). To compare differences in statistical reporting errors between APA journals and non-APA journals, we also retrieved results of the 325 articles from the 2014-2016 volumes of three non-APA journals from @WOS: *ASR*, *AJS*, and *SQ*. @Gerber2008 used these in their study on publication bias, which we wanted to replicate. Fully APA-reported results retrieved using statcheck from these five journals were put into a data set called ‘APA’, and *p*-values retrieved by statcheck were put into a data set called ‘AllP’. Finally, we created a data set called ‘Hyp’, which contained reported *p*-values and statistical results related to explicitly stated hypotheses which were manually retrieved from *ASR*, *AJS*, and *SQ*. This means results with *p*-values reported according to the APA guidelines are also included in ‘Hyp’, as this data set contains all statistical results related to explicitly stated hypotheses. 
+\
+
+## Data collection
+For each sociology journal in @WOS, we verified if it explicitly required authors to adhere to the APA, ASA, Chicago and/or Harvard style guide and/or another external style guide. We also examined if journals explicitly required authors to follow their own journal’s style guide, and if they allowed authors to follow several different style guides. This information was put into a data set called 'SRG'. There was explicitly required adherence to the own journal’s guidelines if one of the following expressions was found on the journal’s website: 1) ‘House style (guide) *X*’ or ‘Journal style (guide) *X*’, where *X* represents the journal’s name, or 2) ‘*X* (format) requirements’ or ‘*X* (format) requirements’, where again *X* represents the journal’s name. If some form of style guidelines was available, but there was no explicitly named style guide, a journal was put into the category ‘Other’.\
+&nbsp;&nbsp;&nbsp;&nbsp;Before extracting statistical information using statcheck, we converted all relevant articles to HTML format. Statcheck converts HTML or PDF files to plain text before extracting statistics, and conversion from HTML format is accompanied by less errors [@Nuijten2016]. We then applied statcheck’s ‘checkHTMLdir’ function to a folder with HTML files [@statcheck122] to automatically retrieve APA-reported results, reported *p*-values, and recalculated *p*-values. The second data set, ‘APA’, contains information retrieved by statcheck on all aspects of fully APA-reported results of all five journals - test statistics (*t*, *z*, *F*, $\chi^2$, or *r*), *df*, and reported *p*-values - and recalculated *p*-values. Results with exactly reported *p*-values and results with *p*-values reported as ‘<’, ‘>’, or ‘non-significant’ can be retrieved by statcheck. If *p*-values are reported as non-significant, statcheck assigns them the label ‘NA’. ‘APA’ also contains information retrieved by statcheck on whether reported *p*-values are (grossly) inconsistent with their recalculated counterparts. If a reported result seems inconsistent (and this cannot be due to correct rounding), statcheck applies a one-sided test to the reported result. If this leads to a consistent reported result, it keeps the one-sided test. Otherwise, it keeps the two-sided test [@Nuijten2017]. We also manually put the part of the article’s text from which we concluded that a result was (not) related to an explicitly stated hypothesis in a separate column. Our definition of explicitly stated hypotheses followed that of @Gerber2008, i.e., hypotheses were considered explicitly stated if they were bolded, italicized, or indented, or if they were listed using one of the following terminologies: ‘Hypothesis 1’, ‘H1', ‘H~1~', or ‘the first hypothesis’. This information was used to test our hypotheses on statistical reporting errors (H1 and H2). Since statcheck also retrieved other (incomprehensible) information besides fully APA-reported results, some rows of ‘APA’ were excluded. In total, 505 results from 78 articles were used in descriptive analyses and hypothesis testing (see Table 1 and Table 2). \
+
+
+```{r table 1, echo = FALSE, warning = FALSE, message = FALSE}
+library('dplyr') #using pipes
+#library(magrittr) #using pipes (not necessary?)
+library('knitr') 
+library('kableExtra') #making a nice table
+
+#Creating content table cells.
+data_table1 <- c("all", "all", "\\emph{ASR}/\\emph{AJS}/\\emph{SQ}", "text", "text", "text/table/figure", "partly", "partly", "yes", 471, 80, 91, 314, 78, 91, 7280, 524, 4849, 2959, 505, 4849)
+#Putting content table cells into a matrix.
+table1 <- matrix(data_table1, ncol = 3, nrow = 7, byrow = TRUE)
+
+#Giving matrix row and column names.
+rownames(table1) <- paste(c("Journals", "Part of article", "Results related to explicitly stated hypotheses?", "Total number of articles", "Number of relevant articles", "Total number of results", "Number of relevant results"))
+colnames(table1) <- paste(c("‘AllP’", "‘APA’", "‘Hyp’"))
+
+#Creating Table 1.
+table1 %>%
+  #format html, centered alignment, bold-faced caption
+  kable(booktabs = T, align = "c", caption = "Overview of information provided by ‘AllP', ‘APA', and ‘Hyp'.", escape = FALSE) %>% #format html, centered alignment, bold-faced caption
+  kable_styling(latex_options = "HOLD_position", full_width = F)
+```
+
+```{r table 2, echo = FALSE, warning = FALSE, message = FALSE}
+#Creating content table cells.
+data_table2 <- c("-", "505 (76)", "399 (20)", "-", "505 (76)", "-", "", "", "", 64, 38, 14, 184, 88, 37, "", "", "", 73, 28, 14, 127, 56, 26, "", "", "", 73, "-", "-", 127, "-", "-", "199 (107)", "-", "130 (30)", "199 (107)", "-", "-")
+#Putting content table cells into a matrix.
+table2 <- matrix(data_table2, ncol = 3, nrow = 13, byrow = TRUE)
+
+#Giving matrix row and column names.
+rownames(table2) <- paste(c("Descriptive information", "Testing hypotheses (gross) inconsistencies (H1 & H2)", "Descriptive information", "(.03 - .04] - (.04 - .05]", "(.01 - .03] - (.03 - .05]", "Descriptive information", "(.04 - .05] - (.05 - .06]", "(.03 - .05] - (.05 - .07]", "Testing hypothesis publication bias (H3)", "(.04 - .05] - (.05 - .06]", "(.03 - .05] - (.05 - .07]", "Descriptive information", "Testing hypothesis marginal significance (H4)"))
+colnames(table2) <- paste(c("‘AllP'", "‘APA'", "‘Hyp'"))
+
+
+#Creating Table 2.
+table2 <- table2 %>%
+  #format html, centered alignment, bold-faced caption
+  kable(booktabs = T, align = "c", caption = "Overview of the numbers of results retrieved for all relevant parts of our study on sociology articles for ‘AllP', ‘APA', and ‘Hyp'.") %>% 
+  kable_styling(latex_options = c("striped", "HOLD_position"), full_width = F) 
+
+table2 %>%
+  #adding indentation for different parts of topics
+  add_indent(c(4, 5, 7, 8, 10, 11)) %>%
+  #grouping data for the different topics
+  pack_rows("Statistical reporting errors", 1, 2) %>%
+  pack_rows("Bump in \\emph{p}-values", 3, 5, escape = FALSE) %>%
+  pack_rows("Publication bias", 6, 11) %>%
+  pack_rows("Marginal significance", 12, 13) %>%
+  #adding footnote
+  add_footnote("Note. The numbers of articles from which results were used are shown between parentheses.", notation = "none")
+```
+\
+
+&nbsp;&nbsp;&nbsp;&nbsp;The third dataset, ‘AllP’, consists of all reported *p*-values of all five journals retrieved by statcheck. We manually added information on whether reported *p*-values were related to an explicitly stated hypothesis as we did for ‘APA’. Of 7,280 results retrieved by statcheck, we removed 4,354 (59.8%) because they did not refer to reported *p*-values. Thus, we had 2,926 reported *p*-values from 308 articles. From these data, descriptive information on the ‘bump’ in *p*-values, publication bias, and marginal significance as assigned by authors to *p*-values in the range (.05 - 10] was obtained. Furthermore, they were used to test H3 and H4 (see Table 1 and Table 2 for an overview). To determine if marginal significance was assigned to a reported *p*-value, we looked up *p*-values in the (.05-10] range in the text of articles. Then, following @OhlssonCollentine, we decided that a *p*-value was assigned marginal significance by authors if the expressions ‘margin\*’ or ‘approach\*’ were mentioned in relation to its significance. The text used to conclude that a *p*-value was (not) assigned marginal significance was stored manually in a separate column of ‘AllP’. Finally, we obtained descriptive statistics on articles with at least one *p*-value in the range (.05 - .10] to which marginal significance was assigned.\
+&nbsp;&nbsp;&nbsp;&nbsp;A fourth data set, ‘Hyp’, was created to replicate the research of @Gerber2008 on publication bias by manually retrieving results from articles. Manual retrieval allows one to retrieve information from tables, figures, and text, whereas statcheck can only retrieve information from text. We only collected data from articles that met our inclusion criteria. Firstly, like @Gerber2008, we only studied articles that explicitly stated one or more hypotheses before its results were presented. Of the 322 articles in *ASR*, *AJS* and *SQ*, 99 (30.7%) met this criteria. Secondly, articles had to contain at least one 'required statistic', i.e., at least one *p*-value or reproducible result related to an explicitly stated hypotheses. This was the case for 91 articles (28.3%) (see Figure 1 for an overview of the selection process). Following @Gerber2008, ‘Hyp’ contains all relevant results from all models used to test explicitly stated hypotheses. Information from appendices was also included, but information from supplements was not, since only appendices are part of articles as published. There are also some differences between our study and that of @Gerber2008. @Gerber2008 used caliper tests for *z*-distributions consisting of *z*-values and *t*-values (converted to *z*-values) within 5%, 10%, 15% or 20% of *z* = 1.64 (one-sided testing) or *z* = 1.96 (two-sided testing). If *z*-values or *t*-values were unavailable, regression coefficients and standard errors were used to calculate accompanying *z*-values. We used exactly reported *p*-values in the ranges (.04 - .06] and (.03 - .07] instead, since it was often unknown what kind of distribution an analysis was based on, and this allowed us to include *p*-values based on *F*-values and $\chi^2$-values. Finally, @Gerber2008 excluded articles with more than 38 relevant coefficients because they could lead to certain articles having a disproportionate effect on analyses. We did not do so since we wanted to include all *p*-values relevant for studying publication bias. If one or more articles would influence the results disproportionately, we would do extra analyses without these articles. We organized all aspects of a result of an explicitly stated hypothesis (*p*-values, regression coefficients, odds ratios, *z*-values, *t*-values, *F*-values,  $\chi^2$-values, standard errors, the phrasing of the hypothesis results belonged to as retrieved from the article, and, if applicable, text from the article in which particular results are mentioned) as we did for ‘APA’. In total, ‘Hyp’ contained 4,929 results. We used 'Hyp' to study all our results-level phenomena (see Table 2). Where possible, we checked whether statistical results were (grossly) inconsistent by recalculating their *p*-values. For information on how this was done, see Table 3 and Table 4. We also manually added information on assignment of marginal significance to in-text *p*-values in the range (.05 - .1] to ‘Hyp’ as we did for ‘AllP’. For *p*-values in tables, we considered significance levels of *p* < .10 in captions of tables (indicated by, e.g., an asterisk) to be assignment of marginal significance. Finally, we studied the percentage of articles containing marginally significant results in the range (.05 - .10] in ‘Hyp’. Note that ‘AllP’, ‘APA’, and ‘Hyp’ overlap. For instance, an in-text APA-reported result related to an explicitly stated hypothesis is included in all three data sets.
+\
+
+<center>
+
+![Flowchart describing the process of selecting articles from which results were retrieved for ‘Hyp’. Percentages are measured per total number of articles.](Flowchart_thesis.png)
+
+</center>
+
+\
+\  
+\
+
+
+```{r table 3, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
+#Creating contents table cells.
+data_table3 <- c("Non-significant (ns)", "Cal\\emph{P} $\\leq$ .05", "Cal\\emph{P} $\\leq$ .05", "$<$", "Cal\\emph{P} $\\geq$ Rep\\emph{P}", "Cal\\emph{P} $>$ .05 \\& Rep\\emph{P} $\\leq$ .05", "$\\geq$", "Cal\\emph{P} $<$ Rep\\emph{P}", "Cal\\emph{P} $<$ .05 \\& Rep\\emph{P} $\\geq$ .05", "=", " Cal\\emph{P} $\\neq$ Rep\\emph{P} not due to", "Cal\\emph{P} $\\neq$ Rep\\emph{P} not due to rounding,", "", "rounding\\textsuperscript{*}", "Cal\\emph{P} $\\leq$ .05 \\& Rep\\emph{P} $>$ .05 or vice versa")
+#Putting content table cells into a matrix.
+table3 <- matrix(data_table3, ncol = 3, nrow = 5, byrow = TRUE)
+#Giving matrix column names.
+colnames(table3) <- paste(c("Type of Rep\\emph{P}", "Inconsistent if...", "Grossly inconsistent if..."))
+
+#Creating Table 3.
+table3 %>%
+  #format html, centered alignment, bold-faced caption
+  kable(booktabs = T,  align = "c", caption = "Conditions under which different types of reported \\emph{p}-values from ‘Hyp’ are considered (grossly) inconsistent.", escape = FALSE) %>% 
+  #table will appear in correspondence with its place in this document, table is scaled-down to fit page size
+  kable_styling(latex_options = c("HOLD_position", "scale_down"), full_width = F) %>% 
+  #Adding footnotes
+  add_footnote("Note. Cal\\emph{P} = recalculated \\emph{p}-value, Rep\\emph{P} = reported \\emph{p}-value.", notation = "none", escape = FALSE)  %>% 
+  add_footnote("See Table 4 for methods used to determine whether a difference between recalculated and reported \\emph{p}-values", notation = "symbol", escape = FALSE) %>%
+  add_footnote("could be due to correct rounding or not.", notation = "none")  %>%
+  #Specifying column length and font size
+  column_spec(1,width = "14cm") %>%
+  column_spec(2, width = "18cm")%>%
+  column_spec(3, width = "26cm")%>%
+  #specifying font size
+  kable_styling(font_size = 40)
+```
+
+
+
+```{r table 4, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
+#Creating content table cells.
+data_table4 <- c(
+##b & SE
+"Only used for recalculation if a result was explicitly based on the \\emph{z}-distribution or \\emph{t}-distribution.", "We use \\emph{b} $=$ 3.11, SE $=$ 2.11, \\emph{p} $=$ 0.07, from a \\emph{z}-distribution as an example:", #intro b&SE
+                 
+"- Correct Cal\\emph{P} will stem from \\emph{b}\\textsubscript{lb} $\\leq$ \\emph{b} $<$ \\emph{b}\\textsubscript{ub} (e.g., 3.105 $\\leq$ \\emph{b} $<$ 3.115) and SE\\textsubscript{lb} $\\leq$ SE $<$ SE\\textsubscript{ub}" , "(e.g., 2.105 $\\leq$ SE $<$ 2.115).", #correct intervals
+                 
+"- Calculate \\emph{t}/\\emph{z}\\textsubscript{ub} $=$ $\\frac{\\emph{b} \\textsubscript{ub}}{SE\\textsubscript{lb}}$ and \\emph{t}/\\emph{z}\\textsubscript{lb} $=$ $\\frac{\\emph{b} \\textsubscript{lb}}{SE\\textsubscript{ub}}$, the largest and smallest \\emph{t}/\\emph{z} consistent with \\emph{b} and SE", #calculation t/z
+                 "(e.g., \\emph{z}\\textsubscript{ub} $=$ $\\frac{3.115}{2.105}$ $=$ 1.47981 and \\emph{z}\\textsubscript{lb} $=$ $\\frac{3.105}{2.115}$ $=$ 1.468085).", #example calculation t/z
+
+"- Use \\emph{t}/\\emph{z}\\textsubscript{lb} and \\emph{t}/\\emph{z}\\textsubscript{ub} (and, in case of \\emph{t}, reported \\emph{df}) to calculate Cal\\emph{P}\\textsubscript{lb} and Cal\\emph{P}\\textsubscript{ub} (boundaries", "of correctly rounded Rep\\emph{P}). For this, the R stats package pt() function - in case of \\emph{t} - or the", "pnorm() function - in case of \\emph{z} - is used. Then, Cal\\emph{P}\\textsubscript{lb} and Cal\\emph{P}\\textsubscript{ub} are rounded to the same", #calculation Callb and Calub
+                  "number of decimals as Rep\\emph{P} with R base round() function. In our example, Cal\\emph{P}\\textsubscript{lb} $\\approx$ 0.07", "and Cal\\emph{P}\\textsubscript{ub} $\\approx$ 0.07.", #example calculation Callb and Calub
+
+"- If Cal\\emph{P}\\textsubscript{lb} $\\leq$ Rep\\emph{P} $\\leq$ Cal\\emph{P}\\textsubscript{ub}, Rep\\emph{P} is considered correct. This is the case in our example.", #conclusion
+
+"", #white space row
+
+##test statistics
+"Functions of the R stats package used for recalculation of \\emph{p}-values: pt() for \\emph{t} and \\emph{r}, pnorm() for \\emph{z},", "pf() for \\emph{F}, and chisq() for $\\chi^2$. All functions, except pnorm(), require information on \\emph{df}. We use ", #intro
+                 "the example of \\emph{t}(61) $=$ 3.11, \\emph{p} $=$ 0.0001:", #intro example
+
+"- Correct Cal\\emph{P} will stem from \\emph{t}\\textsubscript{lb} $\\leq$ \\emph{t} $<$ \\emph{t}\\textsubscript{ub} (e.g., 3.105 $\\leq$ \\emph{t} $<$ 3.115).", #correct intervals
+
+"-	Calculate the \\emph{p}-values consistent with the highest and lowest \\emph{t}-values possible under correct", "rounding with pt() function, and round Cal\\emph{P}\\textsubscript{lb} and Cal\\emph{P}\\textsubscript{ub} to the same number of decimals as ", #calculation Callb and Calub
+                 "Rep\\emph{P} with R base round() function. In our example, Cal\\emph{P}\\textsubscript{lb} $\\approx$ 0.001 and Cal\\emph{P}\\textsubscript{ub} $\\approx$ 0.001.", #example calculation Callb and Calub
+
+"- If Cal\\emph{P}\\textsubscript{lb} $\\leq$ Rep\\emph{P} $\\leq$ Cal\\emph{P}\\textsubscript{ub}, Rep\\emph{P} is considered correct. This is not the case in our example,", #conclusion
+                 "since Rep\\emph{P} is smaller than Cal\\emph{P}\\textsubscript{lb} and Cal\\emph{P}\\textsubscript{ub}.", #conclusion example
+
+"" #white space row
+                 )
+
+#Putting content table cells into a matrix.
+table4 <- matrix(data_table4, ncol = 1, nrow = 22, byrow = TRUE)
+
+#Creating Table 4.
+table4 %>%
+  #format html, centered alignment, bold-faced caption
+  kable(booktabs = T,  align = "l", caption = "Ways of determining whether discrepancies between exactly reported \\emph{p}-values and their recalculated counterparts from  ‘Hyp' could be due to correct rounding or are indicative of an inconsistency.", escape = FALSE) %>% 
+  #grouping data for the different methods of recalculation
+  pack_rows("b & SE", 1,13) %>%
+  pack_rows("test statistics", 14, 22) %>%
+  #Adding indentation 
+  add_indent(c(3:12, 17:22)) %>% 
+  #table will appear in correspondence with its place in this document, table is scaled-down to fit page size, font size is 20
+  kable_styling(latex_options = c("HOLD_position", "scale_down"), full_width = F) %>%
+  kable_styling(font_size = 20) %>% 
+  #adding footnotes
+  add_footnote("Note. Rep\\emph{P} = reported \\emph{p}-value, Cal\\emph{P} = recalculated \\emph{p}-value, Cal\\emph{P}\\textsubscript{lb} = lower bound recalculated \\emph{p}-value," , notation = "none", escape = FALSE)  %>% 
+  add_footnote("Cal\\emph{P}\\textsubscript{ub} = upper bound recalculated \\emph{p}-value, \\emph{b}\\textsubscript{lb} = lower bound \\emph{b}, \\emph{b}\\textsubscript{ub} = upper bound \\emph{b}, SE\\textsubscript{lb} = lower", notation = "none", escape = FALSE) %>% 
+  add_footnote("bound SE, SE\\textsubscript{ub} = upper bound SE.", notation = "none", escape = FALSE) 
+```
+
+
+## Statistical analyses
+In our descriptive analyses (which consist of frequencies and percentages), we reported how many journals require authors to adhere to the APA statistical reporting guidelines. For (gross) inconsistencies, descriptive results were based on ‘APA’ and ‘Hyp’. We followed @Nuijten2016 by studying the direction of gross inconsistencies: do errors make non-significant results significant, or vice versa? For publication bias, the ‘bump’ in *p*-values, and marginal significance, descriptive results were based on ‘AllP’ and ‘Hyp’. For marginal significance, these data sets also provided descriptive statistics at the article level. For all research topics but statistical reporting guidelines, descriptive results were split by explicitly stated hypothesis (yes/no), journal (*ASR*, *AJS*, *SQ*, and, for parts of the study using statcheck, *CHQ*, and *JMF*), and year (2014, 2015, 2016). See Table 2 for an overview of which data sets were used for which parts of the study.\
+&nbsp;&nbsp;&nbsp;&nbsp;Nuijten et al. (2017) have argued that the prevalence of (gross) inconsistencies can be studied in three ways. Firstly, one can calculate the percentage of inconsistencies and gross inconsistencies for each article and take the average of these percentages over all articles. Secondly, one can calculate the overall percentage of (gross) inconsistencies by dividing the amount of (gross) inconsistencies by the total number of reported results obtained. Thirdly, one can use multilevel logistic regression models to estimate the probability that a reported result is inconsistent, while controlling for the nesting of results within articles. Although in theory, the third method is most appropriate, simulation analyses revealed that it performs poorly; because both the number of results per article and the probability of a gross inconsistency are too low, it is accompanied by a too low Type I error, a lack of statistical power, and clearly inaccurate effect size estimates [@Nuijten2017]. Therefore, following @Wicherts and @Nuijten2016, we tested H1 and H2  using logistic regressions on fully APA-reported results.\
+&nbsp;&nbsp;&nbsp;&nbsp;We conducted logistic regressions to test our hypothesis on publication bias (H3) with exactly reported *p*-values from ‘AllP’. Since statcheck interprets results with *p* = .05 as being statistically significant [@statcheck122], *p* = .05 was included in the interval of just significant *p*-values for the logistic regressions. H3 was tested using *p*-values from smaller intervals - (.04 - .05] versus (.05 - .06] – to obtain more precise results, and larger intervals - (.03 - .05] versus (.05 - .07] – for a potentially  more powerful test.\
+&nbsp;&nbsp;&nbsp;&nbsp;To test our hypothesis on *p*-values reported as marginally significant (H4), we conducted logistic regressions with exactly reported *p*-values in the range (.05 - .10] from ‘AllP’ as the independent variable.\
+&nbsp;&nbsp;&nbsp;&nbsp;All logistic regression analyses contained a binary predictor indicating whether a result was related to an explicitly stated hypothesis or not. We chose not to include other potentially relevant control variables, such as journal and year of publication, because some analyses had too little data for including multiple predictors. 
+\
+\
+
+# Results
+In this section, we start by presenting our results regarding statistical reporting guidelines. Next, results on statistical reporting errors, publication bias/*p*-hacking, the ‘bump’ in *p*-values, and marginal significance are discussed. For each results-level topic, we first present the relevant descriptive results and (if applicable) results of hypothesis testing as obtained using statcheck. Then, we discuss descriptive statistics of results related to explicitly stated hypotheses from 'Hyp'. Results on specific years and journals that were of little theoretical interest or were based on too little data are not discussed in text, but can be found in the corresponding tables. Full tables of the results of logistic regressions can be found in the supplement.
+\pagebreak
+
+## Statistical reporting guidelines
+Of the 143 sociology journals in 'SRG', one journal (Society) did not seem to have any explicit guidelines authors are required or allowed to follow when preparing their manuscripts. Four journals (2.8%) explicitly required authors to follow guidelines established by the journal itself, and 102 (71.3%) required authors to adhere to (reference) guidelines established by external organizations. Only 13 journals (9.1%) requested authors to adhere to the APA manual, and thereby, to the APA statistical reporting guidelines. See Table 5 for an overview of the numbers of sociology journals requesting/allowing adherence to different categories of guidelines.
+\
+
+```{r table5, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
+#Creating content table cells.
+data_table5 <- c("", "10 (7%)", "10 (7%)",
+                 "", "12 (8.4%)", "3 (2.1%)",
+                 "", "7 (4.9%)", "6 (4.2%)",
+                 "", "2 (1.4%)", "9 (6.3%)",
+                 "1 (0.7%)", "1 (0.7%)", "1 (0.7%)",
+                 "34 (23.8%)", "4 (2.8%)", "1 (0.7%)",
+                 "37 (25.9%)", "3 (2.1%)", "1 (0.7%)",
+                 "1 (0.7%)", "1 (0.7%)", "143 (100%)")
+#Putting content table cells into a matrix.
+table5 <- matrix(data_table5, ncol = 1, nrow = 24, byrow = TRUE)
+
+#Giving the matrix row names and column names.
+rownames(table5) <- c("APA", "Full manual", "Only references", 
+                            "ASA", "Full manual", "Only references",  
+                            "Chicago", "Full manual", "Only references",  
+                            "Harvard", "Full manual", "Only references",   
+                            "Oxford", "Style Manual for Authors, Editors and Printers", 
+                            "Wiley", "Other", "Own", "Multiple options (one must be chosen)",
+                            "Multiple required", "Multiple required (one is full APA manual)", "Multiple allowed",
+                            "None mentioned", "Unknown*", "Total")
+colnames(table5) <- paste(c("Number of journals (% of total)"))
+
+#Creating Table 5.
+table5 %>%
+  #format html, centered alignment, bold-faced caption
+  kable(booktabs = T, align = "c", longtable = TRUE, caption = "Numbers and percentages of sociology journals in ‘SRG' requesting/allowing adherence to different types of statistical reporting guidelines.") %>% 
+  #grouping data
+  pack_rows("Required", 1, 20) %>%
+  pack_rows("Other, namely...", 21, 23) %>%
+  #adding indentation for different groups
+  add_indent(c(2:3, 5:6, 8:9, 11:12)) %>%
+  #table will appear in correspondence with its place in this document, table is scaled-down to fit page size, font size is 10
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"), full_width = F) %>%
+  kable_styling(font_size = 10) %>% 
+  #Adding footnote
+  footnote(symbol = "We were unable to find which guidelines authors publishing in the journal Society are required or allowed to use. The link provided on the website that should give access to this information gave a ‘page not found’ error.", escape = FALSE, threeparttable = T, footnote_as_chunk = T)
+```
+
+## Statistical reporting errors
+Of the 505 ‘APA’ results, 69 (13.7%) were inconsistent and 8 (1.6%) grossly inconsistent (see Table 6). All grossly inconsistent results had a statistically significant reported *p*-value and a non-significant recalculated *p*-value, making the percentage of significant *p*-values found among recalculated *p*-values 1.6 percentage points lower (30.3% rather than 31.9%) than that found among reported *p*-values. Out of 168 results corresponding to explicitly stated hypotheses, 22 (13.1%) were inconsistent and 4 (2.4%) grossly inconsistent. Out of 337 results corresponding to explicitly stated hypotheses, 47 (13.9%) were inconsistent and 4 (1.2%) grossly inconsistent. Our hypotheses that less (gross) inconsistencies will be observed for results on explicitly stated hypotheses are not confirmed. As for H1, the odds of a result of an explicitly stated hypothesis being inconsistent were 1.076 times smaller than the odds that a result not related to an explicitly stated hypothesis was inconsistent, *b* = -.073, *p* = .793, OR = .930, 95% CI [.531, 1.585]. Regarding H2, the odds of a result of an explicitly stated hypothesis being grossly inconsistent were 2.030 two times larger than the odds that a result not related to an explicitly stated hypothesis was grossly inconsistent, but this difference was not significant, *b* = .708, *p* = .321, OR = 2.030, 95% CI [.475, 8.685]. Most recalculated *p*-values were retrieved from the two APA journals. These journals,  *JMF* and *CHQ*, had very similar percentages of inconsistencies (14.6% and 14.7%, respectively) and gross inconsistencies (1.6% and 1.7%, respectively). As for reproducible results from ‘Hyp’, 17 out of 399 recalculated *p*-values were inconsistent (4.3%), and three (0.8%) were grossly inconsistent. For a comprehensive overview of results, see Table 6.
+
+
+```{r table6, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
+#Creating content table cells.
+data_table6 <- c("", "", "", "", 
+                 29, 168, "22 (13.1%)", "4 (2.4%)", #begin AllP
+                 68, 337, "47 (13.9%)", "4 (1.2%)", 
+                 "", "", "", "", 
+                 7, 43, "1 (2.3%)", "1 (2.3%)",
+                 3, 41, "2 (4.9%)", "0 (0%)",
+                 2, 5, "5 (100%)", "0 (0%)", 
+                 36, 185, "27 (14.6%)", "3 (1.6%)",
+                 28, 231, "34 (14.7%)", "4 (1.7%)",
+                 "", "", "", "", 
+                 20, 172, "22 (12.8%)", "1 (0.6%)", 
+                 21, 136, "15 (11.0%)", "3 (2.2%)",
+                 35, 197, "32 (16.2%)", "4 (2.0%)", 
+                 76, 505, "69 (13.7%)", "8 (1.6%)", #end AllP
+                 "", "", "", "",                    #begin Hyp
+                 11, 313, "13 (4%)", "2 (0.6%)",
+                 7, 68, "2 (2.9%)", "1 (1.5%)", 
+                 2, 5, "2 (40.0%)", "0 (0%)", 
+                 "", "", "", "", 
+                 12, 307, "12 (3.9%)", "2 (0.7%)", 
+                 3, 33, "1 (3.0%)", "0 (0%)", 
+                 5, 59, "3 (5.1%)", "1 (1.7%)", 
+                 20, 399, "17 (4.3%)", "3 (0.8%)") #end Hyp
+#Putting content table cells into a matrix.
+table6 <- matrix(data_table6, ncol = 4, nrow = 23, byrow = TRUE)
+
+#Giving matrix row and column names.
+rownames(table6) <- c("Relation to hypothesis", "Yes", "No", "Journal", 
+                            "ASR", "AJS", "SQ", "JMF", "CHQ", "Year", 
+                            "2014", "2015", "2016", "Total", "Journal", 
+                            "ASR", "AJS", "SQ", "Year", 
+                            "2014", "2015", "2016", "Total")
+colnames(table6) <- paste(c("Articles", "Results", "Inconsistencies", "Gross inconsistencies"))
+
+#Creating Table 6.
+table6 %>%
+  #format html, centered alignment, bold-faced caption
+  kable(booktabs = T, align = "c", caption = "Descriptive statistics on the number of articles, number of results and (gross) inconsistencies for ‘APA' and ‘Hyp'.") %>% 
+  #adding indentation for the categories of all variables
+  add_indent(c(2,3, 5:9, 11:13, 16:18, 20:22)) %>% 
+  #grouping data for the two data sets
+  pack_rows("‘APA'", 1, 14) %>%
+  pack_rows("‘Hyp'", 15, 23) %>%
+  #specifying width of columns (gross) inconsistencies
+  column_spec(3, width = "5em") %>%
+  column_spec(4, width = "5em") %>%
+  #table will appear in correspondence with its place in this document, table is scaled-down to fit page size
+  kable_styling(latex_options = c("striped", "HOLD_position", "scale_down"), full_width = F) %>%
+  #adding footnotes
+  add_footnote("Note. The numbers of articles for the results (not) related to explicitly stated hypotheses reflect the", notation = "none") %>%
+  add_footnote("numbers of articles that contain at least one result that is (not) related to an explicitly stated hypothesis.", notation = "none") 
+```
+
+## Publication bias	
+In ‘AllP’, there was no evidence of publication bias/*p*-hacking (see Figure 2A and Table 7). Overall, when using binwidth .01, 31 out of 73 results were just significant (43.8%). When using binwidth .02, 64 out of 127 results were just significant (50.4%). A non-substantial indication of publication bias was found for results not related to explicitly stated hypotheses when using binwidth .02: out of 90 results, 47 (52.2%) were just significant. There was no evidence of publication bias among results related to explicitly stated hypotheses (see Figure 2C). Next, we tested our hypothesis on publication bias (H3). There were $\frac{1}{.877} \approx 1.140$ times less just significant *p*-values among reported results of explicitly stated hypotheses than among reported results not related to explicitly stated hypotheses for binwidth .01 (*b* = -.132, *p* = .794, OR = .877, 95% CI [.321, 2.345]) and binwidth .02 (*b* = -.251, *p* = .521, OR = .778, 95% CI [.358, 1.674]). For results from ‘Hyp’, we found (slightly) more just significant *p*-values than just insignificant ones - 9 out of 14 results (64.3%) for binwidth .01, and 14 out of 27 (53.8%) for binwidth .02, see Figure 2D and Table 7. 
+
+```{r plots AllP, warning=FALSE, message = FALSE, echo = FALSE, results = 'hide', fig.height=8, fig.cap="Histograms of exactly reported \\emph{p}-values in the range [0 - .10] from ‘AllP’ and 'Hyp'. Specifically, information on 'AllP' is provided for all exactly reported \\emph{p}-values in the range [0, .10] (2A), as well as for exactly reported \\emph{p}-values in this range (not) related to explicitly stated hypotheses (2B and 2C). Finally, information on exactly reported \\emph{p}-values in the range [0, .10] from 'Hyp' (2D) is provided."}
+library('readxl') #reading in data files
+library('ggplot2') #plotting
+library('ggtext') #adapting title size
+library('gridExtra') #arranging tables
+library('gridtext') #adapting text above final table
+library('grid') #font (size) options in grid.arrange function
+library('ggpubr') #creating a ggplot object out of multiple ggplots out together
+library("cowplot") #adding a label to the final plot
+
+
+############################
+##        Plots AllP      ##  
+############################
+
+#Reading in file with AllP data.
+Pval_all_jrnl <- read_excel("C:/Users/EliseSchramkowski/Documents/Master's thesis/Excel/P-values all journals_marg09-09-2021.xlsx", col_types = c("numeric", "text", "text", "text", "text", "text", "text", "numeric", "text", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "numeric", "text", "text"))
+#Only taking into account results with an article number (others are blank rows).
+AllP <- subset(Pval_all_jrnl, Article_numb >= 0) 
+#Assigning numeric values to the types of reported comparisons.
+AllP$Reported.Comparison[which(AllP$Reported.Comparison == "=")] <- 4
+AllP$Reported.Comparison[which(AllP$Reported.Comparison == "<")] <- 1
+AllP$Reported.Comparison[which(AllP$Reported.Comparison == ">")] <- 5
+AllP$Reported.Comparison[which(AllP$Reported.Comparison == "ns")] <- 3
+#Assigning labels to the categories of 'Result.Hypothesis'.
+AllP$Result.Hypothesis[which(AllP$Result.Hypothesis == 0)] <- "Result not related to hypothesis"
+AllP$Result.Hypothesis[which(AllP$Result.Hypothesis == 1)] <- "Result related to hypothesis"
+#Selecting only exactly reported p-values.
+AllP_exact <- subset(AllP, Reported.Comparison == 4) 
+
+#Plot total reported p-values in range [.0 - .10]. 
+sum(AllP_exact$Reported.P.Value >= 0 & AllP_exact$Reported.P.Value <= .1) #n = 514
+plot_aut_rep <- ggplot() + 
+  geom_histogram(data = AllP_exact, aes(x = Reported.P.Value), fill = 'grey', colour='black', bins=10, binwidth = .01, boundary = 0, closed = "right") + #10 bins, width .01, black bin lines, bins colored grey, lines of bins are black, bins close on the right
+  scale_x_continuous(expand = c(0, 0), breaks = seq(0, .10, by = .01), lim = c(0,.105)) + #ticks on the x-axis with equal intervals of .01         
+  scale_y_continuous(expand = c(0, 0), breaks = seq(0,200, by = 25)) + #ticks on the y-axis with intervals of 25                               
+  labs(title = "2A:  ‘APA’, total (*n* = 514)", x = "*p*-value") +  #add title and label to the x-axis
+  theme_classic(base_size = 10) + #theme with x and y axis lines,  no gridline is chosen
+  geom_vline(xintercept = .05, linetype = "dotted") + #dotted vertical line at p = .05 
+  theme(plot.title = ggtext::element_markdown(size = 12), axis.title.x = element_markdown()) #enabling markdown text in label x-axis, adapting title size
+
+#Creating new data sets containing only reported results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses, respectively.
+AllP_exact_nh <- subset(AllP_exact, Result.Hypothesis == "Result not related to hypothesis") #data set containing only results of explicitly stated hypotheses
+nrow(AllP_exact_nh) #n = 582
+AllP_exact_h <- subset(AllP_exact, Result.Hypothesis == "Result related to hypothesis")  #data set containing only results not related to explicitly stated hypotheses
+nrow(AllP_exact_h) #n = 232
+
+#Plot reported *p*-values in range [.0 - .10] that are not related to explicitly stated hypotheses.
+sum(AllP_exact_nh$Reported.P.Value >= 0 & AllP_exact_nh$Reported.P.Value <= .1) #n = 353
+plot_aut_rep_nh <- ggplot() + 
+  geom_histogram(data = AllP_exact_nh, aes(x = Reported.P.Value), fill = 'grey', colour='black', bins=10, binwidth = .01, boundary = 0, closed = "right") + #10 bins, width .01, black bin lines, bins colored grey, bins close on the left
+  scale_x_continuous(expand = c(0, 0), breaks = seq(0, .10, by = .01), lim = c(0,.105)) + #ticks on the x-axis with equal intervals of .01     
+  scale_y_continuous(expand = c(0, 0), breaks = seq(0,200, by = 25)) + #ticks on the y-axis with equal intervals of 25                                   
+  labs(title = "2B: ‘APA’, no hypothesis (*n* = 353)", x = "*p*-value") +  #add title and label to the x-axis
+  theme_classic(base_size = 10) + #theme with x and y axis lines, no gridline
+  geom_vline(xintercept = .05, linetype = "dotted") + #dotted vertical line at p = .05 
+  theme(plot.title = ggtext::element_markdown(size = 12), axis.title.x = element_markdown()) #enabling markdown text in label x-axis, adapting title size
+
+#Plot reported *p*-values in range [.0 - .10] that are related to explicitly stated hypotheses.
+sum(AllP_exact_h$Reported.P.Value >= 0 & AllP_exact_h$Reported.P.Value <= .1) #n = 161
+plot_aut_rep_h <- ggplot() + 
+  geom_histogram(data = AllP_exact_h, aes(x = Reported.P.Value), fill = 'grey', colour='black', bins=10, binwidth = .01, boundary = 0, closed = "right") + #10 bins, width .01, black bin lines, bins colored grey, bins close on the left
+  scale_x_continuous(expand = c(0, 0), breaks = seq(0, .10, by = .01), lim = c(0,.105)) +     
+    scale_y_continuous(expand = c(0, 0), breaks = seq(0,200, by = 25)) + #ticks on the y-axis with equal intervals of 25                                 
+  labs(title = "2C: ‘APA’, result hypothesis (*n* = 161)", x = "*p*-value") +  #add title and label to the x-axis
+  theme_classic(base_size = 10) + #theme with x and y axis lines, no gridline
+  geom_vline(xintercept = .05, linetype = "dotted") + #dotted vertical line at p = .05 
+  theme(plot.title = ggtext::element_markdown(size = 12), axis.title.x = element_markdown()) #enabling markdown text in label x-axis, adapting title size
+
+
+############################
+##        Plot Hyp        ##  
+############################
+
+#Creating a histogram of *p*-values in the range [0 - .10] of results related to explicitly stated hypotheses.
+Hyp <- read_excel("/Users/EliseSchramkowski/Documents/Master's thesis/Excel/Hypotheses 07-12-2021.xlsx", col_types = c("numeric", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",  "numeric", "numeric", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "numeric", "text", "text", "text", "text"))
+#Assigning numbers to the categories of 'Reported.Comparison'.
+Hyp$Reported.Comparison[which(Hyp$Reported.Comparison == "<")] <- "1"
+Hyp$Reported.Comparison[which(Hyp$Reported.Comparison == ">=")] <- "2"
+Hyp$Reported.Comparison[which(Hyp$Reported.Comparison == "ns")] <- "3"
+Hyp$Reported.Comparison[which(Hyp$Reported.Comparison == "=")] <- "4"
+Hyp$Reported.Comparison[which(Hyp$Reported.Comparison == ">")] <- "5"
+#Making '1E-3' and 'ns' numeric, such that 'Reported.P.Value' can be converted to a numeric variable properly.
+Hyp$Reported.P.Value<- as.numeric(Hyp$Reported.P.Value)
+Hyp$Reported.P.Value[which(Hyp$Reported.P.Value=="1E-3")] <- .001
+Hyp$Reported.P.Value[which(Hyp$Reported.P.Value=="ns")] <- 1
+
+#Subset exactly reported p-values in range [.0 - .10].
+Hyp_all_jrnl_exact <- subset(Hyp, Reported.Comparison == 4)
+pb_bump_Hyp <- subset(Hyp_all_jrnl_exact, Reported.P.Value >= 0 & Reported.P.Value <= .1) #n = 514
+#Keeping only the variable 'Reported.P.Value' for plotting purposes.
+pb_bump_Hyp <- pb_bump_Hyp[ ,c("Reported.P.Value")]
+
+#Creating the histogram.
+plot_man_rep <- ggplot() + 
+    geom_histogram(data = Hyp_all_jrnl_exact, aes(x = Reported.P.Value), fill = 'grey', colour='black', #10 bins of width .01, black bin lines, bins colored grey, bins close on the left
+                 bins=10, binwidth = .01, boundary = 0, closed = "right") + #ticks on the x-axis with intervals of .01
+  scale_x_continuous(expand = c(0, 0), breaks = seq(0, .10, by = .01), lim = c(0,.105)) + #ticks on the x-axis in the range [0, 200] with intervals of 25
+  scale_y_continuous(expand = c(0, 0), breaks = seq(0, 200, by = 10)) + #ticks on the y-axis in the range [0, 200] +
+  geom_vline(xintercept = .05, linetype = "dotted") + #dotted vertical line at p = .05 
+  labs(title = "2D: ‘Hyp’ (*n* = 167)", x = "*p*-value") +  #add title and label to the x-axis
+  theme_classic(base_size = 10) + #theme with x and y axis lines and no gridline 
+  theme(plot.title = ggtext::element_markdown(size = 12)) + #adapt title size
+  theme(axis.title.x = ggtext::element_markdown()) #enabling markdown text in label x-axis
+
+#Putting the plots created above in one figure. 
+txt1 <- c("**Exactly reported *p*-values in the range [0, .10]**") #title of the figure
+plot3_aut <- grid.arrange(plot_aut_rep, plot_aut_rep_nh, plot_aut_rep_h, plot_man_rep, ncol=2, nrow=2, top = richtext_grob(txt1,gp=gpar(fontsize=12, font=1))) #creating one Figure with 4 plots, and adding a title
+plot_3lab_aut <- as_ggplot(plot3_aut) #putting created figure into ggplot format
+```
+
+
+```{r table 7, echo = FALSE, warning = FALSE, message = FALSE}
+#Creating content table cells.
+data_table7 <- c("", "", "", "",  "", "",
+                 "10 (41.7%)", 14, 24, "17 (45.9%)", 20, 37, #begin AllP
+                 "22 (44.9%)", 49, 43, "47 (52.2%)", 43, 90,
+                 "", "", "", "", "", "",
+                 "8 (40%)", 12, 20, "11 (37.9%)", 18, 29,
+                 "3 (42.9%)", 4, 7, "8 (57.1%)", 6, 14,
+                 "1 (20%)", 4, 5, "3 (42.9%)", 4, 7,
+                 "14 (43.8%)", 18, 32, "28 (49.1%)", 29, 57,
+                 "6 (66.7%)", 3, 9, "14 (70%)", 6, 20,
+                 "", "", "", "", "", "", 
+                 "13 (44.8%)", 16, 29, "27 (55.1%)", 22, 49,
+                 "10 (52.6%)", 9, 19, "20 (52.6%)", 18, 38,
+                 "9 (36%)", 16, 25, "17 (42.5%)", 16, 40,
+                 "32 (43.8%)", 41, 73, "64 (50.4%)", 41, 127, #end AllP
+                 "", "", "", "",  "", "",                     #begin Hyp
+                 "2 (40%)", 3, 5, "5 (45.5%)", 6, 11,
+                 "3 (100%)", 0, 3, "4 (80%)", 1, 5,
+                 "4 (66.7%)", 2, 6, "5 (50%)", 5, 10,
+                 "", "", "", "",  "", "",                     #begin Hyp
+                 "4 (66.7%)", 2, 6, "8 (61.5%)", 5, 13,
+                 "1 (50%)", 1, 2, "1 (50%)", 1, 2,
+                 "4 (66.7%)", 2, 6, "5 (45.5%)", 6, 11,
+                 "9 (64.3%)", 5, 14, "14 (53.8%)", 12, 26)    #end Hyp
+#Putting content table cells into a matrix.
+table7 <- matrix(data_table7, ncol = 6, nrow = 23, byrow = TRUE)
+
+#Giving matrix row names and column names.
+rownames(table7) <- paste(c("Relation to hypothesis", "Yes", "No", "Journal", 
+                            "ASR", "AJS", "SQ", "JMF", "CHQ", "Year", 
+                            "2014", "2015", "2016", "Total", "Journal", 
+                            "ASR", "AJS", "SQ", "Year", 
+                            "2014", "2015", "2016", "Total"))
+colnames(table7) <- paste(c("(.04 - .05]", "(.05 - .06]", "Total", "(.03 - .05]", "(.05 - .07]", "Total"))
+
+#Creating Table 7.
+table7 <- table7 %>%
+  #format html, centered alignment, bold-faced caption
+  kable(booktabs = T, align = "c", caption = "Descriptive statistics on publication bias for ‘AllP’ and ‘Hyp’.") %>% 
+  #table will appear in correspondence with its place in this document, table is scaled-down to fit page size
+  kable_styling(latex_options = c("striped", "HOLD_position", "scale_down"), full_width = F) 
+
+table7 %>%
+  #Adding indentation for the categories of all variables
+  add_indent(c(2,3, 5:9, 11:13, 16:18, 20:22)) %>% 
+  #grouping columns based on binwidth
+  add_header_above(c(" ", "Binwidth .01" = 3, "Binwidth .02" = 3)) %>%
+  #grouping rows for the two data sets
+  pack_rows("‘AllP'", 1, 14) %>%
+  pack_rows("‘Hyp'", 15, 23) %>%
+  #fixing large spaces between columns binwidth .02
+  column_spec(4:6, width = "5em") %>% 
+  #adding footnotes
+  add_footnote("Note. The numbers of articles for the results (not) related to explicitly stated hypotheses reflect the", notation = "none") %>%
+  add_footnote("numbers of articles that contain at least one result that is (not) related to an explicitly stated hypothesis.", notation = "none") 
+```
+\
+\
+
+## Bump in *p*-values 
+Table 8 shows there is no 'bump' in *p*-values in ‘AllP’: the lower *p*-value intervals contained 50% of *p*-values when using binwidth .01 and 34.8% when using binwidth .02. For results from ‘Hyp’, 9 out of 14 reported *p*-values (64.3%) were just significant for binwidth .01, see Figure 3 and Table 8. However, this provides no clear indication for the presence of a bump in *p*-values since little data were retrieved. For binwidth .02 in ‘Hyp’, 14 out of 37 reported *p*-values (37.8%) were just significant, providing no indication of a 'bump'. For a more detailed overview, see Table 8.
+
+
+```{r table 8, echo = FALSE, warning = FALSE, message = FALSE}
+#Creating content table cells.
+data_table8 <- c("", "", "", "",  "", "",
+                  7, "10 (56.2%)", 17, 34, "17 (33.3%)", 51, #begin AllP
+                 25, "22 (46.8%)", 47, 86, "47 (35.3%)", 133,
+                 "", "", "", "", "", "",
+                 3, "8 (72.7%)", 11, 25, "11 (30.6%)", 36,
+                 5, "3 (37.5%)", 8, 23, "8 (25.8%)", 31,
+                 2, "1 (33.3%)", 3, 1, "3 (75%)", 4, 
+                 14, "14 (50%)", 28, 44, "28 (38.9%)", 72,
+                 8,"6 (42.9%)", 14, 27, "14 (34.1%)", 41,
+                 "", "", "", "", "", "", 
+                 14, "13 (48.1%)", 27, 51, "27 (34.6%)", 78,
+                 10, "10 (50%)", 20, 41,"20 (32.8%)", 61,
+                 8, "9 (52.9%)", 17, 28, "17 (37.8%)", 45,
+                 32, "32 (50%)", 64, 120, "64 (34.8%)", 184, #end AllP
+                 "", "", "", "",  "", "",                    #begin Hyp
+                 3, "2 (40%)", 5, 9, "5 (35.7%)", 14,
+                 1, "3 (75%)", 4, 11, "4 (26.7%)", 15,
+                 1, "4 (80%)", 5, 3, "5 (62.5%)", 8,        
+                 "", "", "", "",  "", "",                   
+                 4, "4 (50%)", 8, 14, "8 (36.4%)", 22,
+                 0, "1 (100%)", 1, 7, "1 (12.5%)", 8,
+                 1, "4 (80%)", 5, 2, "5 (71.4%)", 7,
+                 5, "9 (64.3%)", 14, 23, "14 (37.8%)", 37) #end Hyp
+#Putting content table cells into a matrix.
+table8 <- matrix(data_table8, ncol = 6, nrow = 23, byrow = TRUE)
+
+#Giving matrix row and column names.
+rownames(table8) <- paste(c("Relation to hypothesis", "Yes", "No", "Journal", 
+                            "ASR", "AJS", "SQ", "JMF", "CHQ", "Year", 
+                            "2014", "2015", "2016", "Total", "Journal", 
+                            "ASR", "AJS", "SQ", "Year", 
+                            "2014", "2015", "2016", "Total"))
+colnames(table8) <- paste(c("(.03 - .04]", "(.04 - .05]", "Total", "(.01 - .03]", "(.03 - .05]", "Total"))
+
+#Creating Table 8.
+table8 <- table8 %>%
+  #format html, centered alignment, bold-faced caption
+  kable(booktabs = T, align = "c", caption = "Descriptive statistics on the bump in just significant results for ‘AllP’ and ‘Hyp’.") %>% 
+  #table will appear in correspondence with its place in this document, table is scaled-down to fit page size
+  kable_styling(latex_options = c("striped", "HOLD_position", "scale_down"), full_width = F) 
+
+table8 %>%
+  #adding indentation for the categories of all variables
+  add_indent(c(2,3, 5:9, 11:13, 16:18, 20:22)) %>% 
+  #grouping columns based on binwidth
+  add_header_above(c(" ", "Binwidth .01" = 3, "Binwidth .02" = 3)) %>% 
+  #grouping variables for the two data sets
+  pack_rows("‘AllP'", 1, 14) %>%
+  pack_rows("‘Hyp'", 15, 23) %>%
+  #fixing large spaces between columns binwidth .02
+  column_spec(4:6, width = "5em") %>% 
+  add_footnote("Note. The numbers of articles for the results (not) related to explicitly stated hypotheses reflect the", notation = "none") %>%
+  add_footnote("numbers of articles that contain at least one result that is (not) related to an explicitly stated hypothesis.", notation = "none") 
+```
+\pagebreak
+
+## Marginal significance
+In 46 of the 107 articles from 'AllP' (43.0%) with reported *p*-values in the range (.05 - .10], at least one such *p*-value was reported as marginally significant (see Table 9). Out of 206 'AllP' results with reported *p*-values in the range (.05 - .10], 72 (35.0%) were reported as marginally significant. Among results not related to hypotheses, 52 out of 136 (38.2%) *p*-values in the range (.05 - .10] were reported as marginally significant. Thus, our automatically retrieved results suggest assigning marginal significance occurs regularly in sociology articles. Next, our hypothesis that assignment of marginal significance will be more prevalent among results related to explicitly stated hypotheses (H4) is not confirmed. The odds of a result with a *p*-value in the range (.05 - .10] not related to an explicitly stated hypothesis being assigned marginal significance were 1.548 times higher than the odds that a result related to an explicitly stated hypothesis with a *p*-value in this range was assigned marginal significance, *b* = -.437, *p* = .170, OR = .646, 95% CI [.342, 1.194].\
+&nbsp;&nbsp;&nbsp;&nbsp;Table 9 also shows the prevalence of marginal significance in ‘Hyp’. In 19 of the 30 articles with reported *p*-values in the range (.05 - .10] from ‘Hyp’ (63.3%), at least one *p*-value was reported as marginally significant. At the results level, Table 9 shows that overall, 106 (81.5%) of 130 reported *p*-values in the range (.05 - .10] were reported as marginally significant. Looking at the different journals, reporting results as marginally significant was most prevalent in *AJS* (72 out of 76 results, or 94.7%) and least prevalent in *SQ* (5 out of 12 results, or 41.7%). Among the different years, reporting results as marginally significant was most prevalent in 2015 (71 out of 74 results, or 95.9%) and least prevalent in 2014 (11 out of 24 results, or 45.8%). Thus, results from ‘Hyp’ suggest assigning marginal significance occurs regularly among results related to explicitly stated hypotheses in sociology articles. 
+
+```{r table 9, echo = FALSE, warning = FALSE, message = FALSE}
+#Creating content table cells.
+data_table9 <- c("", "", "", "",  "", "",
+                 "", "", "", "20 (28.6%)", 50, 70,           #begin AllP
+                 "", "", "", "52 (38.2%)", 84, 136,
+                 "", "", "", "", "", "",
+                 "11 (44%)", 14, 25, "19 (32.8%)", 39, 58, 
+                 "3 (20%)", 12, 15, "4 (12.9%)", 27, 31,
+                 "3 (37.5%)", 5, 8, "4 (36.4%)", 7, 11, 
+                 "23 (47.9%)", 25, 48, "34 (40%)", 51, 85,   
+                 "6 (54.5%)", 5, 11, "11 (52.4%)", 10, 21,
+                 "", "", "", "", "", "", 
+                 "11 (35.5%)", 20, 31, "19 (35.2%)", 35, 54, #end new data
+                 "17 (44.7%)", 21, 38,"30 (35.7%)", 54, 84,
+                 8, "9 (52.9%)", 17, 28, "17 (37.8%)", 45,
+                 32, "32 (50%)", 64, 120, "64 (34.8%)", 184, #end AllP
+                 "", "", "", "",  "", "",                    #begin Hyp
+                 3, "2 (40%)", 5, 9, "5 (35.7%)", 14,
+                 1, "3 (75%)", 4, 11, "4 (26.7%)", 15,
+                 1, "4 (80%)", 5, 3, "5 (62.5%)", 8,        
+                 "", "", "", "",  "", "",                   
+                 4, "4 (50%)", 8, 14, "8 (36.4%)", 22,
+                 0, "1 (100%)", 1, 7, "1 (12.5%)", 8,
+                 1, "4 (80%)", 5, 2, "5 (71.4%)", 7,
+                 5, "9 (64.3%)", 14, 23, "14 (37.8%)", 37)  #end Hyp
+#Putting content table cells into a matrix.
+table9 <- matrix(data_table9, ncol = 6, nrow = 23, byrow = TRUE)
+
+#Giving matrix row names and column names.
+rownames(table9) <- paste(c("Relation to hypothesis", "Yes", "No", "Journal",
+                            "ASR", "AJS", "SQ", "JMF", "CHQ", "Year", 
+                            "2014", "2015", "2016", "Total", "Journal", 
+                            "ASR", "AJS", "SQ", "Year", 
+                            "2014", "2015", "2016", "Total"))
+colnames(table9) <- paste(c("Yes", "No", "Total", "Yes", "No", "Total"))
+
+#Creating Table 9.
+table9 <- table9 %>%
+  #format html, centered alignment, bold-faced caption
+  kable(booktabs = T, align = "c", caption = "Descriptive statistics on marginal significance for ‘APA’ and ‘Hyp’.") %>% 
+  #table will appear in correspondence with its place in this document, table is scaled-down to fit page size
+  kable_styling(latex_options = c("striped", "HOLD_position", "scale_down"), full_width = F) 
+
+table9 %>%
+  #adding indentation for the categories of all variables
+  add_indent(c(2,3, 5:9, 11:13, 16:18, 20:22)) %>% 
+  #grouping columns based on binwidth
+  add_header_above(c(" ", "Article level" = 3, "Results level" = 3)) %>% 
+  #grouping variables for the two data sets
+  pack_rows("‘APA'", 1, 14) %>%
+  pack_rows("‘Hyp'", 15, 23) %>%
+  #fixing large spaces between columns with data at the article level 
+  column_spec(4:6, width = "5em") %>% 
+  #adding footnotes
+  add_footnote("Note. The numbers of articles for the results (not) related to explicitly stated hypotheses reflect the", notation = "none") %>%
+  add_footnote("numbers of articles that contain at least one result that is (not) related to an explicitly stated hypothesis.", notation = "none") 
+```
+
+
+\pagebreak
+
+# References
+
