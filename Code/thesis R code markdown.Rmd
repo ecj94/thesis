@@ -69,9 +69,7 @@ write.table(outp_jrnl_tot_sre, "C:/Users/Elise/Documents/Master MSBBSS/year 2/Ma
 Reading the Excel-file containing the information obtained when extracting fully APA-reported results using statcheck and some extra information that was added manually into R (n = 505 from 76 articles). 
 ```{r loading APA and recoding certain variables, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 #Setting working directory
-setwd("C:/Users/EliseSchramkowski/Documents/Master's thesis/project/thesis")
-getwd()
-setwd("./Data")
+setwd("C:/Users/EliseSchramkowski/Documents/GitHub/thesis/Data")
 getwd()
 
 APA <- read_excel("./APA/APA.xlsx") # loading the data set
@@ -281,9 +279,7 @@ exp(cbind(coef(decerr_hyp), confint(decerr_hyp))) #odds ratios
 Reading the Excel-file with the information obtained when extracting *p*-values using statcheck and information that was added manually in Excel. 
 ```{r loading AllP, echo=TRUE, message=FALSE, warning=FALSE, EVAL = FALSE}
 #Setting working directory
-setwd("C:/Users/EliseSchramkowski/Documents/Master's thesis/project/thesis")
-getwd()
-setwd("./Data")
+setwd("C:/Users/EliseSchramkowski/Documents/GitHub/thesis/Data")
 getwd()
 
 #Reading in 'AllP'
@@ -893,8 +889,11 @@ exp(cbind(coef(marg_sign), confint(marg_sign))) #odds ratios
 
 Inclusion process of the articles. The 2014-2016 volumes of *ASR*, *AJS*, and *SQ* contained 322 articles. After our selection procedure, 93 articles were used in our final data set 'Hyp'.
 ```{r inclusion of articles, warning=FALSE, message = FALSE, echo = TRUE}
+setwd("C:/Users/EliseSchramkowski/Documents/GitHub/thesis/Data")
+getwd()
+
 #Calling the data set with information on all articles.
-Hyp_art <- read_excel("/Users/EliseSchramkowski/Documents/Master's thesis/Excel/inclusion_Hyp.xlsx", col_types = c(
+Hyp_art <- read_excel("./Hyp & inclusion_Hyp/inclusion_Hyp.xlsx", col_types = c(
 #Article, Author(s), Journal, Year
 "text", "text", "text", "numeric", 
 #Issue, Hypotheses, Req_stat, 
@@ -1002,9 +1001,7 @@ grViz("digraph{
 ## 4.2  Manual retrieval of results     
 Calling 'Hyp'.
 ```{r loading Hyp, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-setwd("C:/Users/EliseSchramkowski/Documents/Master's thesis/project/thesis")
-getwd()
-setwd("./Data")
+setwd("C:/Users/EliseSchramkowski/Documents/GitHub/thesis/Data")
 getwd()
 
 Hyp <- read_excel("./Hyp & inclusion_Hyp/Hyp.xlsx", col_types = c(
