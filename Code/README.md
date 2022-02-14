@@ -21,5 +21,5 @@ Note:
 <sup>1</sup> Information on this part still has to be added for it to be complete.  
 
 **References**\
-Epskamp, S., & Nuijten, M. B. (2016). Statcheck: Extract statistics from articles and recompute p values. Retrieved\  
+Epskamp, S., & Nuijten, M. B. (2016). Statcheck: Extract statistics from articles and recompute p values. Retrieved    
 &nbsp;&nbsp;&nbsp;&nbsp;from https://cran.r-project.org/src/contrib/Archive/statcheck/
