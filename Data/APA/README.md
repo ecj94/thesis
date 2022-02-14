@@ -8,8 +8,8 @@
 4. Journal: name of the journal the article was published in.
 5. Year: year of publication of the article.
 6. **Statistic**: contains information on which type of statistic has been extracted by statcheck. In this case, statistics that were extracted were *t*-values, *χ*<sup>2</sup>-values, *F*-values, and *z*-values. 
-7. **df1**: first degree of freedom
-8. **df2**: second degree of freedom
+7. **df1**: first degree of freedom.
+8. **df2**: second degree of freedom.
 9. **Test.Comparison**: contains only '=' signs, since the purpose of recalculating results is to see whether recalculated *p*-values are equal to their reported counterparts.
 11. **Reported.Comparison**: reported comparison of the fully APA-reported result, which can be '=', '<', '>', or 'ns'. 
 12. **Reported**: *p*-value as reported in the article.
