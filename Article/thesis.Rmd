@@ -369,7 +369,7 @@ table6 %>%
 ```
 
 ## Publication bias	
-In ‘AllP’, there was no evidence of publication bias/*p*-hacking (see Figure 2A and Table 7). Overall, when using binwidth .01, 31 out of 73 results were just significant (43.8%). When using binwidth .02, 64 out of 127 results were just significant (50.4%). A non-substantial indication of publication bias was found for results not related to explicitly stated hypotheses when using binwidth .02: out of 90 results, 47 (52.2%) were just significant. There was no evidence of publication bias among results related to explicitly stated hypotheses (see Figure 2C). Next, we tested our hypotheses on publication bias (H3a and H3b). As for H3a, there were $\frac{1}{.877} \approx 1.140$ times less just significant *p*-values among reported results of explicitly stated hypotheses than among reported results not related to explicitly stated hypotheses for binwidth .01, *b* = -.132, *p* = .794, OR = .877, 95% CI [.321, 2.345]. H3b for binwidth .02 could not be rejected either, since *b* = -.251, *p* = .521, OR = .778, 95% CI [.358, 1.674]. For results from ‘Hyp’, we found (slightly) more just significant *p*-values than just insignificant ones: 9 out of 14 results (64.3%) for binwidth .01, and 14 out of 27 (53.8%) for binwidth .02, see Figure 2D and Table 7. 
+In ‘AllP’, there was no evidence of publication bias/*p*-hacking (see Figure 2A and Table 7). Overall, when using binwidth .01, 31 out of 73 results were just significant (43.8%). When using binwidth .02, 64 out of 127 results were just significant (50.4%). A non-substantial indication of publication bias was found for results not related to explicitly stated hypotheses when using binwidth .02: out of 90 results, 47 (52.2%) were just significant). There was no evidence of publication bias among results related to explicitly stated hypotheses (see Figure 2C). Next, we tested our hypotheses on publication bias (H3a and H3b). As for H3a, there were $\frac{1}{.877} \approx 1.140$ times less just significant *p*-values among reported results of explicitly stated hypotheses than among reported results not related to explicitly stated hypotheses for binwidth .01, *b* = -.132, *p* = .794, OR = .877, 95% CI [.321, 2.345]. H3b for binwidth .02 could not be rejected either, since *b* = -.251, *p* = .521, OR = .778, 95% CI [.358, 1.674]. For results from ‘Hyp’, we found (slightly) more just significant *p*-values than just insignificant ones: 9 out of 14 results (64.3%) for binwidth .01, and 14 out of 27 (53.8%) for binwidth .02, see Figure 2D and Table 7. 
 
 ```{r plots AllP, warning=FALSE, message = FALSE, echo = FALSE, results = 'hide', fig.height=8, fig.cap="Histograms of exactly reported \\emph{p}-values in the range [0-.10] from ‘AllP’ and 'Hyp'. Specifically, information on 'AllP' is provided for all exactly reported \\emph{p}-values in the range [0-.10] (2A), as well as for exactly reported \\emph{p}-values in this range (not) related to explicitly stated hypotheses (2B and 2C). Finally, information on exactly reported \\emph{p}-values in the range [0-.10] from 'Hyp' (2D) is provided."}
 library('readxl') #reading in data files
@@ -575,14 +575,14 @@ table7 %>%
 
 # Supplement
 
-```{r tableS1 inconsistencies and gross inconsistencies, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
+```{r table S1 inconsistencies and gross inconsistencies, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
 #install.packages("knitr")
 #library(knitr)
 #devtools::install_version("knitr", "1.37")
 
 #Creating content table cells.
 hyp_table_err <- c("-1.820", ".157", "< .001", ".162 [.118, .218]", #intercept H1
-                 "-0.073", ".278", ".793", ".930 [.531, 1.585]", #relation hypothesis H1
+                 "-.073", ".278", ".793", ".930 [.531, 1.585]", #relation hypothesis H1
                  "-4.422", ".503", "< .001", ".012 [.004, .028]", #intercept H2
                  ".708", ".714", ".321", "2.030 [.475, 8.685]") #relation hypothesis H2
 #Putting content table cells into a matrix.
@@ -599,18 +599,18 @@ kable(booktabs = T, format ="latex", align = "c", caption = "Logistic regression
   #grouping data for the two hypotheses
   pack_rows("Inconsistencies (H1)", 1, 2) %>%
   pack_rows("Gross inconsistencies (H2)", 3, 4) %>%
-  #table will appear in correspondence with its place in this document, table is scaled-down to fit page size
+  #table will appear in correspondence with its place in this document
   kable_styling(latex_options = c("HOLD_position", "striped"), full_width = F)
 ```
 \hspace{20em}
 \newline
 
-```{r tableS2 publication bias, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
+```{r table S2 publication bias, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
 #Creating content table cells.
-h3ab_table <- c("-.205", ".287", ".476", ".815 [.456, 1.428]", 
-                 "-.132", ".504", ".794", ".877 [.231, 2.345]",
-                 ".089", ".211", ".673", "1.093 [.723, 1.658]", 
-                 "-.251", ".392", ".521", ".778 [.358, 1.674]")
+h3ab_table <- c("-.205", ".287", ".476", ".815 [.456, 1.428]",  #intercept H3a 
+                 "-.132", ".504", ".794", ".877 [.321, 2.345]", #relation hypothesis H3a
+                 ".089", ".211", ".673", "1.093 [.723, 1.658]", #intercept H3b
+                 "-.251", ".392", ".521", ".778 [.358, 1.674]") #relation hypothesis Hb
 #Putting content table cells into a matrix.
 h3ab_table <- matrix(h3ab_table, ncol = 4, nrow = 4, byrow = TRUE)
 
@@ -622,7 +622,7 @@ rownames(h3ab_table) <- paste(c("Intercept", "Result hypothesis", "Intercept", "
 h3ab_table %>%
   #format latex, centered alignment, bold-faced caption
 kable(booktabs = T, format ="latex", align = "c", caption = "Logistic regressions for H3a and H3b, which concerns the difference in prevalence of publication bias in results related to hypotheses versus results not related to hypotheses.") %>% 
-  #table will appear in correspondence with its place in this document, table is scaled-down to fit page size
+  #table will appear in correspondence with its place in this document
   #grouping data for the two hypotheses
   pack_rows("Binwidth .01 (H3a)", 1, 2) %>%
   pack_rows("Binwidth .02 (H3b)", 3, 4) %>%

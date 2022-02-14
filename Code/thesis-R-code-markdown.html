@@ -2973,7 +2973,10 @@ write.table(outp_jrnl_tot_sre, &quot;C:/Users/Elise/Documents/Master MSBBSS/year
 <div id="data-set-apa" class="section level1">
 <h1>2. Data set ‘APA’</h1>
 <p>Reading the Excel-file containing the information obtained when extracting fully APA-reported results using statcheck and some extra information that was added manually into R (n = 505 from 76 articles).</p>
-<pre class="r"><code>APA &lt;- read_excel(&quot;C:/Users/EliseSchramkowski/Documents/Master&#39;s thesis/Excel/APA.xlsx&quot;) # loading the data set
+<pre class="r"><code>setwd(&quot;..&quot;) #setting working directory to &#39;thesis&#39;
+setwd(&quot;./Data&quot;) #setting working directory to &#39;Data&#39;
+
+APA &lt;- read_excel(&quot;./APA/APA.xlsx&quot;) # loading the data set
 nrow(APA) #n = 524
 APA_u &lt;- APA[!duplicated(APA$Article_numb), ] #removing duplicates to obtain the number of articles
 nrow(APA_u) #n = 80
@@ -3864,7 +3867,11 @@ exp(cbind(coef(decerr_hyp), confint(decerr_hyp))) #odds ratios
 <div id="data-set-allp" class="section level1">
 <h1>3. Data set ‘AllP’</h1>
 <p>Reading the Excel-file with the information obtained when extracting <em>p</em>-values using statcheck and information that was added manually in Excel.</p>
-<pre class="r"><code>AllP &lt;- read_excel(&quot;C:/Users/EliseSchramkowski/Documents/Master&#39;s thesis/Excel/AllP.xlsx&quot;, col_types = c(
+<pre class="r"><code>setwd(&quot;..&quot;) #setting working directory to &#39;thesis&#39;
+setwd(&quot;./Data&quot;) #setting working directory to &#39;Data&#39;
+
+#Reading in &#39;AllP&#39;
+AllP &lt;- read_excel(&quot;./AllP/AllP.xlsx&quot;, col_types = c(
 #Article_numb, Article, Author(s), Journal
 &quot;numeric&quot;, &quot;text&quot;, &quot;text&quot;, &quot;text&quot;, 
 #Year, Statistic, Reported.Comparison, Reported.P.Value
@@ -6182,8 +6189,11 @@ exp(cbind(coef(marg_sign), confint(marg_sign))) #odds ratios
 <div id="inclusion-of-articles" class="section level2">
 <h2>4.1 Inclusion of articles</h2>
 <p>Inclusion process of the articles. The 2014-2016 volumes of <em>ASR</em>, <em>AJS</em>, and <em>SQ</em> contained 322 articles. After our selection procedure, 93 articles were used in our final data set ‘Hyp’.</p>
-<pre class="r"><code>#Calling the data set with information on all articles.
-Hyp_art &lt;- read_excel(&quot;/Users/EliseSchramkowski/Documents/Master&#39;s thesis/Excel/inclusion_Hyp.xlsx&quot;, col_types = c(
+<pre class="r"><code>setwd(&quot;..&quot;) #setting working directory to &#39;thesis&#39;
+setwd(&quot;./Data&quot;) #setting working directory to &#39;Data&#39;
+
+#Calling the data set with information on all articles.
+Hyp_art &lt;- read_excel(&quot;./Hyp &amp; inclusion_Hyp/inclusion_Hyp.xlsx&quot;, col_types = c(
 #Article, Author(s), Journal, Year
 &quot;text&quot;, &quot;text&quot;, &quot;text&quot;, &quot;numeric&quot;, 
 #Issue, Hypotheses, Req_stat, 
@@ -6293,8 +6303,8 @@ grViz(&quot;digraph{
       E -&gt; H
       F -&gt; I
            }&quot;)</code></pre>
-<div id="htmlwidget-ab9cc7f7422d95178414" style="width:672px;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ab9cc7f7422d95178414">{"x":{"diagram":"digraph{\n\n      graph[rankdir = LR]\n  \n      node[shape = rectangle]\n  \n      subgraph cluster_0 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Total number of articles\\n (n = 322)\"\n        node[shape = rectangle, margin = 0.25]\n        A[label = \"ASR = 139\", fixedsize = true, width = 1.35, height = 0.7]\n        B[label = \"AJS = 105\", fixedsize = true, width = 1.35, height = 0.7]\n        C[label = \"SQ = 78\", fixedsize = true, width = 1.35, height = 0.7]\n      }\n  \n      subgraph cluster_1 {\n         graph[shape = rectangle]\n         style = rounded\n         \n         label = \"Articles with explicitly stated hypotheses\\n (n = 99, 30.7%)\"\n         node[shape = rectangle, margin = 0.25]\n         D[label = \"ASR = 55 (39.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         E[label = \"AJS = 29 (27.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         F[label = \"SQ = 15 (19.2%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      subgraph cluster_2 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Articles with required statistics\\n (n = 91, 28.3%)\"\n        node[shape = rectangle, margin = 0.25]\n        G[label = \"ASR = 52 (37.4%)\", fixedsize = true, width = 1.8, height = 0.7]\n        H[label = \"AJS = 26 (24.8%)\", fixedsize = true, width = 1.8, height = 0.7]\n        I[label = \"SQ = 13 (16.7%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      edge[color = black, arrowhead = vee, arrowsize = 1.25]\n      A -> D\n      B -> E\n      C -> F\n      D -> G\n      E -> H\n      F -> I\n           }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-aa620e0007a32c5b9ab9" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-aa620e0007a32c5b9ab9">{"x":{"diagram":"digraph{\n\n      graph[rankdir = LR]\n  \n      node[shape = rectangle]\n  \n      subgraph cluster_0 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Total number of articles\\n (n = 322)\"\n        node[shape = rectangle, margin = 0.25]\n        A[label = \"ASR = 139\", fixedsize = true, width = 1.35, height = 0.7]\n        B[label = \"AJS = 105\", fixedsize = true, width = 1.35, height = 0.7]\n        C[label = \"SQ = 78\", fixedsize = true, width = 1.35, height = 0.7]\n      }\n  \n      subgraph cluster_1 {\n         graph[shape = rectangle]\n         style = rounded\n         \n         label = \"Articles with explicitly stated hypotheses\\n (n = 99, 30.7%)\"\n         node[shape = rectangle, margin = 0.25]\n         D[label = \"ASR = 55 (39.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         E[label = \"AJS = 29 (27.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         F[label = \"SQ = 15 (19.2%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      subgraph cluster_2 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Articles with required statistics\\n (n = 91, 28.3%)\"\n        node[shape = rectangle, margin = 0.25]\n        G[label = \"ASR = 52 (37.4%)\", fixedsize = true, width = 1.8, height = 0.7]\n        H[label = \"AJS = 26 (24.8%)\", fixedsize = true, width = 1.8, height = 0.7]\n        I[label = \"SQ = 13 (16.7%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      edge[color = black, arrowhead = vee, arrowsize = 1.25]\n      A -> D\n      B -> E\n      C -> F\n      D -> G\n      E -> H\n      F -> I\n           }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p><br />
 <br />
 <br />
@@ -6303,7 +6313,10 @@ grViz(&quot;digraph{
 <div id="manual-retrieval-of-results" class="section level2">
 <h2>4.2 Manual retrieval of results</h2>
 <p>Calling ‘Hyp’.</p>
-<pre class="r"><code>Hyp &lt;- read_excel(&quot;/Users/EliseSchramkowski/Documents/Master&#39;s thesis/Excel/Hyp.xlsx&quot;, col_types = c(
+<pre class="r"><code>setwd(&quot;..&quot;) #setting working directory to &#39;thesis&#39;
+setwd(&quot;./Data&quot;) #setting working directory to &#39;Data&#39;
+
+Hyp &lt;- read_excel(&quot;./Hyp &amp; inclusion_Hyp/Hyp.xlsx&quot;, col_types = c(
 #Article_numb, Article, Author(s), Journal
 &quot;numeric&quot;, &quot;text&quot;, &quot;text&quot;, &quot;text&quot;, 
 #Year, Issue, Number of hypotheses, Belongs to hypothesis
@@ -6321,7 +6334,7 @@ grViz(&quot;digraph{
 &quot;numeric&quot;, &quot;text&quot;, &quot;numeric&quot;, &quot;text&quot;, 
 #Information from text article used, Comment
 &quot;text&quot;, &quot;text&quot;))
-nrow(Hyp) #n = 4881</code></pre>
+nrow(Hyp) #n = 4929</code></pre>
 <p><br />
 </p>
 <p>Changing relevant character values to numeric values.</p>
@@ -6389,7 +6402,7 @@ nrow(Hyp_f) #n = 16
 
 #Subset of all results with r-statistics.
 Hyp_r &lt;- subset(Hyp_i, Statistic == 9) 
-nrow(Hyp_r) #n = 4</code></pre>
+nrow(Hyp_r) #n = 52</code></pre>
 <p><br />
 <br />
 <br />
@@ -6456,6 +6469,43 @@ Hyp_eq_t &lt;- Hyp_eq_t %&gt;% mutate(Comp_above = ifelse(Reported.P.Value &gt; 
 Hyp_eq_t &lt;- Hyp_eq_t %&gt;% mutate(Error = ifelse(Comp_below == 0 &amp; Comp_above == 0, 0, 1)) 
 #DecisionError if Reported.P.Value &lt;= .05 and Computed &gt; .05, or vice versa.
 Hyp_eq_t &lt;- Hyp_eq_t %&gt;% mutate(DecisionError = ifelse((Reported.P.Value &lt;= 0.05 &amp; Computed &gt; 0.05)|(Reported.P.Value &gt; 0.05 &amp; Computed &lt;= 0.05), 1, 0)) </code></pre>
+<p><br />
+<br />
+</p>
+</div>
+<div id="recalculating-p-values-based-on-r-values" class="section level3">
+<h3><em>4.3.2 Recalculating p-values based on r-values</em></h3>
+<p>Creating relevant subsets and recalculating <em>p</em>-values for results with <em>r</em>-values and <em>df</em>. For this purpose, <em>t</em>-values first have to be calculated, which can then be used in the pt() formula to calculate the <em>p</em>-values corresponding with bivariate correlations.</p>
+<pre class="r"><code>nrow_Hyp_r &lt;- nrow(Hyp_r) #object for the number of columns 
+
+#Recalculating two-sided p-values.
+for (i in 1:nrow_Hyp_r){
+  {Hyp_r$t_stat[i] &lt;- (Hyp_r$b[i] * sqrt(Hyp_r$df_1[i])) / sqrt(1-Hyp_r$b[i]^2)
+   Hyp_r$Computed[i] &lt;- (2*pt(-abs(Hyp_r$t_stat[i]), Hyp_r$df_1[i]))}}
+options(scipen = 999)
+
+#Subset of results with Reported.Comparison &#39;&lt;&#39;.
+Hyp_r_sml &lt;- subset(Hyp_r, Reported.Comparison == 1) 
+nrow(Hyp_r_sml) #n = 32
+
+#Error if Reported.P.Value &gt;= Computed.
+Hyp_r_sml &lt;- Hyp_r_sml %&gt;% mutate(Error = ifelse(Reported.P.Value &gt;= Computed, 0, 1)) 
+mean(as.numeric(Hyp_r_sml$Error)) #n = 0
+#DecisionError if Reported.P.Value &lt;= .05 and Computed &gt; .05.
+Hyp_r_sml &lt;- Hyp_r_sml %&gt;% mutate(DecisionError = ifelse(Reported.P.Value &lt;= .05 &amp; Computed &gt; .05, 1, 0)) 
+mean(as.numeric(Hyp_r_sml$DecisionError)) #n = 0</code></pre>
+<p>Determining whether there are errors and decision errors among results which have <em>p</em>-values reported as non-significant.</p>
+<pre class="r"><code>#Non-significant results
+Hyp_r_ns &lt;- subset(Hyp_r, Reported.Comparison == 3) #subset results reported as non-significant
+nrow(Hyp_r_ns) #n = 16
+
+#Since a (decision) error can only occur if a result that was reported as non-significant is significant, a value of 1 is assigned if the Computed &lt;= .05, and a value of 0 is assigned if Computed &gt; .05.
+Hyp_r_ns$Error[which(Hyp_r_ns$Computed &gt; 0.05)] &lt;- &quot;0&quot;
+Hyp_r_ns$DecisionError[which(Hyp_r_ns$Computed &gt; 0.05)] &lt;- &quot;0&quot;
+Hyp_r_ns$Error[which(Hyp_r_ns$Computed &lt;= 0.05)] &lt;- &quot;1&quot;
+Hyp_r_ns$DecisionError[which(Hyp_r_ns$Computed &lt;= 0.05)] &lt;- &quot;1&quot;
+mean(as.numeric(Hyp_r_ns$Error)) #n = 0
+mean(as.numeric(Hyp_r_ns$DecisionError)) #n = 0</code></pre>
 <p><br />
 <br />
 </p>
@@ -6714,6 +6764,14 @@ nrow(as.data.frame(Hyp_t_mrgd)) #n = 10
 #nrow(Hyp_eq_t)+nrow(Hyp_t_sml) #n = 10
 mean(as.numeric(Hyp_t_mrgd$Error)) #0.1
 mean(as.numeric(Hyp_t_mrgd$DecisionError)) #0</code></pre>
+<p>Merging the data sets containing results with reported <em>r</em>-values and <em>df</em>.</p>
+<pre class="r"><code>#Merging data sets with results that have reported comparisons &#39;=&#39; and &#39;&lt;&#39;.
+Hyp_r_mrgd &lt;- merge(Hyp_r_sml, Hyp_r_ns, all = TRUE) #merging 
+nrow(as.data.frame(Hyp_r_mrgd)) #n = 48
+mean(as.numeric(Hyp_r_mrgd$Error)) #0
+mean(as.numeric(Hyp_r_mrgd$DecisionError)) #0</code></pre>
+<p><br />
+</p>
 <p><br />
 </p>
 <p>Merging the data sets containing results with reported <em>z</em>-values.</p>
@@ -6763,10 +6821,14 @@ Hyp_tzf_mrgd &lt;- merge(Hyp_tz_mrgd, Hyp_f_mrgd, all.x = TRUE, all.y = TRUE)
 nrow(Hyp_tzf_mrgd) #n = 288
 
 #Merging data sets containing results with (1) t-values, z-values and F-values and (2) chi2-values.  
-Hyp_fin &lt;- merge(Hyp_tzf_mrgd, Hyp_chi_mrgd, all.x = TRUE, all.y = TRUE)
-nrow(Hyp_fin) #n = 351
-mean(as.numeric(Hyp_fin$Error))*100 #0.07122507
-mean(as.numeric(Hyp_fin$DecisionError))*100 #0.01424501</code></pre>
+Hyp_tzfc &lt;- merge(Hyp_tzf_mrgd, Hyp_chi_mrgd, all.x = TRUE, all.y = TRUE)
+nrow(Hyp_tzfc) #n = 351
+
+#Merging data sets containing results with (1) t-values, z-values, F-values and chi2-values and (2) r-values.
+Hyp_fin &lt;- merge(Hyp_tzfc, Hyp_r_mrgd, all.x = TRUE, all.y = TRUE)
+nrow(Hyp_fin) #n = 399
+mean(as.numeric(Hyp_fin$Error))*100 #6.3% 
+mean(as.numeric(Hyp_fin$DecisionError))*100 #1.3%</code></pre>
 <p><br />
 <br />
 </p>
@@ -6777,10 +6839,10 @@ mean(as.numeric(Hyp_fin$DecisionError))*100 #0.01424501</code></pre>
 <pre class="r"><code>options(scipen=999)
 #Selecting results for which it was clear whether one-sided or two-sided testing was done, or which were not erroneous.
 Hyp_unkn_corr &lt;- subset(Hyp_fin, OneTailed != 0 | Error != 1) 
-nrow(Hyp_unkn_corr) #n = 334
+nrow(Hyp_unkn_corr) #n = 381
 #Selecting results that possibly have been deemed erroneous because we incorrectly assumed they were two-tailed.
 Hyp_unkn_err &lt;- subset(Hyp_fin, OneTailed == 0 &amp; Error == 1) 
-nrow(Hyp_unkn_err) #n = 17
+nrow(Hyp_unkn_err) #n = 18
 
 #We take into consideration the possibility that p-values might be one-tailed rather than two-tailed. In this way, we can see if results are erroneous when we assume they are one-tailed.
 Hyp_unkn_err$OneTailed[which(Hyp_unkn_err$OneTailed==&quot;0&quot;)] &lt;- &quot;1&quot; #one-sided testing 
@@ -6844,15 +6906,15 @@ nrow(Hyp_err_mrgd) #n = 17</code></pre>
 <p>Merging the data sets containing results that are erroneous and results that are correct.</p>
 <pre class="r"><code>Hyp_all_err &lt;- merge(Hyp_err_mrgd, Hyp_unkn_corr, all = TRUE) #merging data sets
 
-#The number of erroneous results is 18 (5.1%).
+#The number of erroneous results is 17 (4.3%).
 sum(Hyp_all_err$Error == 1)
 mean(as.numeric(Hyp_all_err$Error))*100
 
-#The number of decision errors is 3 (0.9%).
+#The number of decision errors is 3 (0.8%).
 sum(Hyp_all_err$DecisionError == 1)
 mean(as.numeric(Hyp_all_err$DecisionError))*100
 
-#Results in this data set were retrieved from 19 articles.
+#Results in this data set were retrieved from 20 articles.
 Hyp_err_no_dupl &lt;- Hyp_all_err[!duplicated(Hyp_all_err[,c(&quot;Article_numb&quot;)]),]
 nrow(Hyp_err_no_dupl)</code></pre>
 <p><br />
@@ -6941,13 +7003,13 @@ American Journal of Sociology
 American Sociological Review
 </td>
 <td style="text-align:right;">
-265
+313
 </td>
 <td style="text-align:right;">
 13
 </td>
 <td style="text-align:right;">
-278
+326
 </td>
 </tr>
 <tr>
@@ -6997,13 +7059,13 @@ The Sociological Quarterly
 2016
 </td>
 <td style="text-align:right;">
-8
+56
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-11
+59
 </td>
 </tr>
 <tr>
@@ -7011,13 +7073,13 @@ The Sociological Quarterly
 Total
 </td>
 <td style="text-align:right;">
-334
+382
 </td>
 <td style="text-align:right;">
 17
 </td>
 <td style="text-align:right;">
-351
+399
 </td>
 </tr>
 </tbody>
@@ -7061,10 +7123,10 @@ American Journal of Sociology
 American Sociological Review
 </td>
 <td style="text-align:right;">
-95.3
+96.0
 </td>
 <td style="text-align:right;">
-4.7
+4.0
 </td>
 <td style="text-align:right;">
 100
@@ -7117,10 +7179,10 @@ The Sociological Quarterly
 2016
 </td>
 <td style="text-align:right;">
-72.7
+94.9
 </td>
 <td style="text-align:right;">
-27.3
+5.1
 </td>
 <td style="text-align:right;">
 100
@@ -7131,10 +7193,10 @@ The Sociological Quarterly
 Total
 </td>
 <td style="text-align:right;">
-95.2
+95.7
 </td>
 <td style="text-align:right;">
-4.8
+4.3
 </td>
 <td style="text-align:right;">
 100
@@ -7228,13 +7290,13 @@ American Journal of Sociology
 American Sociological Review
 </td>
 <td style="text-align:right;">
-276
+324
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-278
+326
 </td>
 </tr>
 <tr>
@@ -7284,13 +7346,13 @@ The Sociological Quarterly
 2016
 </td>
 <td style="text-align:right;">
-10
+58
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-11
+59
 </td>
 </tr>
 <tr>
@@ -7298,13 +7360,13 @@ The Sociological Quarterly
 Total
 </td>
 <td style="text-align:right;">
-348
+396
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-351
+399
 </td>
 </tr>
 </tbody>
@@ -7348,10 +7410,10 @@ American Journal of Sociology
 American Sociological Review
 </td>
 <td style="text-align:right;">
-99.3
+99.4
 </td>
 <td style="text-align:right;">
-0.7
+0.6
 </td>
 <td style="text-align:right;">
 100
@@ -7404,10 +7466,10 @@ The Sociological Quarterly
 2016
 </td>
 <td style="text-align:right;">
-90.9
+98.3
 </td>
 <td style="text-align:right;">
-9.1
+1.7
 </td>
 <td style="text-align:right;">
 100
@@ -7418,10 +7480,10 @@ The Sociological Quarterly
 Total
 </td>
 <td style="text-align:right;">
-99.1
+99.2
 </td>
 <td style="text-align:right;">
-0.9
+0.8
 </td>
 <td style="text-align:right;">
 100
