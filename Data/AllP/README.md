@@ -11,7 +11,7 @@
 8. **Raw**: the extracted APA-reported result.
 9. Result.Table: contains information on whether an extracted *p*-value was part of a table or not, where '1' = *p*-value was part of a table, and '0'= *p*-value was not part of a table.
 10. Reported.Not.Relevant: a score of '1' = relevant and '0' = not relevant. In the following cases, extracted results which were reported as being p-values were not deemed relevant:
-    - an extracted *p*-value was not related to a specific result, but was mentioned in the article to indicate which significance levels were used 
+    - an extracted *p*-value was not related to a specific result, but was mentioned in the article to indicate which significance levels were used.
     - an extracted *p*-value was actually not a *p*-value.
     - an extracted *p*-value is a duplicate of another extracted *p*-value.
     - There was one case in which the *p*-value was reported as 'Ns' and 'Ns' did not mean non-significant, but meant 'numbers'.  
@@ -21,7 +21,7 @@
 14. Marg.Sig: indicates whether a *p*-value in the range (.05 - .10] was considered marginally significant by authors, where '1' = yes, '0'= no, and 'NA' = *p*-value was not in the range (.05 - .10]. Following Ohlsson Collentine et al. (2019), we decided that a *p*-value was assigned marginal significance by the authors if the expressions margin* or approach* were mentioned in relation to its significance.
 15. Phrase in which mentioned: contains phrase in which the result was mentioned. This can also be a note underneath a table, or 'NA' if a retrieved result could not be linked 1 to 1 to information in the article.
 16. Explicitly stated hypothesis: contains the phrasing of the explicitly stated hypothesis, or is 'NA' when there was no explicitly stated hypothesis.
-17. Comments:
+17. Comments: various notable information on specific  results or the article they were extracted from.
 
 ## References
 Ohlsson Collentine, Anton, Marcel A. L. M. Van Assen M. and Chris H. J. 	
