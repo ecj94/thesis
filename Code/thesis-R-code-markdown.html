@@ -2939,6 +2939,20 @@ div.tocify {
 <div id="preliminary-procedures" class="section level1">
 <h1>1. Preliminary procedures</h1>
 <p>Loading packages used later on in this R file.</p>
+<pre class="r"><code>library(&#39;readxl&#39;) #reading in .xlsx files
+library(&#39;car&#39;) #logistic regressions
+library(&#39;knitr&#39;) #creating nice tables
+library(&#39;kableExtra&#39;) #creating nice tables
+library(&#39;dplyr&#39;) #using pipes
+
+#Plots
+#library(&#39;ggplot2&#39;) #creating plots
+library(&#39;gridExtra&#39;) #arranging tables
+library(&#39;ggtext&#39;) #adapting title size plot
+library(&#39;gridtext&#39;) #adapting text above figure containing multiple plots
+library(&#39;grid&#39;) #font (size) options in grid.arrange function
+library(&quot;cowplot&quot;) #adding a label to the final containing multiple plots
+library(&quot;ggpubr&quot;) #putting together ggplots</code></pre>
 <p><br />
 </p>
 <p>We found that for <em>JMF</em>, statcheck did not succeed in extracting results with a ‘-’ sign. After contacting the author, Michèle Nuijten, about this problem, she adapted the GitHub Version of the package such that this problem would be solved. Below, the GitHub version of the package is loaded into R.</p>
@@ -4616,7 +4630,7 @@ exp(cbind(coef(pb_0406), confint(pb_0406))) #odds ratios
 </div>
 <div id="statistical-analysis-p-value-range-.03---.07" class="section level3">
 <h3>3.1.4 <em>Statistical analysis p-value range (.03 - .07]</em></h3>
-<p>Logistic regression to study the difference in the prevalence of publication bias between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses (H3) for binwidth .02. Looking at the results, the prevalence of just significant and just insignificant results does not seem to differ significantly for results not related to hypotheses, b0 = .089, SE = .211, <em>p</em> = .673, OR = 1.093, 95% CI [.723, 1.658]. Furthermore, There does not seem to be a significant difference in the prevalence of just significant results among results related to hypotheses and results not related to hypotheses, b = -.312, SE = .396, <em>p</em> = .431, OR = .732, 95% CI [.333, 1.588]. Thus, we could not confirm H3 using binwidth .02.</p>
+<p>Logistic regression to study the difference in the prevalence of publication bias between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses (H3) for binwidth .02. Looking at the results, the prevalence of just significant and just insignificant results does not seem to differ significantly for results not related to hypotheses, b0 = .089, SE = .211, <em>p</em> = .673, OR = 1.093, 95% CI [.723, 1.658]. Furthermore, There does not seem to be a significant difference in the prevalence of just significant results among results related to hypotheses and results not related to hypotheses, b = -.251, SE = .392, <em>p</em> = .521, OR = .778, 95% CI [.358, 1.674]. Thus, we could not confirm H3 using binwidth .02.</p>
 <pre class="r"><code>AllP_exact_0307[&quot;pval_03_07&quot;] &lt;- NA #removing all data from variable &#39;pval_03_07&#39;
 AllP_exact_0307 &lt;- AllP_exact_0307 %&gt;% mutate(pval_03_07 = ifelse(Reported.P.Value &lt;= .05, 1, 0)) #indicating just (non-)significance 
 
@@ -5327,9 +5341,7 @@ Total
 <div id="plots-publication-bias-and-bump-in-p-values" class="section level2">
 <h2>3.3 Plots publication bias and bump in <em>p</em>-values</h2>
 <p>Plot exactly reported <em>p</em>-values.</p>
-<pre class="r"><code>#pb_bump_AllP &lt;- subset(AllP_exact, Reported.P.Value &gt;= 0 &amp; Reported.P.Value &lt;= .1) #n = 514
-#write.table(pb_bump_AllP, &quot;C:/Users/EliseSchramkowski/Documents/Master&#39;s thesis/Excel/pb_bump_AllP_b.txt&quot;, sep = &quot;,&quot;, eol = &quot;\r&quot;)
-sum(AllP_exact$Reported.P.Value &gt;= 0 &amp; AllP_exact$Reported.P.Value &lt;= .1) #n = 514
+<pre class="r"><code>sum(AllP_exact$Reported.P.Value &gt;= 0 &amp; AllP_exact$Reported.P.Value &lt;= .1) #n = 514
 
 #Plot
 plot_aut_rep &lt;- ggplot() + 
@@ -6303,8 +6315,8 @@ grViz(&quot;digraph{
       E -&gt; H
       F -&gt; I
            }&quot;)</code></pre>
-<div id="htmlwidget-aa620e0007a32c5b9ab9" style="width:672px;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-aa620e0007a32c5b9ab9">{"x":{"diagram":"digraph{\n\n      graph[rankdir = LR]\n  \n      node[shape = rectangle]\n  \n      subgraph cluster_0 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Total number of articles\\n (n = 322)\"\n        node[shape = rectangle, margin = 0.25]\n        A[label = \"ASR = 139\", fixedsize = true, width = 1.35, height = 0.7]\n        B[label = \"AJS = 105\", fixedsize = true, width = 1.35, height = 0.7]\n        C[label = \"SQ = 78\", fixedsize = true, width = 1.35, height = 0.7]\n      }\n  \n      subgraph cluster_1 {\n         graph[shape = rectangle]\n         style = rounded\n         \n         label = \"Articles with explicitly stated hypotheses\\n (n = 99, 30.7%)\"\n         node[shape = rectangle, margin = 0.25]\n         D[label = \"ASR = 55 (39.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         E[label = \"AJS = 29 (27.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         F[label = \"SQ = 15 (19.2%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      subgraph cluster_2 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Articles with required statistics\\n (n = 91, 28.3%)\"\n        node[shape = rectangle, margin = 0.25]\n        G[label = \"ASR = 52 (37.4%)\", fixedsize = true, width = 1.8, height = 0.7]\n        H[label = \"AJS = 26 (24.8%)\", fixedsize = true, width = 1.8, height = 0.7]\n        I[label = \"SQ = 13 (16.7%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      edge[color = black, arrowhead = vee, arrowsize = 1.25]\n      A -> D\n      B -> E\n      C -> F\n      D -> G\n      E -> H\n      F -> I\n           }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-44ac7337605b9fa9448a" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-44ac7337605b9fa9448a">{"x":{"diagram":"digraph{\n\n      graph[rankdir = LR]\n  \n      node[shape = rectangle]\n  \n      subgraph cluster_0 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Total number of articles\\n (n = 322)\"\n        node[shape = rectangle, margin = 0.25]\n        A[label = \"ASR = 139\", fixedsize = true, width = 1.35, height = 0.7]\n        B[label = \"AJS = 105\", fixedsize = true, width = 1.35, height = 0.7]\n        C[label = \"SQ = 78\", fixedsize = true, width = 1.35, height = 0.7]\n      }\n  \n      subgraph cluster_1 {\n         graph[shape = rectangle]\n         style = rounded\n         \n         label = \"Articles with explicitly stated hypotheses\\n (n = 99, 30.7%)\"\n         node[shape = rectangle, margin = 0.25]\n         D[label = \"ASR = 55 (39.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         E[label = \"AJS = 29 (27.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         F[label = \"SQ = 15 (19.2%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      subgraph cluster_2 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Articles with required statistics\\n (n = 91, 28.3%)\"\n        node[shape = rectangle, margin = 0.25]\n        G[label = \"ASR = 52 (37.4%)\", fixedsize = true, width = 1.8, height = 0.7]\n        H[label = \"AJS = 26 (24.8%)\", fixedsize = true, width = 1.8, height = 0.7]\n        I[label = \"SQ = 13 (16.7%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      edge[color = black, arrowhead = vee, arrowsize = 1.25]\n      A -> D\n      B -> E\n      C -> F\n      D -> G\n      E -> H\n      F -> I\n           }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p><br />
 <br />
 <br />
