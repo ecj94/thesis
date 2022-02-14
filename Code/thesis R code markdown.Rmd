@@ -635,8 +635,6 @@ tot_perc_bump  %>%
 
 Plot exactly reported *p*-values.
 ```{r plot total reported p-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#pb_bump_AllP <- subset(AllP_exact, Reported.P.Value >= 0 & Reported.P.Value <= .1) #n = 514
-#write.table(pb_bump_AllP, "C:/Users/EliseSchramkowski/Documents/Master's thesis/Excel/pb_bump_AllP_b.txt", sep = ",", eol = "\r")
 sum(AllP_exact$Reported.P.Value >= 0 & AllP_exact$Reported.P.Value <= .1) #n = 514
 
 #Plot

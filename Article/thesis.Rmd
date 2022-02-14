@@ -14,13 +14,6 @@ header-includes:
   - \usepackage{setspace}\doublespacing #double spacing throughout the document
   - \newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}} #resetting the table and figure count for the supplement
   - \usepackage{caption} #customizing captions of tables
-  - \usepackage{float} #do not remove, has something to do with tables/figures being floating objects
-  - \usepackage{booktabs}
-  - \usepackage{cprotect}
-  - \usepackage{fvextra}
-  - \usepackage{textcomp}
-  - \usepackage{amssymb}
-  - \usepackage{amsmath}
 fontsize: 12pt
 spacing: double
 ---
@@ -80,7 +73,7 @@ For each sociology journal in @WOS, we verified if it explicitly required author
 &nbsp;&nbsp;&nbsp;&nbsp;Before extracting statistical information with statcheck, we converted all relevant articles to HTML format. Statcheck namely converts HTML or PDF files to plain text before extracting statistics, and conversion from HTML format is accompanied by less errors [@Nuijten2016]. We then applied statcheck’s ‘checkHTMLdir’ function to a folder with HTML files [@statcheck122] to automatically retrieve APA-reported results, reported *p*-values, and recalculated *p*-values. ‘APA’ contains information retrieved by statcheck on all aspects of fully APA-reported results of all five journals: test statistics (*t*, *z*, *F*, $\chi^2$, and *r*), *df*, and reported *p*-values. Results with exactly reported *p*-values and results with *p*-values reported as ‘<’, ‘>’, or ‘non-significant’ were retrieved by statcheck. If *p*-values were reported as non-significant, statcheck assigned them the label ‘NA’. 'APA' also contains recalculated *p*-values as retrieved by statcheck, as well as information on whether reported *p*-values are (grossly) inconsistent with their recalculated counterparts. If a reported result seemed inconsistent (and this cannot be due to correct rounding), statcheck applied a one-sided test to it. If this lead to a consistent reported result, statcheck kept the one-sided test. Otherwise, it kept the two-sided test [@Nuijten2017]. We also manually put the part of the article’s text from which we concluded that a result was (not) related to an explicitly stated hypothesis in a separate column. Our definition of explicitly stated hypotheses followed that of @Gerber2008, i.e., hypotheses were considered explicitly stated if they were bolded, italicized, or indented, or if they were listed using one of the following terminologies: ‘Hypothesis 1’, ‘H1', ‘H~1~', or ‘the first hypothesis’. 'APA' was used to test our hypotheses on statistical reporting errors (H1 and H2). Since statcheck also retrieved other (incomprehensible) information besides fully APA-reported results, some rows of ‘APA’ were excluded. In total, 505 results from 76 articles were used in descriptive analyses and hypothesis testing (see Table 1 and Table 2). \
 
 
-```{r table 1, echo = FALSE, warning = FALSE, message = FALSE}
+```{r table 1 overview AllP APA Hyp (general), echo = FALSE, warning = FALSE, message = FALSE}
 library('dplyr') #using pipes
 library('knitr') 
 library('kableExtra') #making a nice table
@@ -107,7 +100,7 @@ table1 %>%
   kable_styling(latex_options = "HOLD_position", full_width = F)
 ```
 
-```{r table 2, echo = FALSE, warning = FALSE, message = FALSE}
+```{r table 2 overview AllP APA Hyp (per topic), echo = FALSE, warning = FALSE, message = FALSE}
 #Creating content table cells.
 data_table2 <- c("-", "505 (76)", "399 (20)", #descriptive information
                  "-", "505 (76)", "-", #H1 & H2
@@ -166,7 +159,7 @@ table2 %>%
 $$\\[10in]$$
 &nbsp;
 
-```{r table 3, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
+```{r table 3 definition (gross) inconsistencies per type of reported p-value, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
 #Creating contents table cells.
 data_table3 <- c("ns", "Cal\\emph{P} $\\leq$ .05", "Cal\\emph{P} $\\leq$ .05", #nonsignificant results
                  "$<$", "Cal\\emph{P} $\\geq$ Rep\\emph{P}", "Cal\\emph{P} $>$ .05 \\& Rep\\emph{P} $\\leq$ .05", #results with '<'
@@ -197,7 +190,7 @@ table3 %>%
 
 
 
-```{r table 4, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
+```{r table 4 difference exactly reported and recalculated p-values (not) due to rounding, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
 #Creating content table cells.
 data_table4 <- c(
 ##b & SE
@@ -269,7 +262,7 @@ In this section, we start by presenting our results regarding statistical report
 Of the 143 sociology journals in 'SRG', one journal (Society) did not seem to have any explicit guidelines authors are required or allowed to follow when preparing their manuscripts. Four journals (2.8%) explicitly required authors to follow guidelines established by the journal itself, and 102 (71.3%) required authors to adhere to (reference) guidelines established by external organizations. Only 13 journals (9.1%) requested authors to adhere to the APA manual, and thereby, to the APA statistical reporting guidelines. See Table 5 for an overview of the numbers of sociology journals requesting/allowing adherence to different categories of guidelines.
 \
 
-```{r table5, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
+```{r table5 statistical reporting guidelines, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
 #Creating content table cells.
 data_table5 <- c("", "10 (7%)", "10 (7%)",
                  "", "12 (8.4%)", "3 (2.1%)",
@@ -313,7 +306,7 @@ table5 %>%
 Of the 505 ‘APA’ results, 69 (13.7%) were inconsistent and 8 (1.6%) grossly inconsistent (see Table 6). All grossly inconsistent results had a statistically significant reported *p*-value and a non-significant recalculated *p*-value, making the percentage of significant *p*-values in recalculated *p*-values 1.6 percentage points lower (30.3% rather than 31.9%) than that in reported *p*-values. Out of 168 results related to explicitly stated hypotheses, 22 (13.1%) were inconsistent and 4 (2.4%) grossly inconsistent. Out of 337 results not related to explicitly stated hypotheses, 47 (13.9%) were inconsistent and 4 (1.2%) grossly inconsistent. Our hypotheses that less (gross) inconsistencies will be observed for results on explicitly stated hypotheses are not confirmed. As for H1, the odds of a result of an explicitly stated hypothesis being inconsistent were 1.076 times smaller than the odds that a result not related to an explicitly stated hypothesis was inconsistent, *b* = -.073, *p* = .793, OR = .930, 95% CI [.531, 1.585]. Regarding H2, the odds of a result of an explicitly stated hypothesis being grossly inconsistent were 2.030 two times larger than the odds that a result not related to an explicitly stated hypothesis was grossly inconsistent, but this difference was not significant, *b* = .708, *p* = .321, OR = 2.030, 95% CI [.475, 8.685]. Of the recalculated *p*-values, 416 (82.4%) were retrieved from the two APA journals. These journals, *JMF* and *CHQ*, had very similar percentages of inconsistencies (14.6% and 14.7%, respectively) and gross inconsistencies (1.6% and 1.7%, respectively). As for reproducible results from ‘Hyp’, 17 out of 399 recalculated *p*-values were inconsistent (4.3%), and three (0.8%) were grossly inconsistent. For a comprehensive overview of results, see Table 6.
 
 
-```{r table6, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
+```{r table6 descriptives (gross) inconsistencies, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
 #Creating content table cells.
 data_table6 <- c("", "", "", "", 
                  29, 168, "22 (13.1%)", "4 (2.4%)", #begin APA
@@ -575,7 +568,7 @@ table7 %>%
 
 # Supplement
 
-```{r table S1 inconsistencies and gross inconsistencies, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
+```{r table S1 hypotheses inconsistencies and gross inconsistencies, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
 #install.packages("knitr")
 #library(knitr)
 #devtools::install_version("knitr", "1.37")
@@ -605,7 +598,7 @@ kable(booktabs = T, format ="latex", align = "c", caption = "Logistic regression
 \hspace{20em}
 \newline
 
-```{r table S2 publication bias, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
+```{r table S2 hypotheses publication bias, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
 #Creating content table cells.
 h3ab_table <- c("-.205", ".287", ".476", ".815 [.456, 1.428]",  #intercept H3a 
                  "-.132", ".504", ".794", ".877 [.321, 2.345]", #relation hypothesis H3a
