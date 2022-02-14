@@ -7,12 +7,12 @@ The .Rmd file in this map contains the code used to obtain the results in our st
 2. Data set 'APA', which contains the following information retrieved using statcheck:
    - statistical reporting errors: descriptive results (tables), testing H1 and H2
 3. Data set 'AllP', which contains the following information retrieved using 'statcheck:
-   - publication bias: descriptive results (tables, histograms), testing H3
+   - publication bias: descriptive results (tables, histograms), testing H3a and H3b
    - bump in *p*-values: descriptive results (tables, histograms)
    - marginal significance presented: descriptive results (tables), testing H4
 4. Data set 'Hyp', which contains manually retrieved information on *p*-values and reproducible results related to explicitly stated hypotheses:
    - selection process articles 'Hyp', with flowchart 
-   - statistical reporting errors: descriptive results (tables)**
+   - statistical reporting errors: descriptive results (tables)
    - publication bias: descriptive results (tables, histogram)
    - bump in *p*-values: descriptive results (tables, histogram)
    - marginal significance: descriptive results (tables) 
