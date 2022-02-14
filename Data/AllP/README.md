@@ -1,6 +1,6 @@
 # READme 'AllP'
 
-'AllP' contains all *p*-values extracted by the R statcheck package (Epskamp and Nuijten 2015) from all articles of the 2014-2016 volumes of *ASR*, *AJS*, *SQ*, *JMF*, and *CHQ*, plus manually added information. Variables created by statcheck are indicated below by a boldfaced variable name. The variables in 'AllP' are: 
+'AllP' contains all *p*-values extracted by the R statcheck package (Epskamp and Nuijten 2016) from all articles of the 2014-2016 volumes of *ASR*, *AJS*, *SQ*, *JMF*, and *CHQ*, plus manually added information. Variables created by statcheck are indicated below by a boldfaced variable name. The variables in 'AllP' are: 
 1. Article_numb: each article from which information was retrieved was given a number, such that analyses at the article level could easily be done.
 2. Article: title of the article.
 3. Author(s): surname(s) of the author(s) of the articles.
@@ -23,7 +23,9 @@
 16. Explicitly stated hypothesis: contains the phrasing of the explicitly stated hypothesis, or is 'NA' when there was no explicitly stated hypothesis.
 17. Comments: notable information on specific  results or the article they were extracted from.
 
-## References
+## References  
+Epskamp, S., & Nuijten, M. B. (2016). Statcheck: Extract statistics from articles and recompute p values. Retrieved    
+&nbsp;&nbsp;&nbsp;&nbsp;from https://cran.r-project.org/src/contrib/Archive/statcheck/  
 Ohlsson Collentine, Anton, Marcel A. L. M. Van Assen M. and Chris H. J. 	
 Hartgerink. 2019. “The prevalence of marginally significant  
 &nbsp;&nbsp;&nbsp;&nbsp;results in psychology over time.” *Psychological science*, *30*(4): 576-586.
