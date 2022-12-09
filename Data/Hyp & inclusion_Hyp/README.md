@@ -4,7 +4,7 @@ In this map, two data sets can be found:
 
 1. 'Hyp', which contains all manually retrieved *p*-values and reproducible results related to explicitly stated hypotheses from the 2014-2016 volumes of *ASR*, *AJS*, and *SQ*.
 2. Article inclusion 'Hyp', which contains information on the inclusion process of articles from the 2014-2016 volumes of *ASR*, *AJS*, and *SQ* in 'Hyp'.
-\
+
 
 ### inclusion_Hyp
 The variables in this data set are:
@@ -19,8 +19,7 @@ The variables in this data set are:
 8. Selected: indicates whether an article was included in 'Hyp', where '1' = yes and '0' = no.
 9. Number: number of the selected article. If an article was not selected, this variable had a value 'NA'.
 10. Comments: comment explaining exclusion of an article reporting *z*-value intervals instead of *p*-values.
-\
-\
+
 
 ### 'Hyp'
 'Hyp' contains all *p*-values and reproducible results related to explicitly stated hypotheses from the 2014-2016 volumes of *ASR*, *AJS*, and *SQ*. The variables in 'Hyp' are:
@@ -70,7 +69,7 @@ If only *b*, *SE*, and/or *p*-values were extracted, this variable has the value
 31. Hypothesis: phrasing of the explicitly stated hypothesis from the article.
 32. Information from text article used: information from the text of the article used to determine that a result was related to an explicitly stated hypothesis.
 33. Comment: notable information on specific results or the article they belong to.
-\
+
 
 ### References  
 Ohlsson Collentine, Anton, Marcel A. L. M. Van Assen M. and Chris H. J. Hartgerink. 2019. “The prevalence of marginally significant results in
