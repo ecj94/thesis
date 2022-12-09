@@ -5,7 +5,7 @@ Multiple aspects of statistical reporting practices in sociology were studied in
 
 - statistical reporting guidelines
 - statistical reporting errors
-- publication bias/*p*-hackin\
+- publication bias/*p*-hacking
 - bump in *p*-values
 - marginal significance
 
@@ -18,7 +18,7 @@ For different topics, different data sets were used. Here is a list of the diffe
 - 'AllP': contains all reported *p*-values as retrieved from the 2014-2016 volumes of *ASR*, *AJS*, *SQ*, *CHQ*, and *JMF* by Epskamp & Nuijten's R package statcheck. 'AllP' was used to study publication bias, the 'bump' in *p*-values, and marginal significance.
 - 'Hyp': contains all manually retrieved *p*-values and reproducible results related to explicitly stated hypotheses. These data were retrieved from the 2014-2016 volumes of *ASR*, *AJS*, and *SQ* and were used to study statistical reporting errors, publication bias, the 'bump' in *p*-values, and marginal significance.
 - inclusion_Hyp: contains information on which articles from the 2014-2016 volumes of *ASR*, *AJS*, and *SQ* were included in 'Hyp'.
-\
+
 
 ### References
 Clarivate Analytics’ Web of Science. (2016). Journal citation reports: Sociology, 2016. com.proxy.library.uu.nl/JCRJournalHomeAction.\
