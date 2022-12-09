@@ -8,15 +8,18 @@ output:
     toc: yes
 ---
 
-```{r setup, include=FALSE}
+  
+  ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # 1. Preliminary procedures
 
-Loading packages used later on in this R file.
+Loading packages used later on in the code.
 ```{r loading packages, warning=FALSE, message = FALSE}
-library('logistf') #logistic regression with Firth's correction
+#statcheck is used to retrieve p-values and fully APA-reported results from the text of articles
+library("statcheck") 
+
 library('readxl') #reading in .xlsx files
 library('car') #logistic regressions
 library('knitr') #creating nice tables
@@ -34,33 +37,38 @@ library("ggpubr") #putting together ggplots
 ```
 \
 
-We found that for *JMF*, statcheck did not succeed in extracting results with a '-' sign. After contacting the author, Mich&#232;le Nuijten, about this problem, she adapted the GitHub Version of the package such that this problem would be solved. Below, the GitHub version of the package is loaded into R.
-```{r loading Github version of statcheck, warning=FALSE, message = FALSE, eval = FALSE}
+We found that for *JMF*, statcheck did not succeed in extracting results with a '-' sign. After contacting the author, Mich&#232;le Nuijten, about this problem, she adapted the GitHub Version of the package such that this problem would be solved. Below, the GitHub version of the package is loaded into R. 
+  ```{r loading Github version of statcheck, warning=FALSE, message = FALSE, eval = FALSE}
 devtools::install_github("MicheleNuijten/statcheck")
 ```
 \
 
-Extracting *p*-values and fully APA-reported results from all collected articles. 
+Extracting *p*-values and fully APA-reported results from all collected articles. Initially, we accidentally left out articles from the 2015 volume of *CHQ*, so results from this volume were retrieved separately. Then, all retrieved results were merged. Numbers of rows of *p*-values and fully APA-reported results were 7,280 and 524, respectively.
 ```{r extracting p-values and fully APA-reported results from articles, warning=FALSE, message = FALSE, eval = FALSE}
-#Object with path all articles (minus those from the 2015 volume of CHQ, see below).
-jrnls_tot <- "C:/Users/Elise/Documents/Master MSBBSS/year 2/Master's thesis/Literature/Articles/All jrnls_05_02" 
-#Extracting p-values from all collected articles. 
-outp_jrnl_tot <- checkHTMLdir(jrnls_tot, extension = TRUE, AllPValues = TRUE)
-nrow(outp_jrnl_tot) #n = 6972
-#Extracting fully APA-reported results from all collected articles (minus those from the 2015 volume of CHQ, see below).
-outp_jrnl_tot_sre <- checkHTMLdir(jrnls_tot, extension = TRUE) 
+#All articles except those from CHQ 2015
+jrnls_tot <- "C:/Users/Elise/Documents/Master's thesis/Literature/Articles/All journals_05_02" #file with all articles, minus those from CHQ 2015
+outp_jrnl_tot <- checkHTMLdir(jrnls_tot, extension = TRUE, AllPValues = TRUE) #extracting p-values
+outp_jrnl_tot_sre <- checkHTMLdir(jrnls_tot, extension = TRUE) #extracting fully APA-reported results 
 
-#I had accidentally left out articles of CHQ from 2015. Thus, I put these into a folder and extracted p-values and fully APA-reported results from these articles as well.
-jrnls_extra <- "C:/Users/Elise/Documents/Master MSBBSS/year 2/Master's thesis/Literature/Articles/Extra journals" #object containing all articles of the 2015 volume of CHQ
-outp_jrnl_extra <- checkHTMLdir(jrnls_extra, extension = TRUE, AllPValues = TRUE) #extracting p-values from all articles of the 2015 volume of CHQ
-merge_outp_sre <- merge(outp_jrnl_tot_sre, outp_jrnl_tot_sre2, all=TRUE) #merging the 2015 volume of CHQ With the other volumes
+#Articles CHQ, volume 2015. 
+jrnls_extra <- "C:/Users/Elise/Documents/Master's thesis/Literature/Articles/Extra journals" #file with all articles 2015 volume CHQ
+outp_jrnl_extra <- checkHTMLdir(jrnls_extra, extension = TRUE, AllPValues = TRUE) #extracting p-values 
+outp_jrnl_extra_sre <- checkHTMLdir(jrnls_extra, extension = TRUE) #extracting fully APA-reported results
 
+#Constructing final data sets by merging retrieved data from CHQ year 2015 with the other data.
+merge_outp_p <- merge(outp_jrnl_tot, outp_jrnl_extra, all=TRUE) #merging retrieved p-values
+nrow(merge_outp_p) #n = 7280 retrieved p-values in total
+merge_outp_sre <- merge(outp_jrnl_tot_sre, outp_jrnl_extra_sre, all=TRUE) #merging fully APA-reported retrieved results
+nrow(merge_outp_sre) #n = 524 fully APA-reported retrieved results in total
+```
+\ 
+
+Writing extracted data to text files. These will be saved in a path where all the other data sets and code can also be found.
+```{r writing extracted data to text files, warning=FALSE, message = FALSE, eval = FALSE}
 #Creating a .txt file with the information obtained by statcheck retrieving p-values.
-write.table(outp_jrnl_tot, "C:/Users/Elise/Documents/Master MSBBSS/year 2/Master's thesis/Literature/P-values all journals.txt", sep = ",")
+write.table(outp_jrnl_tot, "C:/Users/Elise/Documents/GitHub/thesis/Data/AllP/AllP_raw.txt", sep = ",")
 #Creating a .txt file with the information obtained by statcheck on fully APA-reported results.
-write.table(outp_jrnl_tot_sre, "C:/Users/Elise/Documents/Master MSBBSS/year 2/Master's thesis/Literature/Statistical reporting errors all journals.txt", sep = ",")
-
-#write.table(AllP_09082020, "C:/Users/EliseSchramkowski/Documents/Master's thesis/Excel/P-values all jrnls_marg10-08-2020b.txt", sep = ",", eol = "\r")
+write.table(outp_jrnl_tot_sre, "C:/Users/Elise/Documents/GitHub/thesis/Data/APA/APA_raw.txt", sep = ",")
 ```
 \
 \
@@ -69,14 +77,13 @@ write.table(outp_jrnl_tot_sre, "C:/Users/Elise/Documents/Master MSBBSS/year 2/Ma
 
 # 2. Data set 'APA'
 
-Reading the Excel-file containing the information obtained when extracting fully APA-reported results using statcheck and additional, manually added information (*n* = 505 from 76 articles). 
+Reading the Excel-file containing information obtained when extracting fully APA-reported results using statcheck and additional, manually added information (*n* = 505 from 76 articles). 
 ```{r loading APA and recoding certain variables, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 setwd("..") #setting working directory to 'thesis'
 setwd("./Data") #setting working directory to 'Data'
 
 APA <- read_excel("./APA/APA.xlsx") # loading the data set
-nrow(APA) #n = 524
-APA_u <- APA[!duplicated(APA$Article_numb), ] #removing duplicates to obtain the number of articles
+APA_u <- APA[!duplicated(APA$Article_numb), ] #removing duplicates to obtain number of articles
 nrow(APA_u) #n = 80
 options(scipen = 999)
 
@@ -267,49 +274,42 @@ tbl_err_nd_APA %>%
   kable(format = "html", caption = "<b>Table 1. Frequencies and percentages of articles with (gross) inconsistencies <b>", align = "c") %>%
   pack_rows("Journal", 1, 5) %>% #grouping journals
   pack_rows("Year", 6, 8) %>% #grouping years
-   kable_styling(bootstrap_options = "striped", full_width = F, position = "float_left") #table with caption
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "float_left") #table with caption
 
 tbl_err_APA %>%
   kable(format = "html", caption = "<b>Table 2. Frequencies and percentages of (gross) inconsistencies<b>", align = "c") %>%
   pack_rows("Relation to hypothesis", 1, 2) %>% #grouping categories relation hypothesis
   pack_rows("Journal", 3, 7) %>% #grouping journals
   pack_rows("Year", 8, 10) %>% #grouping years
-   kable_styling(bootstrap_options = "striped", full_width = F, position = "right") #table with caption
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "right") #table with caption
 ```
 \
 \
 
 ## 2.2 Hypothesis tests
 ### *2.2.1 Hypothesis test errors (H1)*
-Running a logistic regression with the variable indicating whether a result is an error or not as the outcome variable and a predictor indicating whether results belong to explicitly stated hypotheses or not  (test H1). There does not seem to be a significant difference in the amount of inconsistent results between results related to hypotheses and results not related to hypotheses, *b* = -.073, SE = .278, *p* = .793, OR(inverse) = 1.076. Thus, we cannot confirm H1. 
+Running a logistic regression with the variable indicating whether a result is an error or not as the outcome variable and a predictor indicating whether a result belongs to an explicitly stated hypothesis or not. There does not seem to be a significant difference in the amount of inconsistencies between results related to hypotheses and results not related to hypotheses, *b* = -.073, SE = .278, *p* = .793, OR(inverse) = 1.076. Thus, we cannot confirm H1. 
 ```{r testing H1, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-APA$Error_n <- as.numeric(as.character(APA$Error)) #converting 'Error' to a numeric variable
+APA$Error_n <- as.numeric(as.character(APA$Error)) #making 'Error' numeric
 
 #Logistic regression.
 error_hyp <- glm(Error_n~Result.Hypothesis, family = binomial(link = 'logit'),data = APA)
 summary(error_hyp) #output of the logistic regression
 exp(cbind(coef(error_hyp), confint(error_hyp))) #odds ratios
 1/0.9297581 #inverse of the odds ratio of 'Result.Hypothesis' ≈ 1.076
-
-err_hyp <- logistf(Error_n~Result.Hypothesis, data = APA)
-summary(err_hyp) #output of the logistic regression
 ```
 \
 \
 
 ### 2.2.2 *Hypothesis test decision errors (H2)*
-Running a logistic regression with the variable indicating whether a result is a decision error or not as the outcome variable and a predictor indicating whether results belong to explicitly stated hypotheses or not as a predictor (test H2). There does not seem to be a significant difference in the amount of grossly inconsistent results between results related to hypotheses and results not related to hypotheses, *b* = .708, SE = .714, *p* = .321, OR = 2.030. Thus, although there seem to be approximately twice as many grossly inconsistent results among results related to hypotheses than among results not related to hypotheses, the difference between results related to hypotheses than among results not related to hypotheses in gross inconsistencies is not significant. Therefore, we cannot confirm H2.  
+Running a logistic regression with the variable indicating whether a result is a decision error or not as the outcome variable and a predictor indicating whether a results belongs to an explicitly stated hypothesis or not as a predictor. There does not seem to be a significant difference in the amount of grossly inconsistent results between results related to hypotheses and results not related to hypotheses, *b* = .708, SE = .714, *p* = .321, OR = 2.030. Therefore, we cannot confirm H2.  
 ```{r testing H2, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-APA$DecisionError_n <- as.numeric(as.character(APA$DecisionError)) #making DecisionError numeric 
+APA$DecisionError_n <- as.numeric(as.character(APA$DecisionError)) #making 'DecisionError' numeric 
 
 #Logistic regression.
 decerr_hyp <- glm(DecisionError_n~Result.Hypothesis, family = binomial(link = 'logit'),data = APA) 
 summary(decerr_hyp) #output of the logistic regression
 exp(cbind(coef(decerr_hyp), confint(decerr_hyp))) #odds ratios
-1/2.03048780 #inverse of the odds ratio of 'Result.Hypothesis'≈ 1.076
-
-decerr_hyp <- logistf(DecisionError_n~Result.Hypothesis, data = APA)
-summary(decerr_hyp) #output of the logistic regression
 ```
 \
 \
@@ -317,23 +317,23 @@ summary(decerr_hyp) #output of the logistic regression
 \
 
 # 3. Data set 'AllP'
-Reading the Excel-file with the information obtained when extracting *p*-values using statcheck and information that was added manually in Excel. 
+Reading the Excel-file with both the information obtained when extracting *p*-values using statcheck and information that was added manually in Excel. 
 ```{r loading AllP, echo=TRUE, message=FALSE, warning=FALSE, EVAL = FALSE, results = 'hide'}
 setwd("..") #setting working directory to 'thesis'
 setwd("./Data") #setting working directory to 'Data'
 
 #Reading in 'AllP'
 AllP <- read_excel("./AllP/AllP.xlsx", col_types = c(
-#Article_numb, Article, Author(s), Journal
-"numeric", "text", "text", "text", 
-#Year, Statistic, Reported.Comparison, Reported.P.Value
-"numeric", "text", "text", "numeric",
-#Raw, Result.Table, Reported.Not.Relevant, Not.Reported
-"text", "numeric", "numeric", "numeric",
-#Model.fit, Result.Hypothesis, Marg.Sig, Phrase in which mentioned
-"numeric", "numeric", "numeric", "text", 
-#explicitly stated hypothesis, Comments
-"text", "text"))
+  #Article_numb, Article, Author(s), Journal
+  "numeric", "text", "text", "text", 
+  #Year, Statistic, Reported.Comparison, Reported.P.Value
+  "numeric", "text", "text", "numeric",
+  #Raw, Result.Table, Reported.Not.Relevant, Not.Reported
+  "text", "numeric", "numeric", "numeric",
+  #Model.fit, Result.Hypothesis, Marg.Sig, Phrase in which mentioned
+  "numeric", "numeric", "numeric", "text", 
+  #explicitly stated hypothesis, Comments
+  "text", "text"))
 AllP <- subset(AllP, Article_numb >= 0) #only taking into account results with an article number (others are blank rows)
 AllP_tot_n <- nrow(AllP)  #calculating number of rows
 nrow(AllP_tot_n) #there are 7280 rows in the data set
@@ -367,24 +367,18 @@ nrow(AllP_nd) #number of articles is 314
 ```
 \
 \
-
+  
 ## 3.1 Publication bias
 ### 3.1.1 *Descriptive information p-value range (.04-.06]*
-Creating a new data frame with *p*-values in the range (.04-.06].
+  Creating a new data frame with *p*-values in the range (.04-.06].
 ```{r creating data set including only exactly reported p-values and selecting only p-values in range (.04-.06], warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Subsetting data.
 AllP_exact <- subset(AllP, Reported.Comparison == 4) #selecting only exactly reported p-values
 nrow(AllP_exact) #n = 814
 AllP_exact_0406 <- subset(AllP_exact, Reported.P.Value > .04 & Reported.P.Value <= .06) #subset of 'AllP' with all exactly reported p-values in the range (.04-.06]
 AllP_exact_0406["pval_04_06"] <- NA #new column which indicates just (non)-significance
 AllP_exact_0406 <- AllP_exact_0406 %>% mutate(pval_04_06 = ifelse(Reported.P.Value <= .05, "(.04-.05]", "(.05-.06]")) #indicating just (non-)significance
-
-#Calculating numbers of results with p-values in range (.04-.06] and the number of articles they came from.
 nrow_exact_0406 <- nrow(AllP_exact_0406) #object containing the number of rows
 nrow_exact_0406 #n = 73 results
-AllP_exact_0406_nd <- AllP_exact_0406[!duplicated(AllP_exact_0406$Article_numb), ] #removing duplicates to count articles
-nrow_exact_0406_nd <- nrow(AllP_exact_0406_nd) #object containing the number of rows
-nrow_exact_0406_nd #n = 50 articles
 ```
 \
 
@@ -395,7 +389,7 @@ jrnl_0406_t <- xtabs(~ Journal+pval_04_06, data=AllP_exact_0406) #frequency tabl
 jrnl_0406_t <- addmargins(jrnl_0406_t ,margin=2) #adding row margins
 jrnl_0406_m <- as.matrix(jrnl_0406_t)
 jrnl_0406_p <- with(AllP_exact_0406, table(Journal, pval_04_06)) %>% 
-          prop.table(margin = 1) #proportion table
+  prop.table(margin = 1) #proportion table
 jrnl_0406_p100 <- jrnl_0406_p *100 #turning proportions into percentages
 jrnl_0406_p100 <- addmargins(jrnl_0406_p100 ,margin=2) #adding row margins
 
@@ -404,7 +398,7 @@ yr_0406_t <- xtabs(~ Year+pval_04_06, data=AllP_exact_0406) #frequency table
 yr_0406_t <- addmargins(yr_0406_t, margin=2) #adding row margins
 yr_0406_m <- as.matrix(yr_0406_t)
 yr_0406_p <- with(AllP_exact_0406, table(Year, pval_04_06)) %>% 
-          prop.table(margin = 1) #proportion table
+  prop.table(margin = 1) #proportion table
 yr_0406_p100 <- yr_0406_p *100 #turning proportions into percentages
 yr_0406_p100 <- addmargins(yr_0406_p100 ,margin=2) #adding row margins
 
@@ -413,7 +407,7 @@ hyp_0406_t <- xtabs(~ Result.Hypothesis+pval_04_06, data=AllP_exact_0406) #frequ
 hyp_0406_t <- addmargins(hyp_0406_t, margin=2) #adding row margins
 hyp_0406_m <- as.matrix(hyp_0406_t) 
 hyp_0406_p <- with(AllP_exact_0406, table(Result.Hypothesis, pval_04_06)) %>% 
-          prop.table(margin = 1) #proportion table
+  prop.table(margin = 1) #proportion table
 hyp_0406_p100 <- hyp_0406_p *100 #turning proportions into percentages
 hyp_0406_p100 <- addmargins(hyp_0406_p100 ,margin=2)#adding row margins
 
@@ -428,28 +422,22 @@ tot_0406_p <- addmargins(tot_0406_tp) #adding row margin
 ### 3.1.2 *Descriptive information p-value range (.03-.07]*
 Creating a new data frame with *p*-values in the range (.03-.07].
 ```{r selecting p-values in range (.03-.07], warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Subsetting data.
 AllP_exact_0307 <- subset(AllP_exact, Reported.P.Value > .03 & Reported.P.Value <= .07) #subset of 'AllP' with all exactly reported p-values in the range (.03-.07]
 AllP_exact_0307["pval_03_07"] <- NA #new column which indicates just (non)-significance
 AllP_exact_0307 <- AllP_exact_0307 %>% mutate(pval_03_07 = ifelse(Reported.P.Value <= .05, "(.03-.05]", "(.05-.07]")) #indicating just (non-)significance
-
-#Calculating numbers of results with p-values in range (.03-.07] and the number of articles they came from.
 nrow_exact_0307 <- nrow(AllP_exact_0307) #object containing the number of rows
 nrow_exact_0307 #n = 127 results
-AllP_exact_0307_nd <- AllP_exact_0307[!duplicated(AllP_exact_0307$Article_numb), ] #Removing duplicates to count articles.
-nrow_exact_0307_nd <- nrow(AllP_exact_0307_nd) #object containing the number of rows
-nrow_exact_0307_nd #n = 71 articles
 ```
 \
 
-Creating frequency and proportion tables for publication bias in the range (.03-07] for different categories.
+Creating frequency and proportion tables for publication bias in the range (.03-.07] for different categories.
 ```{r, warning=FALSE, message = FALSE, echo = TRUE}
 #P-values in the range (.03-.07] and journal
 jrnl_0307_t <- xtabs(~ Journal+pval_03_07, data=AllP_exact_0307) #frequency table
 jrnl_0307_t <- addmargins(jrnl_0307_t ,margin=2) #adding row margins
 jrnl_0307_m <- as.matrix(jrnl_0307_t)
 jrnl_0307_p <- with(AllP_exact_0307, table(Journal, pval_03_07)) %>% 
-          prop.table(margin = 1) #proportion table
+  prop.table(margin = 1) #proportion table
 jrnl_0307_p100 <- jrnl_0307_p *100 #turning proportions into percentages
 jrnl_0307_p100 <- addmargins(jrnl_0307_p100 ,margin=2) #adding row margins
 
@@ -458,7 +446,7 @@ yr_0307_t <- xtabs(~ Year+pval_03_07, data=AllP_exact_0307) #frequency table
 yr_0307_t <- addmargins(yr_0307_t, margin=2) #adding row margins
 yr_0307_m <- as.matrix(yr_0307_t)
 yr_0307_p <- with(AllP_exact_0307, table(Year, pval_03_07)) %>% 
-          prop.table(margin = 1) #proportion table
+  prop.table(margin = 1) #proportion table
 yr_0307_p100 <- yr_0307_p *100 #turning proportions into percentages
 yr_0307_p100 <- addmargins(yr_0307_p100 ,margin=2) #adding row margins
 
@@ -467,7 +455,7 @@ hyp_0307_t <- xtabs(~ Result.Hypothesis+pval_03_07, data=AllP_exact_0307) #frequ
 hyp_0307_t <- addmargins(hyp_0307_t, margin=2) #adding row margins
 hyp_0307_m <- as.matrix(hyp_0307_t) 
 hyp_0307_p <- with(AllP_exact_0307, table(Result.Hypothesis, pval_03_07)) %>% 
-          prop.table(margin = 1) #proportion table
+  prop.table(margin = 1) #proportion table
 hyp_0307_p100 <- hyp_0307_p *100 #turning proportions into percentages
 hyp_0307_p100 <- addmargins(hyp_0307_p100 ,margin=2)#adding row margins
 
@@ -511,24 +499,24 @@ Final tables on publication bias based on 'AllP'.
 ```{r tables publication bias AllP, warning=FALSE, message = FALSE, echo = FALSE}
 tot_pb %>%
   kable(format = "html", align = "c", caption = "<b>Table 5. Publication bias (frequencies)<b>") %>% #format html, centered alignment, bold-faced caption
-    pack_rows("Relation to hypothesis", 1, 2) %>% #grouping categories relation hypothesis
-    pack_rows("Journal", 3, 7) %>% #grouping journals
-    pack_rows("Year", 8, 10) %>% #grouping years
-    column_spec (4, border_left = F, border_right = T, extra_css = "border-right:2px solid lightgrey;")%>% #vertical, solid lightgrey line separates binwidths 
-    kable_styling(bootstrap_options = "striped", full_width = F) #styling
+  pack_rows("Relation to hypothesis", 1, 2) %>% #grouping categories relation hypothesis
+  pack_rows("Journal", 3, 7) %>% #grouping journals
+  pack_rows("Year", 8, 10) %>% #grouping years
+  column_spec (4, border_left = F, border_right = T, extra_css = "border-right:2px solid lightgrey;")%>% #vertical, solid lightgrey line separates binwidths 
+  kable_styling(bootstrap_options = "striped", full_width = F) #styling
 
 tot_pb_perc  %>%
   kable(format = "html", align = "c", caption = "<b>Table 6. Publication bias (%)<b>", digits = 1) %>% #format html, centered alignment, bold-faced caption
-    pack_rows("Relation to hypothesis", 1, 2) %>% #grouping categories relation hypothesis
-    pack_rows("Journal", 3, 7) %>% #grouping journals
-    pack_rows("Year", 8, 10) %>% #grouping years
-     column_spec (4, border_left = F, border_right = T, extra_css = "border-right:2px solid lightgrey;")%>% #vertical, solid lightgrey line separates binwidths
-     kable_styling(bootstrap_options = "striped", full_width = F) #styling
+  pack_rows("Relation to hypothesis", 1, 2) %>% #grouping categories relation hypothesis
+  pack_rows("Journal", 3, 7) %>% #grouping journals
+  pack_rows("Year", 8, 10) %>% #grouping years
+  column_spec (4, border_left = F, border_right = T, extra_css = "border-right:2px solid lightgrey;")%>% #vertical, solid lightgrey line separates binwidths
+  kable_styling(bootstrap_options = "striped", full_width = F) #styling
 ```
 \
 
-### 3.1.3  *Statistical analysis p-value range (.04-.06]*
-Logistic regression to study the difference in the prevalence of publication bias between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses (H3) for binwidth .01. the prevalence of just significant and just insignificant results does not seem to differ significantly for results related to hypotheses and results not related to hypotheses. Thus, it can be concluded that we cannot confirm H3 using *p*-value intervals of binwidth .01, b1 = -.132, SE = 504, *p* = .794, OR = .877, 95% CI [.321, 2.345].
+### 3.1.3  *Statistical analysis p-value range (.04-.06] (H3a)*
+Logistic regression to study the difference in the prevalence of publication bias between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses for binwidth .01. The prevalence of just significant and just non-significant results does not seem to differ significantly for results related to hypotheses and results not related to hypotheses, b1 = -.132, SE = .504, *p* = .794, OR = .877, 95% CI [.321, 2.345]. Thus, we could not confirm H3a.
 ```{r testing H3 binwidth .01, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 AllP_exact_0406["pval_04_06"] <- NA #removing all data from variable 'pval_04_06'
 AllP_exact_0406 <- AllP_exact_0406 %>% mutate(pval_04_06 = ifelse(Reported.P.Value <= .05, 1, 0)) #indicating just (non-)significance 
@@ -543,8 +531,8 @@ exp(cbind(coef(pb_0406), confint(pb_0406))) #odds ratios
 ```
 \
 
-### 3.1.4  *Statistical analysis p-value range (.03-.07]*
-Logistic regression to study the difference in the prevalence of publication bias between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses (H3) for binwidth .02. There does not seem to be a significant difference in the prevalence of just significant results among results related to hypotheses and results not related to hypotheses, b1 = -.251, SE = .392, *p* = .521, OR = .778, 95% CI [.358, 1.674]. Thus, we could not confirm H3 using binwidth .02.
+### 3.1.4  *Statistical analysis p-value range (.03-.07] (H3b)*
+Logistic regression to study the difference in the prevalence of publication bias between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses for binwidth .02. There does not seem to be a significant difference in the prevalence of just significant results among results related to hypotheses and results not related to hypotheses, b1 = -.251, SE = .392, *p* = .521, OR = .778, 95% CI [.358, 1.674]. Thus, we could not confirm H3b.
 ```{r testing H3 binwidth .02, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 AllP_exact_0307["pval_03_07"] <- NA #removing all data from variable 'pval_03_07'
 AllP_exact_0307 <- AllP_exact_0307 %>% mutate(pval_03_07 = ifelse(Reported.P.Value <= .05, 1, 0)) #indicating just (non-)significance 
@@ -561,53 +549,47 @@ exp(cbind(coef(pb_0307), confint(pb_0307))) #odds ratios
 ## 3.2 Bump in *p*-values
 \
 
-### *3.2.1 Descriptive information p-value range (.03 - .05]*
-Creating a new data frame with *p*-values in the range (.03 - .05].
-```{r selecting p-values in the range (.03 - .05] (AllP), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Subsetting data.
-AllP_exact_0305 <- subset(AllP_exact, Reported.P.Value > .03 & Reported.P.Value <= .05) #subset of 'AllP' with all exactly reported p-values in the range (.03 - .05]
+### *3.2.1 Descriptive information p-value range (.03-.05]*
+Creating a new data frame with *p*-values in the range (.03-.05].
+```{r selecting p-values in the range (.03-.05] (AllP), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
+AllP_exact_0305 <- subset(AllP_exact, Reported.P.Value > .03 & Reported.P.Value <= .05) #subset of 'AllP' with all exactly reported p-values in the range (.03-.05]
 AllP_exact_0305["pval_03_05"] <- NA #new column for indicating just (non-)significance
 AllP_exact_0305 <- AllP_exact_0305 %>% mutate(pval_03_05 = ifelse(Reported.P.Value <= .04, "(.03-.04]", "(.04-.05]")) #indicating just (non-)significance
-
-#Calculating numbers of results with p-values in range (.03-.05] and the number of articles they came from.
 nrow_exact_0305 <- nrow(AllP_exact_0305) #object containing the number of rows
 nrow_exact_0305 #n = 64 results
-AllP_exact_0305_nd <- AllP_exact_0305[!duplicated(AllP_exact_0305$Article_numb), ] #removing duplicates to count articles
-nrow_exact_0305_nd <- nrow(AllP_exact_0305_nd ) #object containing the number of articles
-nrow_exact_0305_nd #n = 40 articles
 ```
 \
 
 Creating frequency and proportion tables for publication bias in the range (.03-.05] for different categories.
 ```{r tables bump in p-values with binwidth .01 (AllP), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#P-values in the range (.03 - .05] and journal
+#P-values in the range (.03-.05] and journal
 jrnl_0305_t <- xtabs(~ Journal+pval_03_05, data=AllP_exact_0305) #frequency table
 jrnl_0305_t <- addmargins(jrnl_0305_t ,margin=2) #adding row margins
 jrnl_0305_m <- as.matrix(jrnl_0305_t)
 jrnl_0305_p <- with(AllP_exact_0305, table(Journal, pval_03_05)) %>% 
-          prop.table(margin = 1) #proportion table
+  prop.table(margin = 1) #proportion table
 jrnl_0305_p100 <- jrnl_0305_p *100 #turning proportions into percentages
 jrnl_0305_p100 <- addmargins(jrnl_0305_p100 ,margin=2) #adding row margins
 
-#P-values in the range (.03 - .05] and year
+#P-values in the range (.03-.05] and year
 yr_0305_t <- xtabs(~ Year+pval_03_05, data=AllP_exact_0305) #frequency table
 yr_0305_t <- addmargins(yr_0305_t, margin=2) #adding row margins
 yr_0305_m <- as.matrix(yr_0305_t)
 yr_0305_p <- with(AllP_exact_0305, table(Year, pval_03_05)) %>% 
-          prop.table(margin = 1) #proportion table
+  prop.table(margin = 1) #proportion table
 yr_0305_p100 <- yr_0305_p *100 #turning proportions into percentages
 yr_0305_p100 <- addmargins(yr_0305_p100 ,margin=2) #adding row margins
 
-#P-values in the range (.03 - .05] and relation to hypothesis
+#P-values in the range (.03-.05] and relation to hypothesis
 hyp_0305_t <- xtabs(~ Result.Hypothesis+pval_03_05, data=AllP_exact_0305) #frequency table
 hyp_0305_t <- addmargins(hyp_0305_t, margin=2) #adding row margins
 hyp_0305_m <- as.matrix(hyp_0305_t) 
 hyp_0305_p <- with(AllP_exact_0305, table(Result.Hypothesis, pval_03_05)) %>% 
-          prop.table(margin = 1) #proportion table
+  prop.table(margin = 1) #proportion table
 hyp_0305_p100 <- hyp_0305_p *100 #turning proportions into percentages
 hyp_0305_p100 <- addmargins(hyp_0305_p100 ,margin=2)#adding row margins
 
-#Total of p-values in the range (.03 - .05] 
+#Total of p-values in the range (.03-.05] 
 tot_0305_t <- table(AllP_exact_0305$pval_03_05) #frequency table
 tot_0305_sum <- sum(tot_0305_t) #calculating the total frequency
 tot_0305_tp <- round(100*prop.table(tot_0305_t),digits=3) #proportion table
@@ -615,25 +597,20 @@ tot_0305_p <- addmargins(tot_0305_tp) #adding row margin
 ```
 \
 
-### *3.2.2 Descriptive information p-value range (.01 - .05]*
-Creating a new data frame with *p*-values in the range (.01 - .05].
-```{r selecting p-values in the range (.01 - .05], warning=FALSE, message = FALSE, echo = TRUE}
-AllP_exact_0105 <- subset(AllP_exact, Reported.P.Value > .01 & Reported.P.Value <= .05) #subset of 'AllP' with exactly reported p-values in the range (.01 - .05]
+### *3.2.2 Descriptive information p-value range (.01-.05]*
+Creating a new data frame with *p*-values in the range (.01-.05].
+```{r selecting p-values in the range (.01-.05], warning=FALSE, message = FALSE, echo = TRUE}
+AllP_exact_0105 <- subset(AllP_exact, Reported.P.Value > .01 & Reported.P.Value <= .05) #subset of 'AllP' with exactly reported p-values in the range (.01-.05]
 AllP_exact_0105["pval_01_05"] <- NA #new column indicating just (non-)significance
 AllP_exact_0105 <- AllP_exact_0105 %>% mutate(pval_01_05 = ifelse(Reported.P.Value <= .03, "(.01-.03]", "(.03-.05]")) #indicating just (non-)significance
-
-#Calculating numbers of results with p-values in range (.01-.05] and the number of articles they came from.
 nrow_exact_0105 <- nrow(AllP_exact_0105) #object containing the number of rows 
 nrow_exact_0105 #n = 184
-AllP_exact_0105_nd <- AllP_exact_0105[!duplicated(AllP_exact_0105$Article_numb), ] #removing duplicates to count articles
-nrow_exact_0105_nd <- nrow(AllP_exact_0105_nd ) #object containing the number of rows
-nrow_exact_0105_nd #n = 80 articles
 ```
 \
 
-Creating frequency and proportion tables for the bump in *p*-values in the range (.01-05] for different categories.
+Creating frequency and proportion tables for the bump in *p*-values in the range (.01-.05] for different categories.
 ```{r tables on the bump in p-valueswith binwidth .02 (AllP), warning=FALSE, message = FALSE, echo = TRUE}
-#P-values in the range (.01 - .05] and journal
+#P-values in the range (.01-.05] and journal
 jrnl_0105_t <- xtabs(~ Journal+pval_01_05, data=AllP_exact_0105) #frequency table
 jrnl_0105_t <- addmargins(jrnl_0105_t ,margin=2) #adding row margins
 jrnl_0105_m <- as.matrix(jrnl_0105_t)
@@ -642,7 +619,7 @@ jrnl_0105_p <- with(AllP_exact_0105, table(Journal, pval_01_05)) %>%
 jrnl_0105_p100 <- jrnl_0105_p *100 #turning proportions into percentages
 jrnl_0105_p100 <- addmargins(jrnl_0105_p100 ,margin=2) #adding row margins
 
-#P-values in the range (.01 - .05] and year
+#P-values in the range (.01-.05] and year
 yr_0105_t <- xtabs(~ Year+pval_01_05, data=AllP_exact_0105) #frequency table
 yr_0105_t <- addmargins(yr_0105_t, margin=2) #adding row margins
 yr_0105_m <- as.matrix(yr_0105_t)
@@ -651,7 +628,7 @@ yr_0105_p <- with(AllP_exact_0105, table(Year, pval_01_05)) %>%
 yr_0105_p100 <- yr_0105_p *100 #turning proportions into percentages
 yr_0105_p100 <- addmargins(yr_0105_p100 ,margin=2) #adding row margins
 
-#P-values in the range (.01 - .05] and relation to hypothesis
+#P-values in the range (.01-.05] and relation to hypothesis
 hyp_0105_t <- xtabs(~ Result.Hypothesis+pval_01_05, data=AllP_exact_0105) #frequency table
 hyp_0105_t <- addmargins(hyp_0105_t, margin=2) #adding row margins
 hyp_0105_m <- as.matrix(hyp_0105_t) 
@@ -660,7 +637,7 @@ hyp_0105_p <- with(AllP_exact_0105, table(Result.Hypothesis, pval_01_05)) %>%
 hyp_0105_p100 <- hyp_0105_p *100 #turning proportions into percentages
 hyp_0105_p100 <- addmargins(hyp_0105_p100 ,margin=2)#adding row margins
 
-#Total of p-values in the range (.01 - .05] 
+#Total of p-values in the range (.01-.05] 
 tot_0105_t <- table(AllP_exact_0105$pval_01_05) #frequency table
 tot_0105_sum <- sum(tot_0105_t) #calculating the total frequency
 tot_0105_tp <- round(100*prop.table(tot_0105_t),digits=3) #proportion table
@@ -699,131 +676,83 @@ Final tables on the bump in *p*-values.
 ```{r tables on the bump in p-values AllP, warning=FALSE, message = FALSE, echo = FALSE}
 tot_bump %>%
   kable(format = "html", align = "c", caption = "<b>Table 7. Bump in p-values (frequencies)<b>") %>% #format html, centered alignment, bold-faced caption
-    pack_rows("Relation to hypothesis", 1, 2) %>% #grouping categories relation hypothesis
-    pack_rows("Journal", 3, 7) %>% #grouping journals
-    pack_rows("Year", 8, 10) %>% #grouping years
-    column_spec (4, border_left = F, border_right = T, extra_css = "border-right:2px solid lightgrey;")%>% #vertical, solid lightgrey line separates binwidths 
-    kable_styling(bootstrap_options = "striped", full_width = F) #styling
+  pack_rows("Relation to hypothesis", 1, 2) %>% #grouping categories relation hypothesis
+  pack_rows("Journal", 3, 7) %>% #grouping journals
+  pack_rows("Year", 8, 10) %>% #grouping years
+  column_spec (4, border_left = F, border_right = T, extra_css = "border-right:2px solid lightgrey;")%>% #vertical, solid lightgrey line separates binwidths 
+  kable_styling(bootstrap_options = "striped", full_width = F) #styling
 
 tot_perc_bump  %>%
   kable(format = "html", align = "c", caption = "<b>Table 8. Bump in p-values  (%)<b>", digits = 1) %>% #format html, centered alignment, bold-faced caption
-    pack_rows("Relation to hypothesis", 1, 2) %>% #grouping categories relation hypothesis
-    pack_rows("Journal", 3, 7) %>% #grouping journals
-    pack_rows("Year", 8, 10) %>% #grouping years
-    column_spec (4, border_left = F, border_right = T, extra_css = "border-right:2px solid lightgrey;")%>% #vertical, solid lightgrey line separates binwidths
-    kable_styling(bootstrap_options = "striped", full_width = F) #styling
+  pack_rows("Relation to hypothesis", 1, 2) %>% #grouping categories relation hypothesis
+  pack_rows("Journal", 3, 7) %>% #grouping journals
+  pack_rows("Year", 8, 10) %>% #grouping years
+  column_spec (4, border_left = F, border_right = T, extra_css = "border-right:2px solid lightgrey;")%>% #vertical, solid lightgrey line separates binwidths
+  kable_styling(bootstrap_options = "striped", full_width = F) #styling
 ```
 \
 \
 \
 
-## 3.3 Plots publication bias and bump in *p*-values 
+## 3.3 Marginal significance
 
-Plot exactly reported *p*-values.
-```{r plot total reported p-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-sum(AllP_exact$Reported.P.Value >= 0 & AllP_exact$Reported.P.Value <= .1) #n = 514
-
-#Plot
-plot_aut_rep <- ggplot() + 
-  geom_histogram(data = AllP_exact, aes(x = Reported.P.Value), fill = 'grey', colour='black', bins=10, binwidth = .01, boundary = 0, closed = "right") + #10 bins, width .01, black bin lines, bins colored grey, lines of bins are black, bins close on the right
-  scale_x_continuous(expand = c(0, 0), breaks = seq(0, .10, by = .01), lim = c(0,.105)) +     
-  scale_y_continuous(breaks = seq(0,200, by = 25)) + #ticks on the y-axis with intervals of 25                               
-  labs(title = "Total (n = 514)", x = "*p*-value") +  #add title and label to the x-axis
-  theme_classic(base_size = 14) + #theme with x and y axis lines, no gridline is chosen
-  theme(plot.title = element_text(size = 16), axis.title.x = element_markdown()) #adapt title size
-```
-\
-
-Creating new data sets containing only results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses, respectively.
-```{r subsetting based on relation hypotheses, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-AllP_exact_nh <- subset(AllP_exact, Result.Hypothesis == "No") #data set containing only of results not related to explicitly stated hypotheses
-nrow(AllP_exact_nh) #n = 582
-AllP_exact_h <- subset(AllP_exact, Result.Hypothesis == "Yes") #data set containing only results of explicitly stated hypotheses
-nrow(AllP_exact_h) #n = 232
-```
-\
-
-Plot reported *p*-values that are not related to explicitly stated hypotheses.
-```{r plot reported p-values not related to explicitly stated hypotheses, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-sum(AllP_exact_nh$Reported.P.Value >= 0 & AllP_exact_nh$Reported.P.Value <= .1) #n = 353
-
-#Plot 
-plot_aut_rep_nh <- ggplot() + 
-  geom_histogram(data = AllP_exact_nh, aes(x = Reported.P.Value), fill = 'grey', colour='black', bins=10, binwidth = .01, boundary = 0, closed = "right") + #10 bins, width .01, black bin lines, bins colored grey, bins close on the left
-  scale_x_continuous(expand = c(0, 0), breaks = seq(0, .10, by = .01), lim = c(0,.105)) +     
-  scale_y_continuous(breaks = seq(0,200, by = 25)) + #ticks on the y-axis with equal intervals of 25                                   
-  labs(title = "No relation explicitly stated hypothesis (n = 353)", x = "*p*-value") +  #add title and label to the x-axis
-  theme_classic(base_size = 14) + #theme with x and y axis lines, no gridline
-  theme(plot.title = element_text(size = 16), axis.title.x = element_markdown()) #adapt title size
-```
-\
-
-Plot reported *p*-values that are related to explicitly stated hypotheses.
-```{r plot reported p-values related to explicitly stated hypotheses, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-sum(AllP_exact_h$Reported.P.Value >= 0 & AllP_exact_h$Reported.P.Value <= .1) #n = 161
-
-#Plot 
-plot_aut_rep_h <- ggplot() + 
-  geom_histogram(data = AllP_exact_h, aes(x = Reported.P.Value), fill = 'grey', colour='black', bins=10, binwidth = .01, boundary = 0, closed = "right") + #10 bins, width .01, black bin lines, bins colored grey, bins close on the left
-  scale_x_continuous(expand = c(0, 0), breaks = seq(0, .10, by = .01), lim = c(0,.105)) +     
-    scale_y_continuous(breaks = seq(0,200, by = 25)) + #ticks on the y-axis with equal intervals of 25                                 
-  labs(title = "Relation explicitly stated hypothesis (n = 161)", x = "*p*-value") +  #add title and label to the x-axis
-  theme_classic(base_size = 14) + #theme with x and y axis lines, no gridline
-  theme(plot.title = element_text(size = 16), axis.title.x = element_markdown()) #adapt title size
-```
-\
-
-Putting the plots created above in one figure of exactly reported *p*-values in the range [0 - .10]. 
-```{r final figure, warning=FALSE, message = FALSE, echo = TRUE, results = FALSE, fig.height=9, fig.width=7}
-txt1 <- c("**Exactly reported *p*-values in the range [0, .10]**") #title of the figure
-plot3_aut <- grid.arrange(plot_aut_rep, plot_aut_rep_nh, plot_aut_rep_h, ncol=1, nrow = 3,  top = richtext_grob(txt1,gp=gpar(fontsize=18,font=2))) #creating one Figure with 3 plots, and adding a title
-plot_3lab_aut <- as_ggplot(plot3_aut) + draw_plot_label(label = c("A", "B", "C"), size = 15, x = c(0, 0, 0), y = c(1, (2/3), (1/3))) #adding labels to the different plots
-```
-\
-\
-\
-
-## 3.4 Marginal significance
-
-### *3.4.2 Descriptive information article level*
-Of the 107 articles with *p*-values in the range (.05 - .10], 46 contained at least one result reported as marginally significant.
+### *3.3.1 Preliminary calculations*
+Firstly, we calculate some basic statistics relevant to marginal significance at the article and results level. These will be used to calculate other statistics later on. Results that are reported using the sign ‘>’ are not taken into account, since this do not imply results were near the conventional significance level, i.e., *p* = .05. 
 ```{r number of articles with at least one result reported as marginally significant, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Subsetting data to include only results relevant for studying marginal significance.
-AllP_marg <- subset(AllP, Reported.P.Value > .05 & Reported.P.Value <= .1 & Reported.Comparison < 5) 
-nrow(AllP_marg) #n = 206
-#Removing duplicates for counting number of articles.
-AllP_marg_nd <- AllP_marg[!duplicated(AllP_marg$Article_numb), ] 
-AllP_marg_nd_tot <- nrow(AllP_marg_nd) #n = 107 articles with p-values in range (.05-.10]
+#Selecting relevant data.
+AllP_marg <- subset(AllP, Reported.P.Value > .05 & Reported.P.Value <= .1 & Reported.Comparison < 5) #subsetting the data, no results with '>'
+AllP_marg_n <- nrow(AllP_marg) 
+AllP_marg_n #n = 206 results with p-values in range (.05-.10]
+
 #Subset marginally significant results.
 AllP_marg_1 <- subset(AllP_marg, Marg.Sig == 1) 
-nrow(AllP_marg_1) #n = 72
+AllP_marg_1_n <- nrow(AllP_marg_1) 
+AllP_marg_1_n #n = 72 results reported as marginally significant
+AllP_marg_perc <- round(((AllP_marg_1_n/AllP_marg_n)*100), digits = 1)
+
 #Data set with all articles with at least one marginally significant result.
 AllP_marg_1_nd <- AllP_marg_1[!duplicated(AllP_marg_1$Article_numb), ] 
-AllP_marg_1_nd_nrow <- nrow(AllP_marg_1_nd) #n = 46 
+AllP_marg_1_nd_nrow <- nrow(AllP_marg_1_nd) 
+AllP_marg_1_nd_nrow #n = 46 
+
+#Removing duplicates to count number of articles.
+AllP_marg_nd <- AllP_marg[!duplicated(AllP_marg$Article_numb), ] 
+AllP_marg_nd_tot <- nrow(AllP_marg_nd) 
+AllP_marg_nd_tot #n = 107 articles with p-values in range (.05-.10]
+AllP_marg_nd_perc <- round((AllP_marg_1_nd_nrow/AllP_marg_nd_tot)*100, digits = 1) #percentage
+
+#Subset results that are reported as not marginally significant.
+AllP_marg_0 <- subset(AllP_marg, Marg.Sig == 0)
+AllP_marg_0_n <- nrow(AllP_marg_0) 
+AllP_marg_0_n #n = 134
+
+#Articles with no p-values in the range (.05-.10] that are reported as marginally significant.
+AllP_marg_0_nd_nrow <- AllP_marg_nd_tot - AllP_marg_1_nd_nrow 
+AllP_marg_0_nd_nrow #61
 ```
 \
+\
 
-Creating frequency and proportion tables for articles with at least one result with a *p*-value in the range (.01-05] reported as marginal significant for different categories.
+### *3.3.2 Descriptive information article level*
+
+Creating tables containing information on marginal significance at the article level. Data on different categories are included.
 ```{r tables on marginal significance at the article level (AllP), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Total articles with marginally significant results.
-AllP_marg_0_nd_nrow <- AllP_marg_nd_tot - AllP_marg_1_nd_nrow #0 reported as marginally significant
-AllP_marg_nd_perc <- round((AllP_marg_1_nd_nrow/AllP_marg_nd_tot)*100, digits = 1) #calculate % articles with >= 1 result reported as marginally significant
 AllP_tot_marg_nd <- as.data.frame(cbind(AllP_marg_nd_tot, AllP_marg_0_nd_nrow, AllP_marg_1_nd_nrow, AllP_marg_nd_perc)) #combining objects
 names(AllP_tot_marg_nd)[1:4] <- c("Total","No","Yes", "% Yes") #changing column names
 
 #Marginal significance and journals
 AllP_jrnl_marg_tot_nd <- as.matrix(table(AllP_marg_nd$Journal)) #>= 1 relevant p-value 
 AllP_jrnl_marg_1_nd <- as.matrix(table(AllP_marg_1_nd$Journal)) #>= 1 reported as marginally significant
-AllP_jrnl_marg_0_nd <- AllP_jrnl_marg_tot_nd - AllP_jrnl_marg_1_nd #0 reported as marginally significant
-AllP_jrnl_marg_nd_perc <- round((AllP_jrnl_marg_1_nd/AllP_jrnl_marg_tot_nd)*100, digits = 1) # calculate % articles with >= 1 result reported as marginally significant 
+AllP_jrnl_marg_0_nd <- AllP_jrnl_marg_tot_nd - AllP_jrnl_marg_1_nd #no results reported as marginally significant
+AllP_jrnl_marg_nd_perc <- round((AllP_jrnl_marg_1_nd/AllP_jrnl_marg_tot_nd)*100, digits = 1) #calculate % articles with >= 1 result reported as marginally significant 
 AllP_jrnl_marg_nd <- as.data.frame(cbind(AllP_jrnl_marg_tot_nd, AllP_jrnl_marg_0_nd,  AllP_jrnl_marg_1_nd, AllP_jrnl_marg_nd_perc)) #combining columns into one data frame
 names(AllP_jrnl_marg_nd)[1:4] <- c("Total","No","Yes", "% Yes") #changing column names
 
 #Marginally significance and years
 AllP_yr_marg_tot_nd <- as.matrix(table(AllP_marg_nd$Year)) #>= 1 relevant p-value
 AllP_yr_marg_1_nd <- as.matrix(table(AllP_marg_1_nd$Year)) #>= 1 reported as marginally significant
-AllP_yr_marg_0_nd <- AllP_yr_marg_tot_nd - AllP_yr_marg_1_nd #0 reported as marginally significant
-AllP_yr_marg_nd_perc <- round((AllP_yr_marg_1_nd/AllP_yr_marg_tot_nd)*100, digits = 1) # calculate % articles with >= 1 result reported as marginally significant 
+AllP_yr_marg_0_nd <- AllP_yr_marg_tot_nd - AllP_yr_marg_1_nd #no results reported as marginally significant
+AllP_yr_marg_nd_perc <- round((AllP_yr_marg_1_nd/AllP_yr_marg_tot_nd)*100, digits = 1) #calculate % articles with >= 1 result reported as marginally significant 
 AllP_yr_marg_nd <- as.data.frame(cbind(AllP_yr_marg_tot_nd, AllP_yr_marg_0_nd,  AllP_yr_marg_1_nd, AllP_yr_marg_nd_perc)) #combining columns into one data frame
 names(AllP_yr_marg_nd)[1:4] <- c("Total","No","Yes", "% Yes") #changing column names
 
@@ -836,27 +765,13 @@ rownames(tbl_marg_AllP_nd)[9] <- "Total" #naming the 'total' row
 \
 \
 
-### *3.4.1 Descriptive information results level*  
+### *3.3.3 Descriptive information results level*  
 
-Selecting the 206 results with reported *p*-values in the range (.05 - .1] from 'AllP'. Reported results with the sign '>' are not taken into account, since these do not imply results were near the conventional significance level, i.e., *p* = .05.
-```{r selecting only results relevant for studying marginal significance, warning=FALSE, message = FALSE, echo = TRUE,  results = 'hide'}
-#Subsetting the data.
-AllP_marg <- subset(AllP, Reported.P.Value > .05 & Reported.P.Value <= .1 & Reported.Comparison < 5 & Result.Table == 0) 
-AllP_marg_n <- nrow(AllP_marg) #n = 206
-AllP_marg_1 <- subset(AllP_marg, Marg.Sig == 1) #only results reported as marginally significant
-AllP_marg_1_n <- nrow(AllP_marg_1) #n = 72
-AllP_marg_0 <- subset(AllP_marg, Marg.Sig == 0) #only results not reported as marginally significant
-AllP_marg_0_n <- nrow(AllP_marg_0) #134
-```
-\
-
-Creating frequency and proportion tables for marginal significance for different categories. 
+Creating tables containing information on marginal significance at the results level. Data for different categories are included.
 ```{r tables on marginal significance at the results level (AllP), warning=FALSE, message = FALSE, echo = TRUE,  results = 'hide'}
 #Total
-AllP_marg_perc <- (AllP_marg_1_n/AllP_marg_n)*100
-AllP_marg_perc <- round(AllP_marg_perc, digits = 1)
 AllP_tot_marg <- as.data.frame(cbind(AllP_marg_n, AllP_marg_0_n, AllP_marg_1_n, AllP_marg_perc))
-names(AllP_tot_marg)[1:4] <- c("Total","No","Yes", "% Yes") #changing column names
+names(AllP_tot_marg)[1:4] <- c("Total", "No", "Yes", "% Yes") #changing column names
 
 #Per journal
 jrnl_AllP_marg_tot <- as.matrix(table(AllP_marg$Journal)) #number of results with p-values in the range (.05-.0) per journal
@@ -866,7 +781,7 @@ jrnl_AllP_marg <- cbind(jrnl_AllP_marg_tot, jrnl_AllP_marg_0, jrnl_AllP_marg_1)
 jrnl_AllP_marg <- as.data.frame(jrnl_AllP_marg)
 jrnl_AllP_marg <- jrnl_AllP_marg %>% 
   mutate(percentage = percent(jrnl_AllP_marg_1/jrnl_AllP_marg_tot, accuracy = 0.1))
-names(jrnl_AllP_marg)[1:4] <- c("Total","No","Yes", "% Yes") #changing column names
+names(jrnl_AllP_marg)[1:4] <- c("Total", "No", "Yes", "% Yes") #changing column names
 
 #Per year
 yr_AllP_marg_tot <- as.matrix(table(AllP_marg$Year)) #number of results with p-values in the range (.05-.0) per journal
@@ -875,7 +790,7 @@ yr_AllP_marg_0 <- as.matrix(table(AllP_marg_0$Year)) #number of results not repo
 yr_AllP_marg <- as.data.frame(cbind(yr_AllP_marg_tot, yr_AllP_marg_0, yr_AllP_marg_1)) #data frame per year
 yr_AllP_marg <- yr_AllP_marg %>% 
   mutate(percentage = percent(yr_AllP_marg_1/yr_AllP_marg_tot, accuracy = 0.1))
-names(yr_AllP_marg)[1:4] <- c("Total","No","Yes", "% Yes") #changing column names
+names(yr_AllP_marg)[1:4] <- c("Total", "No", "Yes", "% Yes") #changing column names
 
 #Per relation to hypothesis
 hyp_AllP_marg_tot <- as.matrix(table(AllP_marg$Result.Hypothesis)) #number of results with p-values in the range (.05-.0) per journal
@@ -885,7 +800,7 @@ hyp_AllP_marg <- cbind(hyp_AllP_marg_tot, hyp_AllP_marg_0, hyp_AllP_marg_1)
 hyp_AllP_marg <- as.data.frame(hyp_AllP_marg)
 hyp_AllP_marg <- hyp_AllP_marg %>% 
   mutate(percentage = percent(hyp_AllP_marg_1/hyp_AllP_marg_tot, accuracy = 0.1))
-names(hyp_AllP_marg)[1:4] <- c("Total","No","Yes", "% Yes") #changing column names
+names(hyp_AllP_marg)[1:4] <- c("Total", "No", "Yes", "% Yes") #changing column names
 
 #Combining data on totals, journals, years, and relation to hypothesis.
 tbl_marg_AllP <- bind_rows(hyp_AllP_marg, jrnl_AllP_marg, yr_AllP_marg) #binding rows journals, years, and relation hypothesis
@@ -896,7 +811,7 @@ rownames(tbl_marg_AllP)[11] <- "Total" #naming the 'total' row
 ```
 \
 
-### *3.4.3 Final tables on marginal significance*
+### *3.3.4 Final tables on marginal significance*
 
 ```{r final tables marginal significance AllP, warning=FALSE, message = FALSE, echo = FALSE}
 #article level
@@ -909,16 +824,16 @@ tbl_marg_AllP_nd %>%
 #results level
 tbl_marg_AllP %>%
   kable(format = "html", align = "c", caption = "<b>Table 9. Frequencies and percentages of results reported as marginally significant<b>") %>% #format html, centered alignment, bold-faced caption
-    pack_rows("Relation to hypothesis", 1, 2) %>% #grouping categories relation hypothesis
-    pack_rows("Journal", 3, 7) %>% #grouping journals
-    pack_rows("Year", 8, 10) %>% #grouping years
-    kable_styling(bootstrap_options = "striped", full_width = F, position = "right") #styling
+  pack_rows("Relation to hypothesis", 1, 2) %>% #grouping categories relation hypothesis
+  pack_rows("Journal", 3, 7) %>% #grouping journals
+  pack_rows("Year", 8, 10) %>% #grouping years
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "right") #styling
 ```
 \
 \
 
-###  *3.4.3 Statistical analysis marginal significance*
-Logistic regression to study the difference in the prevalence of marginally significant results between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses (H4). The prevalence of marginally significant results does not seem to differ significantly for results related to hypotheses and results not related to hypotheses. Thus, we cannot confirm H4, b1 = -0.437, SE = .318, *p* = .170, OR = 1.548, 95% CI [.342, 1.194].
+###  *3.3.5 Statistical analysis marginal significance (H4)*
+Logistic regression to study the difference in the prevalence of marginally significant results between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses. The prevalence of marginally significant results does not seem to differ significantly for results related to hypotheses and results not related to hypotheses. Thus, we cannot confirm H4, b1 = -0.437, SE = .318, *p* = .170, OR = .646, 95% CI [.342, 1.194].
 ```{r testing H4, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 AllP_marg$Marg.Sig <- as.numeric(as.character(AllP_marg$Marg.Sig)) #making 'Marg.Sig' numeric 
 
@@ -926,7 +841,6 @@ AllP_marg$Marg.Sig <- as.numeric(as.character(AllP_marg$Marg.Sig)) #making 'Marg
 marg_sign <- glm(Marg.Sig~Result.Hypothesis, family = binomial(link = 'logit'), data = AllP_marg) 
 summary(marg_sign) #output of the logistic regression
 exp(cbind(coef(marg_sign), confint(marg_sign))) #odds ratios
-1/0.6461538 #inverse of the odds ratio of 'Result.Hypothesis' ≈  1.548
 ```
 \
 \
@@ -936,32 +850,32 @@ exp(cbind(coef(marg_sign), confint(marg_sign))) #odds ratios
 # 4. Data set 'Hyp'
 ## 4.1 Inclusion of articles       
 
-Inclusion process of the articles. The 2014-2016 volumes of *ASR*, *AJS*, and *SQ* contained 322 articles. After our selection procedure, 93 articles were used in our final data set 'Hyp'.
+The 2014-2016 volumes of *ASR*, *AJS*, and *SQ* contained 322 articles. After our selection procedure, 93 articles were used in our final data set 'Hyp'.
 ```{r inclusion of articles, warning=FALSE, message = FALSE, echo = TRUE}
 setwd("..") #setting working directory to 'thesis'
 setwd("./Data") #setting working directory to 'Data'
 
 #Calling the data set with information on all articles.
 Hyp_art <- read_excel("./Hyp & inclusion_Hyp/inclusion_Hyp.xlsx", col_types = c(
-#Article, Author(s), Journal, Year
-"text", "text", "text", "numeric", 
-#Issue, Hypotheses, Req_stat, 
-"numeric", "numeric", "numeric",
-#Selected, Number, Comments
-"numeric", "numeric", "text")) 
+  #Article, Author(s), Journal, Year
+  "text", "text", "text", "numeric", 
+  #Issue, Hypotheses, Req_stat, 
+  "numeric", "numeric", "numeric",
+  #Selected, Number, Comments
+  "numeric", "numeric", "text")) 
 Hyp_art <- subset(Hyp_art, Year > 2013 & Year < 2017) #removing blank rows 
 nrow(Hyp_art) #n = 322
 Hyp_art_journal <- table(Hyp_art$Journal) #all articles split up by journal
 Hyp_art_journal
 
 #Numbers of articles with listed hypotheses
-Hyp_art_hyp1 <- subset(Hyp_art, Hypotheses == 1) #all articles with listed hypotheses
+Hyp_art_hyp1 <- subset(Hyp_art, Hypotheses == 1)
 nrow(Hyp_art_hyp1) #n = 99
 Hyp_art_hyp1_journal <- table(Hyp_art_hyp1$Journal) #articles split by journal
 Hyp_art_hyp1_journal
 
 #Numbers of articles with listed hypotheses and at least one required statistic
-Hyp_art_hyp1_stat <- subset(Hyp_art_hyp1, Req_stat == 1) #all articles with >= 1 required statistic
+Hyp_art_hyp1_stat <- subset(Hyp_art_hyp1, Req_stat == 1) 
 nrow(Hyp_art_hyp1_stat) #n = 91
 Hyp_art_hyp1_stat_journal <- table(Hyp_art_hyp1_stat$Journal) #articles split by journal
 Hyp_art_hyp1_stat_journal
@@ -1048,30 +962,31 @@ grViz("digraph{
 \
 
 ## 4.2  Manual retrieval of results     
+
 Calling 'Hyp'.
 ```{r loading Hyp, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 setwd("..") #setting working directory to 'thesis'
 setwd("./Data") #setting working directory to 'Data'
 
 Hyp <- read_excel("./Hyp & inclusion_Hyp/Hyp.xlsx", col_types = c(
-#Article_numb, Article, Author(s), Journal
-"numeric", "text", "text", "text", 
-#Year, Issue, Number of hypotheses, Belongs to hypothesis
-"numeric", "numeric", "numeric", "text", 
-#Statistic, b, se, r, t_stat
-"text", "numeric", "numeric", "numeric", "numeric",
-#n, IVs, df_1, df_2
-"numeric", "numeric", "numeric", "numeric", 
-#Reported.Comparison, Reported.P.Value, lb_b, ub_b 
-"text", "numeric", "numeric", "numeric",
-#lb_se, ub_se, lb_r, ub_r, lb_stat, ub_stat,
-"numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
-#dec_pval_rep, Computed, P_one_sided_chi, Error
-"numeric", "numeric", "numeric", "numeric", 
-#DecisionError, OneTailed, Marg.sig, Hypothesis
-"numeric", "text", "numeric", "text", 
-#Information from text article used, Comment
-"text", "text"))
+  #Article_numb, Article, Author(s), Journal
+  "numeric", "text", "text", "text", 
+  #Year, Issue, Number of hypotheses, Belongs to hypothesis
+  "numeric", "numeric", "numeric", "text", 
+  #Statistic, b, se, r, t_stat
+  "text", "numeric", "numeric", "numeric", "numeric",
+  #n, IVs, df_1, df_2
+  "numeric", "numeric", "numeric", "numeric", 
+  #Reported.Comparison, Reported.P.Value, lb_b, ub_b 
+  "text", "numeric", "numeric", "numeric",
+  #lb_se, ub_se, lb_r, ub_r, lb_stat, ub_stat,
+  "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
+  #dec_pval_rep, Computed, P_one_sided, Error
+  "numeric", "numeric", "numeric", "numeric", 
+  #DecisionError, OneTailed, Marg.sig, Hypothesis
+  "numeric", "text", "numeric", "text", 
+  #Information from text article used, Comment
+  "text", "text"))
 nrow(Hyp) #n = 4929
 ```
 \
@@ -1115,24 +1030,6 @@ is.numeric(Hyp$Reported.P.Value)
 is.numeric(Hyp$t_stat)
 ```
 \
-Numbers of results in 'Hyp' for each journal.
-```{r retrieved results per journal, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Subset of results from ASR.
-Hyp_ASR <- subset(Hyp, Journal ==  "American Sociological Review")  
-nrow(Hyp_ASR) #2171 results
-(nrow(Hyp_ASR)/nrow(Hyp))*100 #44% of results of 'Hyp' are from ASR
-
-#Subset of results from AJS.
-Hyp_AJS <- subset(Hyp, Journal ==  "American Journal of Sociology")  
-nrow(Hyp_AJS) #1892 results
-(nrow(Hyp_AJS)/nrow(Hyp))*100 #38.4% of results of 'Hyp' are from AJS
-
-#Subset of results from SQ.
-Hyp_SQ <- subset(Hyp, Journal ==  "The Sociological Quarterly")  
-nrow(Hyp_SQ) #866 results
-(nrow(Hyp_SQ)/nrow(Hyp))*100 #17.6% of results of 'Hyp' are from SQ
-```
-\
 
 Creating subsets of data set relevant for recalculation.
 ```{r subsetting based on test statistic, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
@@ -1144,7 +1041,7 @@ nrow(Hyp_i) #n = 612
 Hyp_t <- subset(Hyp_i, Statistic >= 2 & Statistic <= 3) 
 nrow(Hyp_t) #n = 217
 
-#Subset of results which contain regression coefficients and/or t-statistics for which df also reported. This is the final selection of results which contain regression coefficients, t-statistics (or both), since one cannot recalculate p-values of these statistics without knowing the df of the results.
+#Final subset of results with regression coefficients and/or t-statistics. This includes only those results for which df were reported. 
 Hyp_t_df <- subset(Hyp_t, !is.na(df_1))
 nrow(Hyp_t_df) #n = 10
 
@@ -1152,8 +1049,8 @@ nrow(Hyp_t_df) #n = 10
 Hyp_z <- subset(Hyp_i, Statistic >= 4 & Statistic <= 6) 
 nrow(Hyp_z) #n = 262
 
-#Subset of all results with chi2-statistics. This includes two results from Doan, Loehr & Miller (2014) for which the chi2-statistic was reported as '.001'in the 'Hyp' Excel file, but for which the actual reported value was '< .001' (as written down in the original Excel file under 'b'). The p-values assigned to these unequally reported statistics, which are reported as 'ns', can be recalculated despite the chi2-statistic being unequally reported. Since the lower a chi2-statistic is, the less significant it becomes, we could test whether 'ns' is accurate by filling in .001 as the p-value in the cases described above. 
-Hyp_chi <- subset(Hyp_i, Statistic == 7 & !is.na(df_1) & !is.na(t_stat) & !is.na(OneTailed)) 
+#Final subset of results with chi2-statistics, which contains only results for which the df are known. This includes two results from Doan, Loehr & Miller (2014) for which the chi2-statistic was reported as '.001'in the 'Hyp' Excel file, but for which the actual reported value was '< .001' (see 'Hyp' Excel file, column 'b'). The p-values assigned to these unequally reported statistics, which are reported as 'ns', can be recalculated despite the chi2-statistics being unequally reported. Since the lower a chi2-statistic is, the less significant it becomes, we could test whether 'ns' is accurate by filling in .001 as the p-value in the cases described above. 
+Hyp_chi <- subset(Hyp_i, Statistic == 7 & !is.na(df_1) & !is.na(t_stat) & !is.na(OneTailed))
 nrow(Hyp_chi) #n = 64
 
 #Subset of all results with F-statistics.
@@ -1169,11 +1066,21 @@ nrow(Hyp_r) #n = 52
 \
 
 ## 4.3 Statistical reporting errors
+
+### <u> Important note on recalculations, read this first for clarity. </u>
+In this section, *p*-values from 'Hyp' will be recalculated using information on different statistics. The order of statistics recalculated is as follows: *t*,  *r*, *z*, $\chi^2$, and *F*. During recalculation, we ran into two issues:\   
+1. We had cases in which OneSided = 0 (meaning it was unclear whether one-sided or two-sided testing was used) & Computed > 1 under our initial (working) assumption that two-sided testing was used in cases with OneSided = 0. For these results, OneSided = 0 was immediately converted to OneSided = 1. A new *p*-value was determined immediately after, as was the correctness of this new *p*-value.\   
+2. We had cases in which results with OneSided = 0 turned out to be erroneous under two-sided testing, but without leading to Computed > 1. Since Computed > 1 is always incorrect, but results that seemed to be erroneous under two-sided testing with Computed $\le$ 1 did have theoretically possible *p*-values, we decided to recalculate this category of results after doing all of our initial calculations. Thus, after recalculating results for the different statistics (*t*,  *r*, *z*, $\chi^2$, and *F*), these results were assigned OneSided == 1 and recalculated as such. The results following from these recalculations were incorporated into the final results. Thus, if the outcome of one-sided testing was that a result did turn out to be correct, we assumed that was correct, and that authors had just failed to mention one-sided testing in the article in question. If a result was still incorrect after one-sided testing, we assumed a result was definitely incorrect.
+
+
 ### *4.3.1 Recalculating p-values based on t-values*
+
+*No (decision) errors were found among reported p-values based on t-values, see below.*
+\
 
 Creating relevant subsets and recalculating *p*-values for results with *t*-values.
 ```{r recalculating p-values with '<' based on t-statistics, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-nrow_Hyp_t_df <- nrow(Hyp_t_df) #object for the number of columns 
+nrow_Hyp_t_df <- nrow(Hyp_t_df) #object number of columns 
 
 #Determining whether a p-value is one-sided or two-sided.
 for (i in 1:nrow_Hyp_t_df){
@@ -1186,14 +1093,15 @@ nrow(Hyp_t_sml) #n = 3
 
 #Error if Reported.P.Value >= Computed.
 Hyp_t_sml <- Hyp_t_sml %>% mutate(Error = ifelse(Reported.P.Value >= Computed, 0, 1)) 
-mean(as.numeric(Hyp_t_sml$Error)) #n = 0
 #DecisionError if Reported.P.Value <= .05 and Computed > .05.
 Hyp_t_sml <- Hyp_t_sml %>% mutate(DecisionError = ifelse(Reported.P.Value <= .05 & Computed > .05, 1, 0)) 
-mean(as.numeric(Hyp_t_sml$DecisionError)) #n = 0
+#Numbers of (decision) errors.
+sum(as.numeric(Hyp_t_sml$Error)) #n = 0
+sum(as.numeric(Hyp_t_sml$DecisionError)) #n = 0
 ```
 \
 
-Function that calculates numbers of decimal places. In our case, this function will be used on exactly reported *p*-values, such that we can obtain rounded *p*-values which indicate the lowest and highest *p*-values that would be acceptable when taking potential rounding errors into account. Note that this function rounds off to the smallest non-zero value of the reported *p*-value. E.g., *p* = 0.0000 will have 0 decimals, and *p* = .0010 will have 3 decimals.
+Function that calculates the numbers of decimal places (credits to daroczig and owen88, see https://stackoverflow.com/questions/5173692/how-to-return-number-of-decimal-places-in-r). In our case, this function will be used on exactly reported *p*-values, such that we can obtain rounded *p*-values which indicate the lowest and highest reported *p*-values that would be acceptable when taking potential rounding errors into account. Note that this function rounds off to the smallest non-zero value of the reported *p*-value. E.g., *p* = 0.0000 will have 0 decimals, and *p* = .0010 will have 3 decimals.
 ```{r function to calculate decimals, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 decimalplaces <- function(x) {
   if (abs(x - round(x)) > .Machine$double.eps^0.5) {
@@ -1205,12 +1113,11 @@ decimalplaces <- function(x) {
 ```
 \
 
-Determining whether there are (decision) errors among results which have exactly reported *p*-values for which regression coefficients and standard errors were not reported, but *t*-statistics were reported. 
+Determining whether there are (decision) errors among results with exactly reported *p*-values for which regression coefficients and standard errors were not reported, but *t*-statistics were reported. 
 ```{r assigning (decision) errors for exactly reported p-values based on t-statistics, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Subset results with exactly reported p-values.
-Hyp_eq_t <- subset(Hyp_t_df, Reported.Comparison == 4) 
+Hyp_eq_t <- subset(Hyp_t_df, Reported.Comparison == 4) #subset results with exactly reported p-values
 nrow(Hyp_eq_t) #n = 7
-nrow_Hyp_eq_t <- nrow(Hyp_eq_t) #object for the number of columns 
+nrow_Hyp_eq_t <- nrow(Hyp_eq_t) #object number of columns 
 
 #Calculating the p-values that correspond with the computed lower and upper bounds for the t-values.
 for (i in 1:nrow_Hyp_eq_t){
@@ -1232,22 +1139,28 @@ Hyp_eq_t <- Hyp_eq_t %>% mutate(Comp_above = ifelse(Reported.P.Value > Comp_ub_r
 Hyp_eq_t <- Hyp_eq_t %>% mutate(Error = ifelse(Comp_below == 0 & Comp_above == 0, 0, 1)) 
 #DecisionError if Reported.P.Value <= .05 and Computed > .05, or vice versa.
 Hyp_eq_t <- Hyp_eq_t %>% mutate(DecisionError = ifelse((Reported.P.Value <= 0.05 & Computed > 0.05)|(Reported.P.Value > 0.05 & Computed <= 0.05), 1, 0)) 
+#Numbers of (decision) errors.
+sum(as.numeric(Hyp_eq_t$Error)) #0
+sum(as.numeric(Hyp_eq_t$DecisionError)) #0
 ```
 \
 \
 
 ### *4.3.2 Recalculating p-values based on r-values*
 
-Creating relevant subsets and recalculating *p*-values for results with *r*-values and *df*. For this purpose, *t*-values first have to be calculated, which can then be used in the pt() formula to calculate the *p*-values corresponding to bivariate correlations.
+*No (decision) errors were found among reported p-values based on r-values, see below.*
+\
+
+Creating relevant subsets and recalculating *p*-values for results with *r*-values and *df*. For this purpose, *t*-values first have to be calculated. These can then be used in the pt() formula to calculate *p*-values corresponding to bivariate correlations.
 ```{r recalculating p-values with '<' based on r-statistics, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-nrow_Hyp_r <- nrow(Hyp_r) #object for the number of columns 
+nrow_Hyp_r <- nrow(Hyp_r) #object number of columns 
 
 #Recalculating two-sided p-values.
 for (i in 1:nrow_Hyp_r){
   {Hyp_r$t_stat[i] <- (Hyp_r$r[i] * sqrt(Hyp_r$df_1[i])) / sqrt(1-Hyp_r$r[i]^2)
-   Hyp_r$Computed[i] <- (2*pt(-abs(Hyp_r$t_stat[i]), Hyp_r$df_1[i]))
-   Hyp_r$lb_stat[i] <- (Hyp_r$lb_r[i] * sqrt(Hyp_r$df_1[i])) / sqrt(1-Hyp_r$lb_r[i]^2)
-   Hyp_r$ub_stat[i] <- (Hyp_r$ub_r[i] * sqrt(Hyp_r$df_1[i])) / sqrt(1-Hyp_r$ub_r[i]^2)}}
+  Hyp_r$Computed[i] <- (2*pt(-abs(Hyp_r$t_stat[i]), Hyp_r$df_1[i]))
+  Hyp_r$lb_stat[i] <- (Hyp_r$lb_r[i] * sqrt(Hyp_r$df_1[i])) / sqrt(1-Hyp_r$lb_r[i]^2)
+  Hyp_r$ub_stat[i] <- (Hyp_r$ub_r[i] * sqrt(Hyp_r$df_1[i])) / sqrt(1-Hyp_r$ub_r[i]^2)}}
 options(scipen = 999)
 
 #Subset of results with Reported.Comparison '<'.
@@ -1256,33 +1169,35 @@ nrow(Hyp_r_sml) #n = 32
 
 #Error if Reported.P.Value >= Computed.
 Hyp_r_sml <- Hyp_r_sml %>% mutate(Error = ifelse(Reported.P.Value >= Computed, 0, 1)) 
-mean(as.numeric(Hyp_r_sml$Error)) #n = 0
 #DecisionError if Reported.P.Value <= .05 and Computed > .05.
 Hyp_r_sml <- Hyp_r_sml %>% mutate(DecisionError = ifelse(Reported.P.Value <= .05 & Computed > .05, 1, 0)) 
-mean(as.numeric(Hyp_r_sml$DecisionError)) #n = 0
+#Numbers of (decision) errors.
+sum(as.numeric(Hyp_r_sml$Error)) #n = 0
+sum(as.numeric(Hyp_r_sml$DecisionError)) #n = 0
 ```
+\
+
 Determining whether there are (decision) errors among results which have *p*-values reported as non-significant.
 ```{r assigning (decision) errors for nonsignificant results based on r-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Non-significant results
 Hyp_r_ns <- subset(Hyp_r, Reported.Comparison == 3) #subset results reported as non-significant
 nrow(Hyp_r_ns) #n = 16
 
-#Since a (decision) error can only occur if a result that was reported as non-significant is significant, a value of 1 is assigned if the Computed <= .05, and a value of 0 is assigned if Computed > .05.
+#Since a (decision) error occurs if a result that was reported as non-significant is significant, a "1" is assigned if Computed <= .05, and a "0" is assigned if Computed > .05.
 Hyp_r_ns$Error[which(Hyp_r_ns$Computed > 0.05)] <- "0"
 Hyp_r_ns$DecisionError[which(Hyp_r_ns$Computed > 0.05)] <- "0"
 Hyp_r_ns$Error[which(Hyp_r_ns$Computed <= 0.05)] <- "1"
 Hyp_r_ns$DecisionError[which(Hyp_r_ns$Computed <= 0.05)] <- "1"
+#Numbers of (decision) errors.
 mean(as.numeric(Hyp_r_ns$Error)) #n = 0
 mean(as.numeric(Hyp_r_ns$DecisionError)) #n = 0
 ```
 \
 
-Determining whether there are (decision) errors among results which have exactly reported *p*-values which belong to *r*-statistics. 
+Determining whether there are (decision) errors among results which have exactly reported *p*-values. 
 ```{r assigning (decision) errors for exactly reported p-values based on r-statistics, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Subset results with exactly reported p-values.
-Hyp_eq_r <- subset(Hyp_r, Reported.Comparison == 4) 
+Hyp_eq_r <- subset(Hyp_r, Reported.Comparison == 4) #subset results with exactly reported p-values
 nrow(Hyp_eq_r) #n = 4
-nrow_Hyp_eq_r <- nrow(Hyp_eq_r) #object for the number of columns 
+nrow_Hyp_eq_r <- nrow(Hyp_eq_r) #object number of columns 
 
 #Calculating the p-values that correspond with the computed lower and upper bounds for the r-values.
 for (i in 1:nrow_Hyp_eq_r){
@@ -1304,14 +1219,19 @@ Hyp_eq_r <- Hyp_eq_r %>% mutate(Comp_above = ifelse(Reported.P.Value > Comp_ub_r
 Hyp_eq_r <- Hyp_eq_r %>% mutate(Error = ifelse(Comp_below == 0 & Comp_above == 0, 0, 1)) 
 #DecisionError if Reported.P.Value <= .05 and Computed > .05, or vice versa.
 Hyp_eq_r <- Hyp_eq_r %>% mutate(DecisionError = ifelse((Reported.P.Value <= 0.05 & Computed > 0.05)|(Reported.P.Value > 0.05 & Computed <= 0.05), 1, 0)) 
+#Numbers of (decision) errors.
+sum(as.numeric(Hyp_eq_r$Error)) #0
+sum(as.numeric(Hyp_eq_r$DecisionError)) #0
 ```
 \
 \
 
-### *4.3.2 Recalculating p-values based on z-values* 
+### *4.3.3 Recalculating p-values based on z-values* 
+
+*Among reported p-values based on z-values, 12 (decision) errors were found, see below.*
+
 Creating relevant subsets and recalculating *p*-values for results with *z*-values.
 ```{r recalculating p-values based on z-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Hyp_z$t_stat <- as.numeric(as.character(Hyp_z$t_stat))  #new column with numeric z-values 
 Hyp_z$OneTailed <- as.numeric(as.character(Hyp_z$OneTailed)) #column with 'OneTailed' as a numeric variable
 Hyp_z$t_stat_abs <- abs(Hyp_z$t_stat) #column containing absolute z-values
 nrow_Hyp_z <- nrow(Hyp_z) #object with the number of columns of the above-mentioned subset
@@ -1326,32 +1246,33 @@ for (i in 1:nrow_Hyp_z){
 
 Determining whether there are (decision) errors among results which have *p*-values reported as non-significant.
 ```{r assigning (decision) errors for nonsignificant results based on z-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Non-significant results
 Hyp_z_ns <- subset(Hyp_z, Reported.Comparison == 3) #subset results reported as non-significant
 nrow(Hyp_z_ns) #n = 91
 
-#Since a (decision) error can only occur if a result that was reported as non-significant is significant, a value of 1 is assigned if the Computed <= .05, and a value of 0 is assigned if Computed > .05.
+#Since a (decision) error occurs if a result that was reported as non-significant is significant, a "1" is assigned if Computed <= .05, and a "0" is assigned if Computed > .05.
 Hyp_z_ns$Error[which(Hyp_z_ns$Computed > 0.05)] <- "0"
 Hyp_z_ns$DecisionError[which(Hyp_z_ns$Computed > 0.05)] <- "0"
 Hyp_z_ns$Error[which(Hyp_z_ns$Computed <= 0.05)] <- "1"
 Hyp_z_ns$DecisionError[which(Hyp_z_ns$Computed <= 0.05)] <- "1"
-mean(as.numeric(Hyp_z_ns$Error)) #n = 0
-mean(as.numeric(Hyp_z_ns$DecisionError)) #n = 0
+#Numbers of (decision) errors.
+sum(as.numeric(Hyp_z_ns$Error)) #0
+sum(as.numeric(Hyp_z_ns$DecisionError)) #0
 ```
 \
 
 Determining whether there are (decision) errors among results which have inexactly reported *p*-values.
 ```{r assigning (decision) errors for < p-values based on z-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 Hyp_z_uneq <- subset(Hyp_z, Reported.Comparison == 1) #subset results with reported comparison '<'
-nrow_Hyp_z_uneq <- nrow(Hyp_z_uneq) #object that represents the number of columns of the subset
+nrow_Hyp_z_uneq <- nrow(Hyp_z_uneq) #object with number of columns subset
 nrow(Hyp_z_uneq) #n = 147
 
 #Error if Reported.P.Value >= Computed.
 Hyp_z_uneq <- Hyp_z_uneq %>% mutate(Error = ifelse(Reported.P.Value >= Computed, 0, 1)) 
-mean(as.numeric(Hyp_z_uneq$Error)) ##0.06802721
 #DecisionError if Reported.P.Value <= .05 and Computed > .05.
 Hyp_z_uneq <- Hyp_z_uneq %>% mutate(DecisionError = ifelse(Reported.P.Value <= .05 & Computed > .05, 1, 0)) 
-mean(as.numeric(Hyp_z_uneq$DecisionError)) #0.006802721
+#Numbers of (decision) errors.
+sum(as.numeric(Hyp_z_uneq$Error)) #10, both OneSided == 0 and OneSided == 2
+sum(as.numeric(Hyp_z_uneq$DecisionError)) #1
 ```
 \
 
@@ -1365,7 +1286,7 @@ nrow_Hyp_z_eq <- nrow(Hyp_z_eq)
 Hyp_z_eq$lb_stat_abs <- abs(Hyp_z_eq$lb_stat)
 Hyp_z_eq$ub_stat_abs <- abs(Hyp_z_eq$ub_stat)
 
-#Calculating p-values belonging to the lower and upper bounds of acceptable z-values. We performed a one-sided test on a z-statistic if a one-tailed test was done, and a two-sided test on a z-statistic if a two-tailed test was done or if it is unknown whether one-tailed or two-tailed testing was done.
+#Calculating p-values belonging to the lower and upper bounds of acceptable z-values. We performed a one-sided test on a z-statistic if a one-tailed test was done, and a two-sided test if a two-tailed test was done or if sidedness of the test was unknown.
 for (i in 1:nrow_Hyp_z_eq){
   if (Hyp_z_eq$OneTailed[i] == 1) {Hyp_z_eq$Comp_lb[i] <- (1 - pnorm(Hyp_z_eq$lb_stat_abs[i]))} else {Hyp_z_eq$Comp_lb[i] <- (2*(1 - pnorm(Hyp_z_eq$lb_stat_abs[i])))
   Hyp_z_eq$dec_pval_rep[i] <- decimalplaces(Hyp_z_eq$Reported.P.Value[i])}}
@@ -1385,20 +1306,26 @@ Hyp_z_eq <- Hyp_z_eq %>% mutate(Comp_above = ifelse(Reported.P.Value > Comp_ub_r
 #Error if Reported.P.Value is not different from Computed due to correct rounding.
 Hyp_z_eq <- Hyp_z_eq %>% mutate(Error = ifelse(Comp_above == 0 & Comp_below == 0, 0, 1)) 
 #DecisionError if Reported.P.Value <= .05 and Computed > .05, or vice versa.
-Hyp_z_eq <- Hyp_z_eq %>% mutate(DecisionError = ifelse((Reported.P.Value <= 0.05 & Computed > 0.05)|(Reported.P.Value > 0.05 & Computed <= 0.05), 1, 0)) 
+Hyp_z_eq <- Hyp_z_eq %>% mutate(DecisionError = ifelse((Reported.P.Value <= 0.05 & Computed > 0.05)|(Reported.P.Value > 0.05 & Computed <= 0.05), 1, 0))
+#Numbers of (decision) errors.
+sum(as.numeric(Hyp_z_eq$Error)) #2, concern results for which OneSided == 0
+sum(as.numeric(Hyp_z_eq$DecisionError)) #0
 ```
 \
 \
 
-### *4.3.3 Recalculating p-values based on $\chi^2$-values* 
+### *4.3.4 Recalculating p-values based on $\chi^2$-values* 
+
+*Among reported p-values based on $\chi^2$-values, 9 (decision) errors were found, see below.*
+
 Creating relevant subsets and recalculating *p*-values for results with $\chi^2$-values.
 ```{r recalculating p-values based on chi^2-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-Hyp_chi$OneTailed <- as.numeric(as.character(Hyp_chi$OneTailed)) #column with information on whether tests are one-tailed or two-tailed of the type 'numeric'
+Hyp_chi$OneTailed <- as.numeric(as.character(Hyp_chi$OneTailed)) #column with information on sidedness tests, type 'numeric'
 Hyp_chi$t_stat_abs <- abs(Hyp_chi$t_stat) #column containing absolute chi^2-values
-nrow_Hyp_chi <- nrow(Hyp_chi) #object with the number of columns of the above-mentioned subset
+nrow_Hyp_chi <- nrow(Hyp_chi) #object with number of columns above-mentioned subset
 nrow(Hyp_chi) #n = 64
 
-#Performing a one-sided test if a one-tailed test was done, and a two-sided test if a two-tailed test was done or if it is unknown whether one-tailed or two-tailed testing was done.
+#Performing a one-sided test if a one-tailed test was done, and a two-sided test if a two-tailed test was done or if sidedness of the test was unknown
 for (i in 1:nrow_Hyp_chi){
   if (Hyp_chi$OneTailed[i] == 1) {Hyp_chi$Computed[i] <- (1 - pchisq(Hyp_chi$t_stat_abs[i], Hyp_chi$df_1[i]))} else {Hyp_chi$Computed[i] <- (2*(1 - pchisq(Hyp_chi$t_stat_abs[i], Hyp_chi$df_1[i])))}
 }
@@ -1406,12 +1333,12 @@ for (i in 1:nrow_Hyp_chi){
 \
 
 
-For results of which the sidedness was unknown, two-sided testing was initially used. There were some results for which this resulted in recalculated *p* > 1. We applied one-sided testing to these results, to see if their *p*-values actually seemed correct under one-sided testing.
-```{r changing sidedness of certain results, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
+For results of which the sidedness was unknown, two-sided testing was initially done. There were some results for which this resulted in recalculated *p* > 1. We applied one-sided testing to these results, to see if their *p*-values actually seemed correct under one-sided testing.
+```{r changing sidedness of results chi^2, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 #Changing one tailed results into two-tailed results when Computed > 1.
 Hyp_chi$OneTailed[which(Hyp_chi$OneTailed== 0 &  Hyp_chi$Computed > 1)] <- "1" 
 
-#Recalculating p-values for results of which the sidedness has changed.
+#Recalculating result for which Computed > 1. 
 for (i in 1:nrow_Hyp_chi){
   if (Hyp_chi$OneTailed[i] == 1) {Hyp_chi$Computed[i] <- (1 - pchisq(Hyp_chi$t_stat_abs[i], df = Hyp_chi$df_1[i]))} else {Hyp_chi$Computed[i] <- (2*(1 - pchisq(Hyp_chi$t_stat_abs[i], df = Hyp_chi$df_1[i])))}}
 ```
@@ -1423,21 +1350,21 @@ Determining whether there are (decision) errors among results which have *p*-val
 Hyp_chi_ns <- subset(Hyp_chi, Reported.Comparison == 3) 
 nrow(Hyp_chi_ns) #n = 36
 
-#Since a (decision) error can only occur if a result that was reported as non-significant is significant, a value of 1 is assigned if Computed <= .05, and a value of 0 is assigned if Computed > .05.
+#Since a (decision) error occurs if a result that was reported as non-significant is significant, a "1" is assigned if Computed <= .05, and a "0" is assigned if Computed > .05.
 Hyp_chi_ns$Error[which(Hyp_chi_ns$Computed > 0.05)] <- "0"
 Hyp_chi_ns$DecisionError[which(Hyp_chi_ns$Computed > 0.05)] <- "0"
 Hyp_chi_ns$Error[which(Hyp_chi_ns$Computed <= 0.05)] <- "1"
 Hyp_chi_ns$DecisionError[which(Hyp_chi_ns$Computed <= 0.05)] <- "1"
-mean(as.numeric(Hyp_chi_ns$Error)) #n = 0
-mean(as.numeric(Hyp_chi_ns$DecisionError)) #n = 0
+#Numbers of (decision) errors.
+sum(as.numeric(Hyp_chi_ns$Error)) #n = 0
+sum(as.numeric(Hyp_chi_ns$DecisionError)) #n = 0
 ```
 \
 
 Determining whether there are (decision) errors among results which have reported *p*-values smaller than a certain value.
 ```{r assigning (decision) errors for < reported p-values based on chi^2-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Subset of results with Reported.Comparison '<'.
-Hyp_chi_sml <- subset(Hyp_chi, Reported.Comparison == 1) 
-nrow_Hyp_chi_sml <- nrow(Hyp_chi_sml) #numeric object for the subset's number of columns 
+Hyp_chi_sml <- subset(Hyp_chi, Reported.Comparison == 1) #subset of results with Reported.Comparison '<'
+nrow_Hyp_chi_sml <- nrow(Hyp_chi_sml) #numeric object for subset's number of columns 
 nrow(Hyp_chi_sml) #n = 25
 
 #Calculating rounded p-values.
@@ -1447,19 +1374,19 @@ for (i in 1:nrow_Hyp_chi_sml){
 
 #Error if Reported.P.Value >= Computed.
 Hyp_chi_sml <- Hyp_chi_sml %>% mutate(Error = ifelse(Reported.P.Value >= Computed, 0, 1))
-mean(as.numeric(Hyp_chi_sml$Error)) #0.32
 #DecisionError if Reported.P.Value <= .05 and Computed > .05 
 Hyp_chi_sml <- Hyp_chi_sml %>% mutate(DecisionError = ifelse(Reported.P.Value <= .05 & Computed > .05, 1, 0)) 
-mean(as.numeric(Hyp_chi_sml$DecisionError)) #0.08
+#Numbers of (decision) errors.
+sum(as.numeric(Hyp_chi_sml$Error)) #8, both OneSided == 0 and OneSided == 2
+sum(as.numeric(Hyp_chi_sml$DecisionError)) #2
 ```
 \
 
 Determining whether there are (decision) errors among results which have exactly reported *p*-values.
 ```{r assigning (decision) errors for exactly reported p-values based on chi^2-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Subset results with exactly reported p-values.
-Hyp_chi_eq <- subset(Hyp_chi, Reported.Comparison == 4)
+Hyp_chi_eq <- subset(Hyp_chi, Reported.Comparison == 4) #subset results with exactly reported p-values
 nrow(Hyp_chi_eq) #n = 1
-nrow_Hyp_chi_eq = nrow(Hyp_chi_eq) #numeric object for the subset's number of columns 
+nrow_Hyp_chi_eq = nrow(Hyp_chi_eq) #numeric object for subset's number of columns 
 options(scipen=999)
 
 #Creating columns with absolute chi2-values for the lower and upper bounds of acceptable chi2-values.
@@ -1481,17 +1408,17 @@ Hyp_chi_eq <- Hyp_chi_eq %>% mutate(Comp_above = ifelse(Reported.P.Value > Comp_
 #Error if Reported.P.Value is not different from Computed due to correct rounding.
 Hyp_chi_eq <- Hyp_chi_eq %>% mutate(Error = ifelse(Comp_above == 0 & Comp_below == 0, 0, 1)) 
 #DecisionError if Reported.P.Value <= .05 and Computed > .05, or vice versa.
-Hyp_chi_eq <- Hyp_chi_eq %>% mutate(DecisionError = ifelse((Reported.P.Value <= 0.05 & Computed > 0.05)|(Reported.P.Value > 0.05 & Computed <= 0.05), 1, 0)) 
-mean(as.numeric(Hyp_chi_eq$Error)) #1
-mean(as.numeric(Hyp_chi_eq$DecisionError)) #1
+Hyp_chi_eq <- Hyp_chi_eq %>% mutate(DecisionError = ifelse((Reported.P.Value <= 0.05 & Computed > 0.05)|(Reported.P.Value > 0.05 & Computed <= 0.05), 1, 0))
+#Numbers of (decision) errors.
+sum(as.numeric(Hyp_chi_eq$Error)) #1, concerns a result for which OneSided == 0
+sum(as.numeric(Hyp_chi_eq$DecisionError)) #1
 ```
 \
 
 Determining whether there are (decision) errors among results which have reported *p*-values larger than a certain value.
 ```{r assigning (decision) errors > reported p-values based on chi^2-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Subset of results with reported comparison '<'.
-Hyp_chi_lrg <- subset(Hyp_chi, Reported.Comparison == 5) 
-nrow_Hyp_chi_lrg <- nrow(Hyp_chi_lrg) #numeric object for the number of columns of the subset
+Hyp_chi_lrg <- subset(Hyp_chi, Reported.Comparison == 5) #subset of results with reported comparison '<'
+nrow_Hyp_chi_lrg <- nrow(Hyp_chi_lrg) #numeric object for number of columns of subset
 nrow(Hyp_chi_lrg) #n = 2
 
 #Error if Reported.P.Value > Computed.
@@ -1501,20 +1428,24 @@ for (i in 1:nrow_Hyp_chi_lrg){
 
 #Error if Reported.P.Value >= Computed.
 Hyp_chi_lrg <- Hyp_chi_lrg %>% mutate(Error = ifelse(Reported.P.Value >= Computed, 1, 0))
-mean(as.numeric(Hyp_chi_lrg$Error)) #0
 #DecisionError if Reported.P.Value > .05 and Computed <= .05.
 Hyp_chi_lrg <- Hyp_chi_lrg %>% mutate(DecisionError = ifelse(Reported.P.Value >= .05 & Computed <= .05, 1, 0)) 
-mean(as.numeric(Hyp_chi_lrg$DecisionError)) #0
+#Numbers of (decision) errors.
+sum(as.numeric(Hyp_chi_lrg$Error)) #0
+sum(as.numeric(Hyp_chi_lrg$DecisionError)) #0
 ```
 \
 \
 
-### *4.3.4 Recalculating p-values based on F-values* 
+### *4.3.5 Recalculating p-values based on F-values*
+
+*Among reported p-values based on F-values, 11 (decision) errors were found, see below.*
+
 Creating relevant subsets and recalculating *p*-values for results with *F*-values.
 ```{r  recalculating p-values based on F-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 Hyp_f$OneTailed <- as.numeric(as.character(Hyp_f$OneTailed)) #column with 'OneTailed' as a numeric variable
 Hyp_f$t_stat_abs <- abs(Hyp_f$t_stat) #column containing absolute F-values
-nrow_Hyp_f <- nrow(Hyp_f) #object with the number of columns of the above-mentioned subset
+nrow_Hyp_f <- nrow(Hyp_f) #object number of columns above-mentioned subset
 nrow(Hyp_f) #n = 16
 
 #Performing a one-sided test if a one-tailed test was done, and a two-sided test if a two-tailed test was done or if it is unknown whether one-tailed or two-tailed testing was done.
@@ -1522,32 +1453,41 @@ for (i in 1:nrow_Hyp_f){
   if (Hyp_f$OneTailed[i] == 1) {Hyp_f$Computed[i] <- (1 - pf(Hyp_f$t_stat[i], Hyp_f$df_1[i], Hyp_f$df_2[i]))} else {Hyp_f$Computed[i] <- (2*(1 - pf(Hyp_f$t_stat[i], Hyp_f$df_1[i], Hyp_f$df_2[i])))}
   Hyp_f$dec_pval_rep[i] <- decimalplaces(Hyp_f$Reported.P.Value[i])
   Hyp_f$Computed <- as.numeric(Hyp_f$Computed)
-  }
- 
- 
+}
+```
+\ 
+
+For results of which the sidedness was unknown, two-sided testing was initially used. There was one result for which this lead to recalculated *p* > 1. We applied one-sided testing to this result to see if its *p*-value seemed correct under one-sided testing. 
+```{r changing sidedness of certain results, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
+#Changing results to one-tailed when Computed > 1.
+Hyp_f$OneTailed[which(Hyp_f$OneTailed== 0 &  Hyp_f$Computed > 1)] <- "1" 
+
+#Recalculating result for which Computed > 1. 
+for (i in 1:nrow_Hyp_f){
+  if (Hyp_f$OneTailed[i] == 1) {Hyp_f$Computed[i] <- (1 - pf(Hyp_f$t_stat[i], Hyp_f$df_1[i], Hyp_f$df_2[i]))} else {Hyp_f$Computed[i] <- (2*(1 - pf(Hyp_f$t_stat[i], Hyp_f$df_1[i], Hyp_f$df_2[i])))}}
 ```
 \
 
 Determining whether there are (decision) errors among results which have reported *p*-values smaller than a certain value.
 ```{r assigning (decision) errors for < reported p-values based on F-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Subset of results with Reported.Comparison '<'.
-Hyp_f_uneq <- subset(Hyp_f, Reported.Comparison == 1) 
-nrow_Hyp_f_uneq <- nrow(Hyp_f_uneq) #numeric object for the number of columns of the subset
+Hyp_f_uneq <- subset(Hyp_f, Reported.Comparison == 1) #subset of results with Reported.Comparison '<'
+nrow_Hyp_f_uneq <- nrow(Hyp_f_uneq) #numeric object for number of columns of subset
 nrow(Hyp_f_uneq) #n = 3
 
 #Error if Reported.P.Value > Computed.
 Hyp_f_uneq <- Hyp_f_uneq %>% mutate(Error = ifelse(Reported.P.Value >= Computed, 0, 1))
-mean(as.numeric(Hyp_f_uneq$Error)) #0
 #DecisionError if Reported.P.Value <= .05 and Computed > .05.
 Hyp_f_uneq <- Hyp_f_uneq %>% mutate(DecisionError = ifelse(Reported.P.Value <= .05 & Computed > .05, 1, 0)) 
-mean(as.numeric(Hyp_f_uneq$DecisionError)) #0
+#Numbers of (decision) errors.
+sum(as.numeric(Hyp_f_uneq$Error)) #0
+sum(as.numeric(Hyp_f_uneq$DecisionError)) #0
 ```
 \
 
 Determining whether there are (decision) errors among results which have exactly reported *p*-values.
 ```{r assigning (decision) errors for exactly reported p-values based on F-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 Hyp_f_eq <- subset(Hyp_f, Reported.Comparison == 4) #data set containing exactly reported p-values 
-nrow_Hyp_f_eq = nrow(Hyp_f_eq) #numeric object for the number of columns 
+nrow_Hyp_f_eq = nrow(Hyp_f_eq) #numeric object number of columns 
 options(scipen=999)
 
 #Creating columns with absolute lower and upper bounds of acceptable F-values.
@@ -1557,8 +1497,9 @@ Hyp_f_eq$ub_stat_abs <- abs(Hyp_f_eq$ub_stat)
 #Calculating decimal places of reported p-values and (un)rounded upper and lower boundaries for correct rounding.
 for (i in 1:nrow_Hyp_f_eq){
   Hyp_f_eq$dec_pval_rep[i] <- decimalplaces(Hyp_f_eq$Reported.P.Value[i])
-  Hyp_f_eq$Comp_ub[i] <-  (1 - pf(Hyp_f_eq$ub_stat_abs[i], Hyp_f_eq$df_1[i], Hyp_f_eq$df_2[i]))
-  Hyp_f_eq$Comp_lb[i] <-  (1 - pf(Hyp_f_eq$lb_stat_abs[i], Hyp_f_eq$df_1[i], Hyp_f_eq$df_2[i]))
+    if (Hyp_f_eq$OneTailed[i] == 1) {Hyp_f_eq$Comp_ub[i] <- (1 - pf(Hyp_f_eq$ub_stat_abs[i], Hyp_f_eq$df_1[i], Hyp_f_eq$df_2[i]))} else {Hyp_f_eq$Comp_ub[i] <- (2*(1 - pf(Hyp_f_eq$ub_stat_abs[i], Hyp_f_eq$df_1[i], Hyp_f_eq$df_2[i])))}
+    if (Hyp_f_eq$OneTailed[i] == 1) {Hyp_f_eq$Comp_lb[i] <- (1 - pf(Hyp_f_eq$lb_stat_abs[i], Hyp_f_eq$df_1[i], Hyp_f_eq$df_2[i]))} else {Hyp_f_eq$Comp_lb[i] <- (2*(1 - pf(Hyp_f_eq$lb_stat_abs[i], Hyp_f_eq$df_1[i],  Hyp_f_eq$df_2[i])))}
+
   Hyp_f_eq$Comp_lb_r[i] <- round(Hyp_f_eq$Comp_lb[i], digits = Hyp_f_eq$dec_pval_rep[i])
   Hyp_f_eq$Comp_ub_r[i] <- round(Hyp_f_eq$Comp_ub[i], digits = Hyp_f_eq$dec_pval_rep[i])}
 
@@ -1570,23 +1511,23 @@ Hyp_f_eq <- Hyp_f_eq %>% mutate(Comp_above = ifelse(Reported.P.Value > Comp_ub_r
 Hyp_f_eq <- Hyp_f_eq %>% mutate(Error = ifelse(Comp_above == 0 & Comp_below == 0, 0, 1)) 
 #DecisionError if Reported.P.Value <= .05 and Computed > .05, or vice versa.
 Hyp_f_eq <- Hyp_f_eq %>% mutate(DecisionError = ifelse((Reported.P.Value <= 0.05 & Computed > 0.05)|(Reported.P.Value > 0.05 & Computed <= 0.05), 1, 0)) 
-mean(as.numeric(Hyp_f_eq$Error)) #0.077
-mean(as.numeric(Hyp_f_eq$DecisionError)) #0
+#Numbers of (decision) errors.
+sum(as.numeric(Hyp_f_eq$Error)) #11, concerns results for which OneSided == 0
+sum(as.numeric(Hyp_f_eq$DecisionError)) #2 
 ```
 \
 \
 
-### *4.3.5 Merging data sets* 
+### *4.3.6 Merging data sets* 
 Merging the data sets containing results with reported *t*-values.
 ```{r merging data sets of results with t-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 #Merging data sets with results that have reported comparisons '=' and '<'.
 Hyp_t_mrgd <- merge(Hyp_eq_t, Hyp_t_sml, all = TRUE) #merging 
 nrow(as.data.frame(Hyp_t_mrgd)) #n = 10
-#nrow(Hyp_eq_t)+nrow(Hyp_t_sml) #n = 10
-mean(as.numeric(Hyp_t_mrgd$Error)) #0
-mean(as.numeric(Hyp_t_mrgd$DecisionError)) #0
 ```
-Merging the data sets containing results with reported *r*-values.
+\
+
+Merging data sets containing results with reported *r*-values.
 ```{r merging data sets of results with r-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 #Merging data sets with results that have reported comparisons 'ns' and '<'.
 Hyp_r_sml_ns <- merge(Hyp_r_sml, Hyp_r_ns, all = TRUE) #merging 
@@ -1594,42 +1535,34 @@ Hyp_r_sml_ns <- merge(Hyp_r_sml, Hyp_r_ns, all = TRUE) #merging
 #Merging data set with results that have reported comparisons 'ns' and '<' with data set with exactly reported results.
 Hyp_r_mrgd <- merge(Hyp_r_sml_ns, Hyp_eq_r, all = TRUE) #merging 
 nrow(as.data.frame(Hyp_r_mrgd)) #n = 52
-mean(as.numeric(Hyp_r_mrgd$Error)) #0
-mean(as.numeric(Hyp_r_mrgd$DecisionError)) #0
 ```
 \
 
-Merging the data sets containing results with reported *z*-values.
+Merging data sets containing results with reported *z*-values.
 ```{r merging data sets of results with z-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 #Merging data sets with results that have reported comparison 'ns' and inexactly reported p-values.
 Hyp_z_ns_uneq <- rbind.data.frame(Hyp_z_ns, Hyp_z_uneq) #merging 
-nrow(Hyp_z_ns_uneq) #n = 238
-nrow(Hyp_z_ns)+nrow(Hyp_z_uneq) #n = 238
-mean(as.numeric(Hyp_z_ns_uneq$Error)) #0.04201681
-mean(as.numeric(Hyp_z_ns_uneq$DecisionError)) #0.004201681
 
-#Merging data sets with results that have reported comparison 'ns' and exactly reported p-values.
+#Merging (1) data set with results that have reported comparison 'ns' and inexactly reported p-values with (2) data set with results with exactly reported p-values.
 Hyp_z_mrgd <- merge(Hyp_z_ns_uneq, Hyp_z_eq, all = TRUE) #merging 
 nrow(Hyp_z_mrgd) #n = 262
-nrow(Hyp_z_ns_uneq)+nrow(Hyp_z_eq)#n = 262
-mean(as.numeric(Hyp_z_ns_uneq$Error)) #0.04201681
-mean(as.numeric(Hyp_z_ns_uneq$DecisionError)) #0.004201681's
+sum(as.numeric(Hyp_z_ns_uneq$Error)) #10
+sum(as.numeric(Hyp_z_ns_uneq$DecisionError)) #1
 ```
 \
 
-Merging the data sets containing results with reported $\chi^2$-values.
+Merging data sets containing results with reported $\chi^2$-values.
 ```{r merging data sets of results with chi^2-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 #Merging data sets with results that have reported comparisons '<' and 'ns'.
 Hyp_chi_sm_ns <- merge(Hyp_chi_sml, Hyp_chi_ns, all = TRUE)
-nrow(as.data.frame(Hyp_chi_sm_ns)) #n = 61
-
 #Merging data sets with results that have inexactly reported and exactly reported p-values.
 Hyp_chi_sm_ns_eq <- merge(Hyp_chi_sm_ns, Hyp_chi_eq, all = TRUE) 
-nrow(as.data.frame(Hyp_chi_sm_ns_eq)) #n = 62
 
 #Merging data sets with (1) p-values with reported comparison '>' and (2) other types of p-values.
 Hyp_chi_mrgd <- merge(Hyp_chi_sm_ns_eq, Hyp_chi_lrg, all = TRUE) 
 nrow(as.data.frame(Hyp_chi_mrgd)) #n = 64
+sum(as.numeric(Hyp_chi_mrgd$Error)) #9
+sum(as.numeric(Hyp_chi_mrgd$DecisionError)) #3
 ```
 \
 
@@ -1637,8 +1570,8 @@ Merging data sets containing results with reported *F*-values.
 ```{r  merging data sets of results with F-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 Hyp_f_mrgd <- merge(Hyp_f_uneq, Hyp_f_eq, all = TRUE) #16(= 3 + 13)
 nrow(as.data.frame(Hyp_f_mrgd))
-mean(as.numeric(Hyp_f_mrgd$Error)) #0
-mean(as.numeric(Hyp_f_mrgd$DecisionError)) #0
+sum(as.numeric(Hyp_f_mrgd$Error)) #11
+sum(as.numeric(Hyp_f_mrgd$DecisionError)) #2
 ```
 \
 
@@ -1659,84 +1592,82 @@ nrow(Hyp_tzfc) #n = 352
 #Merging data sets containing results with (1) t-values, z-values, F-values and chi2-values and (2) r-values.
 Hyp_fin <- merge(Hyp_tzfc, Hyp_r_mrgd, all.x = TRUE, all.y = TRUE)
 nrow(Hyp_fin) #n = 404
-mean(as.numeric(Hyp_fin$Error))*100 #5.2% 
-mean(as.numeric(Hyp_fin$DecisionError))*100 #1.0%
-
+sum(as.numeric(Hyp_fin$Error)) #32
+sum(as.numeric(Hyp_fin$DecisionError)) #6
 ```
 \
 \
 
-### *4.3.6 Removing errors due to assumptions sidednesss* 
-In 'Hyp', there are results for which it was not clear whether they were one-sided or two-sided. For these results, we initially assumed that two-sided testing was used. However, we also studied if results that were erroneous under two-sided testing were not erroneous when using one-sided testing. This prevented us from assigning errors to results which may not have been erroneous.
+### *4.3.7 Removing errors due to assumptions sidedness* 
+In 'Hyp', there are results for which it was not clear whether they were one-sided or two-sided. For these results, we initially assumed that two-sided testing was used. However, we also studied if results that were erroneous under two-sided testing were not erroneous when using one-sided testing. This prevented us from inadvertently assigning errors to results.
 ```{r removing errors due to assumptions, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 options(scipen=999)
 #Selecting results for which it was clear whether one-sided or two-sided testing was done, or which were not erroneous.
-Hyp_unkn_corr <- subset(Hyp_fin, OneTailed != 0 | Error != 1) 
-nrow(Hyp_unkn_corr) #n = 388
-#Selecting results that possibly have been deemed erroneous because we incorrectly assumed they were two-tailed.
-Hyp_unkn_err <- subset(Hyp_fin, OneTailed == 0 & Error == 1) 
-nrow(Hyp_unkn_err) #n = 16
+Hyp_unkn_corr <- subset(Hyp_fin, OneTailed != 0 | (Error != 1 & DecisionError != 1)) 
+nrow(Hyp_unkn_corr) #n = 377
+#Selecting results that were possibly deemed erroneous because we incorrectly assumed they were two-tailed.
+Hyp_unkn_err <- subset(Hyp_fin, OneTailed == 0 & (Error == 1 | DecisionError == 1)) 
+nrow(Hyp_unkn_err) #n = 27
 
-#We take into consideration the possibility that p-values might be one-tailed rather than two-tailed. In this way, we can see if results are erroneous when we assume they are one-tailed.
-Hyp_unkn_err$OneTailed[which(Hyp_unkn_err$OneTailed=="0")] <- "1" #one-sided testing 
-nrow_Hyp_unkn_err <- nrow(Hyp_unkn_err) #numeric object that represents the subset's number of columns 
+#We take into consideration the possibility that p-values might be correct when we assume they are one-tailed rather than two-tailed. 
+Hyp_unkn_err$OneTailed[which(Hyp_unkn_err$OneTailed=="0")] <- "1" #making testing erroneous results to one-sided 
+nrow_Hyp_unkn_err <- nrow(Hyp_unkn_err) #numeric object that represents subset's number of columns 
 
-#Performing one-sided tests on the different test statistics in the data set.
+#Performing one-sided tests on the different test statistics in the data set with results that were erroneous under the assumption of two-sided testing.
 for (i in 1:nrow_Hyp_unkn_err){
-  if (Hyp_unkn_err$Statistic[i] == 4) {Hyp_unkn_err$P_one_sided_chi[i] <- (1 - pnorm(Hyp_unkn_err$t_stat_abs[i]))}
-  if (Hyp_unkn_err$Statistic[i] == 7) {Hyp_unkn_err$P_one_sided_chi[i] <- (1 - pchisq(Hyp_unkn_err$t_stat_abs[i], df = Hyp_unkn_err$df_1[i]))}
-  if (Hyp_unkn_err$Statistic[i] == 8) {Hyp_unkn_err$P_one_sided_chi[i] <-  (1 - pf(Hyp_unkn_err$t_stat_abs[i], Hyp_unkn_err$df_1[i], Hyp_unkn_err$df_2[i], lower.tail = FALSE))}}
+  if (Hyp_unkn_err$Statistic[i] == 4) {Hyp_unkn_err$P_one_sided[i] <- (1 - pnorm(Hyp_unkn_err$t_stat_abs[i]))} #z-values
+  if (Hyp_unkn_err$Statistic[i] == 7) {Hyp_unkn_err$P_one_sided[i] <- (1 - pchisq(Hyp_unkn_err$t_stat_abs[i], df = Hyp_unkn_err$df_1[i]))} #chi^2-values
+  if (Hyp_unkn_err$Statistic[i] == 8) {Hyp_unkn_err$P_one_sided[i] <-  (1 - pf(Hyp_unkn_err$t_stat_abs[i], Hyp_unkn_err$df_1[i], Hyp_unkn_err$df_2[i]))}} #F-values
 ```
 \
 
 Recalculating *p*-values and reassigning (decision) errors to results with inexactly reported *p*-values.
 ```{r reassigning (decision) errors for results with inexactly reported p-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 Hyp_unkn_err_sml <- subset(Hyp_unkn_err, Reported.Comparison == 1) #data set for results reported as having p-values smaller than a certain value
-nrow_Hyp_unkn_err_sml <- nrow(Hyp_unkn_err_sml) #object with the number of rows of the subset
+nrow_Hyp_unkn_err_sml <- nrow(Hyp_unkn_err_sml) #object number of rows subset
 
-#Error if Reported.P.Value < P_one_sided_chi.
-Hyp_unkn_err_sml <- Hyp_unkn_err_sml %>% mutate(Error = ifelse(Reported.P.Value >= P_one_sided_chi, 0, 1))
+#Error if Reported.P.Value < P_one_sided.
+Hyp_unkn_err_sml <- Hyp_unkn_err_sml %>% mutate(Error = ifelse(Reported.P.Value >= P_one_sided, 0, 1))
 #DecisionError if Reported.P.Value <= .05 and Computed > .05.
-Hyp_unkn_err_sml <- Hyp_unkn_err_sml %>% mutate(DecisionError = ifelse(Reported.P.Value <= .05 & P_one_sided_chi > .05, 1, 0)) 
+Hyp_unkn_err_sml <- Hyp_unkn_err_sml %>% mutate(DecisionError = ifelse(Reported.P.Value <= .05 & P_one_sided > .05, 1, 0)) 
 
 
 Hyp_unkn_err_lrg <- subset(Hyp_unkn_err, Reported.Comparison == 5) #data set for results reported as having p-values smaller than a certain value
-nrow_Hyp_unkn_err_lrg <- nrow(Hyp_unkn_err_lrg) #object with the number of rows of the subset
+nrow_Hyp_unkn_err_lrg <- nrow(Hyp_unkn_err_lrg) #object number of rows subset
 
-#Error if Reported.P.Value > P_one_sided_chi.
-Hyp_unkn_err_lrg <- Hyp_unkn_err_lrg %>% mutate(Error = ifelse(Reported.P.Value <= P_one_sided_chi, 0, 1))
+#Error if Reported.P.Value > P_one_sided.
+Hyp_unkn_err_lrg <- Hyp_unkn_err_lrg %>% mutate(Error = ifelse(Reported.P.Value <= P_one_sided, 0, 1))
 #DecisionError if Reported.P.Value >= .05 and Computed < .05.
-Hyp_unkn_err_lrg <- Hyp_unkn_err_lrg %>% mutate(DecisionError = ifelse(Reported.P.Value >= .05 & P_one_sided_chi < .05, 1, 0)) 
+Hyp_unkn_err_lrg <- Hyp_unkn_err_lrg %>% mutate(DecisionError = ifelse(Reported.P.Value >= .05 & P_one_sided < .05, 1, 0)) 
 
 #Subset of results with p-values reported as 'ns'.
 Hyp_unkn_err_ns <- subset(Hyp_unkn_err, Reported.Comparison == 3) 
 
-#Since a (decision) error can only occur if a result that was reported as non-significant is significant, a value of 1 is assigned if Computed <= .05, and a value of 0 is assigned if Computed > .05.
-Hyp_unkn_err_ns$Error[which(Hyp_unkn_err_ns$P_one_sided_chi > 0.05)] <- "0"
-Hyp_unkn_err_ns$DecisionError[which(Hyp_unkn_err_ns$P_one_sided_chi > 0.05)] <- "0"
-Hyp_unkn_err_ns$Error[which(Hyp_unkn_err_ns$P_one_sided_chi <= 0.05)] <- "1"
-Hyp_unkn_err_ns$DecisionError[which(Hyp_unkn_err_ns$P_one_sided_chi <= 0.05)] <- "1"
+#Since a (decision) error occurs if a result that was reported as non-significant is significant, a "1" is assigned if Computed <= .05, and a "0" is assigned if Computed > .05.
+Hyp_unkn_err_ns$Error[which(Hyp_unkn_err_ns$P_one_sided > 0.05)] <- "0"
+Hyp_unkn_err_ns$DecisionError[which(Hyp_unkn_err_ns$P_one_sided > 0.05)] <- "0"
+Hyp_unkn_err_ns$Error[which(Hyp_unkn_err_ns$P_one_sided <= 0.05)] <- "1"
+Hyp_unkn_err_ns$DecisionError[which(Hyp_unkn_err_ns$P_one_sided <= 0.05)] <- "1"
 ```
 \
 
 Recalculating *p*-values and reassigning (decision) errors to results with exactly reported *p*-values.
 ```{r reassigning (decision) errors for results with exactly reported p-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Selecting only those observations which have exactly reported p-values.
-Hyp_unkn_err_eq <- subset(Hyp_unkn_err, Reported.Comparison == 4) #subset
-nrow_Hyp_unkn_err_eq = nrow(Hyp_unkn_err_eq) #object With the number of rows of subset
+Hyp_unkn_err_eq <- subset(Hyp_unkn_err, Reported.Comparison == 4) #subset of results with exactly reported p-values
+nrow_Hyp_unkn_err_eq = nrow(Hyp_unkn_err_eq) #object number of rows subset
 
 options(scipen=999)
 #Calculating the p-values of the lower bounds of acceptable test statistic values. 
 for (i in 1:nrow_Hyp_unkn_err_eq){
-  if (Hyp_unkn_err_eq$Statistic[i] == 4) {Hyp_unkn_err_eq$Comp_lb[i] <- (1 - pnorm(Hyp_unkn_err_eq$lb_stat_abs[i]))}
-  if (Hyp_unkn_err_eq$Statistic[i] == 7) {Hyp_unkn_err_eq$Comp_lb[i]  <- (1 - pchisq(Hyp_unkn_err_eq$lb_stat_abs[i], df = Hyp_unkn_err_eq$df_1[i]))}
-  if (Hyp_unkn_err_eq$Statistic[i] == 8) {Hyp_unkn_err_eq$Comp_lb[i] <-  (1 - pf(Hyp_unkn_err_eq$lb_stat_abs[i], Hyp_unkn_err_eq$df_1[i], Hyp_unkn_err_eq$df_2[i], lower.tail = FALSE))}}
+  if (Hyp_unkn_err_eq$Statistic[i] == 4) {Hyp_unkn_err_eq$Comp_lb[i] <- (1 - pnorm(Hyp_unkn_err_eq$lb_stat_abs[i]))} #z-values
+  if (Hyp_unkn_err_eq$Statistic[i] == 7) {Hyp_unkn_err_eq$Comp_lb[i]  <- (1 - pchisq(Hyp_unkn_err_eq$lb_stat_abs[i], df = Hyp_unkn_err_eq$df_1[i]))} #chi^2-values
+  if (Hyp_unkn_err_eq$Statistic[i] == 8) {Hyp_unkn_err_eq$Comp_lb[i] <-  (1 - pf(Hyp_unkn_err_eq$lb_stat_abs[i], Hyp_unkn_err_eq$df_1[i], Hyp_unkn_err_eq$df_2[i]))}} #F-values
 
 #Calculating the p-values of the upper bounds of acceptable test statistic values. 
 for (i in 1:nrow_Hyp_unkn_err_eq){
-  if (Hyp_unkn_err_eq$Statistic[i] == 4) {Hyp_unkn_err_eq$Comp_ub[i] <- (1 - pnorm(Hyp_unkn_err_eq$ub_stat_abs[i]))}
-  if (Hyp_unkn_err_eq$Statistic[i] == 7) {Hyp_unkn_err_eq$Comp_ub[i]  <- (1 - pchisq(Hyp_unkn_err_eq$ub_stat_abs[i], df = Hyp_unkn_err_eq$df_1[i]))}
-  if (Hyp_unkn_err_eq$Statistic[i] == 8) {Hyp_unkn_err_eq$Comp_ub[i] <-  (1 - pf(Hyp_unkn_err_eq$ub_stat_abs[i], Hyp_unkn_err_eq$df_1[i], Hyp_unkn_err_eq$df_2[i], lower.tail = FALSE))}}
+  if (Hyp_unkn_err_eq$Statistic[i] == 4) {Hyp_unkn_err_eq$Comp_ub[i] <- (1 - pnorm(Hyp_unkn_err_eq$ub_stat_abs[i]))} #z-values
+  if (Hyp_unkn_err_eq$Statistic[i] == 7) {Hyp_unkn_err_eq$Comp_ub[i]  <- (1 - pchisq(Hyp_unkn_err_eq$ub_stat_abs[i], df = Hyp_unkn_err_eq$df_1[i]))} #chi^2-values
+  if (Hyp_unkn_err_eq$Statistic[i] == 8) {Hyp_unkn_err_eq$Comp_ub[i] <-  (1 - pf(Hyp_unkn_err_eq$ub_stat_abs[i], Hyp_unkn_err_eq$df_1[i], Hyp_unkn_err_eq$df_2[i]))}} #F-values
 
 #Rounded p-values of the lower and upper bounds of acceptable test statistic values. 
 for (i in 1:nrow_Hyp_unkn_err_eq){
@@ -1751,7 +1682,7 @@ Hyp_unkn_err_eq <- Hyp_unkn_err_eq %>% mutate(Comp_above = ifelse(Reported.P.Val
 #Error if Reported.P.Value is not different from Computed due to correct rounding.
 Hyp_unkn_err_eq <- Hyp_unkn_err_eq %>% mutate(Error = ifelse(Comp_above == 0 & Comp_below == 0, 0, 1)) 
 #DecisionError if Reported.P.Value <= .05 and Computed > .05, or vice versa.
-Hyp_unkn_err_eq <- Hyp_unkn_err_eq %>% mutate(DecisionError = ifelse((Reported.P.Value <= 0.05 & P_one_sided_chi > 0.05)|(Reported.P.Value > 0.05 & P_one_sided_chi <= 0.05), 1, 0)) 
+Hyp_unkn_err_eq <- Hyp_unkn_err_eq %>% mutate(DecisionError = ifelse((Reported.P.Value <= 0.05 & P_one_sided > 0.05)|(Reported.P.Value > 0.05 & P_one_sided <= 0.05), 1, 0)) 
 
 #Merging the data sets containing results with p-values reported as '<' and exactly reported p-values. 
 Hyp_err_sml_eq <- merge(Hyp_unkn_err_sml, Hyp_unkn_err_eq, all.x = TRUE, all.y = TRUE)
@@ -1760,14 +1691,14 @@ Hyp_err_sml_eq_lrg <- merge(Hyp_err_sml_eq, Hyp_unkn_err_lrg, all.x = TRUE, all.
 #Merging the data set containing results with p-values reported as '<', '>', and exactly reported p-values with the data set containing p-values reported as 'ns'.
 Hyp_err_mrgd <- merge(Hyp_err_sml_eq_lrg, Hyp_unkn_err_ns, all.x = TRUE, all.y = TRUE)
 
-nrow(Hyp_err_mrgd) #n = 16
+nrow(Hyp_err_mrgd) #n = 27
 ```
 \
 
 Merging the data sets containing results that are erroneous and results that are correct. 
 ```{r final merge, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 Hyp_all_err <- merge(Hyp_err_mrgd, Hyp_unkn_corr, all = TRUE) #merging data sets
-Hyp_all_err_n <- nrow(Hyp_all_err) #n = 404
+Hyp_all_err_n <- nrow(Hyp_all_err)
 nrow(Hyp_all_err) #n = 404
 
 #The number of erroneous results is 14 (3.5%).
@@ -1786,9 +1717,9 @@ tot_Hyp_nd <- nrow(Hyp_err_no_dupl)
 \
 \
 
-### *4.3.7 Descriptive information errors*
+### *4.3.8 Descriptive information errors*
 
-#### *4.3.7.1 Article level*
+#### *4.3.8.1 Article level*
 Tables on articles with errors per category and in total.
 ```{r tables on errors article level (Hyp), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 ##Total articles
@@ -1855,8 +1786,9 @@ tbl_err_nd_Hyp <- bind_rows(jrnl_decerr_nd_Hyp, yr_decerr_nd_Hyp) #binding rows 
 tbl_err_nd_Hyp <- rbind(tbl_err_nd_Hyp, tot_decerr_nd_Hyp) #binding all rows together
 rownames(tbl_err_nd_Hyp)[7] <- "Total" #naming the 'total' row
 ```
+\
 
-#### *4.3.7.2 Results level*
+#### *4.3.8.2 Results level*
 ```{r tables on errors at the results level (Hyp), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 ##Total
 #error
@@ -1924,7 +1856,7 @@ rownames(tbl_err_Hyp)[7] <- "Total" #naming the 'total' row
 ```
 \
 
-#### *4.3.7.3 Final tables on statistical reporting errors* 
+#### *4.3.8.3 Final tables on statistical reporting errors* 
 Tables on errors for each category and for results in total.
 ```{r final tables errors (Hyp), warning=FALSE, message = FALSE, echo = FALSE}
 tbl_err_nd_Hyp %>%
@@ -1946,7 +1878,7 @@ tbl_err_Hyp  %>%
 ## 4.4  Publication bias  
 
 ### 4.4.1 *Caliper tests of Gerber & Malhotra (2008) translated to p-values*
-While we studied *p*-values related to explicitly stated hypotheses in intervals (.04-.06] and (.03-.07], Gerber & Malhotra (2008) used calculated and reported *z*-values to study publication bias among results related to explicitly stated hypotheses. For this purpose, they used Caliper tests of different sizes, among which 5% and 10%. Below, we calculated the corresponding *p*-value intervals for these Caliper widths. It turns out the 5% Calipers used by Gerber & Malhotra (2008) largely overlap with the *p*-value range (.04-.06], although overlap is by no means perfect.
+While we studied *p*-values related to explicitly stated hypotheses in intervals (.04-.06] and (.03-.07], Gerber & Malhotra (2008) used calculated and reported *z*-values to study publication bias among results related to explicitly stated hypotheses. For this purpose, they used Caliper tests of different sizes, among which 5% and 10%. Below, we calculated the corresponding *p*-value intervals for these Caliper widths. It turns out the 5% and 10% Calipers used by Gerber & Malhotra (2008) largely overlap with our *p*-value ranges, although overlap is by no means perfect.
 ```{r Caliper tests  Gerber & Malhotra (2008) translated to p-values, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 ##10%, two-tailed. This is the p-value interval (.031, .077].
 #upper bound: 1.764, p = .077
@@ -1987,22 +1919,16 @@ lb_5_1tail <- 1.645*1.05
 ### 4.4.2 *Descriptive information p-value range (.04-.06]*
 Creating a new data frame with *p*-values in the range (.04-.06].
 ```{r selecting p-values in the range (.04-.06] from Hyp, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Subsetting the data.
 Hyp_exact <- subset(Hyp, Reported.Comparison == 4) #subset exactly reported p-values
 nrow(Hyp_exact) #n = 218
 Hyp_exact_0406 <- subset(Hyp_exact, Reported.P.Value > .04 & Reported.P.Value <= .06) #subset of 'Hyp' with all exactly reported p-values in the range (.04-.06]
 Hyp_exact_0406["pval_04_06"] <- NA #new column indicating just (non-)significance
 Hyp_exact_0406 <- Hyp_exact_0406 %>% mutate(pval_04_06 = ifelse(Reported.P.Value <= .05, "(.04-.05]", "(.05-.06]")) #indicating just (non-)significance
-
-#Calculating numbers of results with p-values in range (.04-.06] and the number of articles they came from.
 nhyp_exact_0406 <- nrow(Hyp_exact_0406) #object containing the number of rows
 nhyp_exact_0406 #n = 14 results
-Hyp_exact_0406 <- Hyp_exact_0406[!duplicated(Hyp_exact_0406$Article_numb), ] #removing duplicates to count articles
-nhyp_exact_0406_nd <- nrow(Hyp_exact_0406) #object containing the number of rows
-nhyp_exact_0406_nd #n = 7 articles
 ```
 \
-Creating frequency and proportion tables for publication bias in the *p*-value range (.04-06] for different categories.
+Creating frequency and proportion tables for publication bias in the *p*-value range (.04-.06] for different categories.
 ```{r tables on publication bias with binwidth .01, (Hyp), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 #P-values in the range (.04-.06] and journal
 jrnl_0406hyp_t <- xtabs(~ Journal+pval_04_06, data=Hyp_exact_0406) #frequency table
@@ -2014,7 +1940,6 @@ jrnl_0406hyp_p <- with(Hyp_exact_0406, table(Journal, pval_04_06)) %>%
 jrnl_0406hyp_p100 <- jrnl_0406hyp_p *100 #turning proportions into percentages
 jrnl_0406hyp_p100 <- addmargins(jrnl_0406hyp_p100 ,margin=2) #adding row margins
 jrnl_0406hyp_p100 <- jrnl_0406hyp_p100[c(2:1, 3),] #changing row order
-
 
 #P-values in the range (.04-.06] and year
 yr_0406hyp_t <- xtabs(~ Year+pval_04_06, data=Hyp_exact_0406) #frequency table
@@ -2040,17 +1965,12 @@ Creating a new data frame with *p*-values in the range (.03-.07].
 Hyp_exact_0307 <- subset(Hyp_exact, Reported.P.Value > .03 & Reported.P.Value <= .07) #subset of 'Hyp' with all exactly reported p-values in the range (.03-.07]
 Hyp_exact_0307["pval_03_07"] <- NA #new column indicating just (non-)significance
 Hyp_exact_0307 <- Hyp_exact_0307 %>% mutate(pval_03_07 = ifelse(Reported.P.Value <= .05, "(.03-.05]", "(.05-.07]")) #indicating just (non-)significance
-
-#Calculating numbers of results with p-values in range (.04-.06] and the number of articles they came from.
 nhyp_exact_0307 <- nrow(Hyp_exact_0307) #object containing the number of rows 
 nhyp_exact_0307 #n = 26 results
-Hyp_exact_0307 <- Hyp_exact_0307[!duplicated(Hyp_exact_0307$Article_numb), ] #removing duplicates to count articles
-nhyp_exact_0307_nd <- nrow(Hyp_exact_0307) #object containing the number of rows
-nhyp_exact_0307_nd #n = 11 articles
 ```
 \
 
-Creating frequency and proportion tables for publication bias in the *p*-value range (.03-07] for different categories.
+Creating frequency and proportion tables for publication bias in the *p*-value range (.03-.07] for different categories.
 ```{r tables on publication bias with binwidth .02 (Hyp), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 #P-values in the range (.03-.07] and journal
 jrnl_0307hyp_t <- xtabs(~ Journal+pval_03_07, data=Hyp_exact_0307) #frequency table
@@ -2116,7 +2036,7 @@ tot_pb_hyp %>%
   column_spec (4, border_left = F, border_right = T, extra_css = "border-right:2px solid lightgrey;")%>% #vertical, solid lightgrey line separates binwidths 
   kable_styling(bootstrap_options = "striped", full_width = F) #styling
 
- tot_pb_perc_hyp %>%
+tot_pb_perc_hyp %>%
   kable(format = "html", align = "c", caption = "<b>Table 18. Publication bias (%)<b>", digits = 1) %>% #format html, centered alignment, bold-faced caption
   pack_rows("Journal", 1, 3) %>% #grouping journals
   pack_rows("Year", 4, 6) %>% #grouping years
@@ -2128,27 +2048,19 @@ tot_pb_hyp %>%
 \
 
 ## 4.5 Bump in *p*-values
-### *4.5.1 Descriptive information p-value range (.03 - .05]*
-\
-
-Creating a new data frame with *p*-values in the range (.03 - .05].
-```{r selecting p-values in the range (.03 - .05] from Hyp, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Subsetting the data.
-Hyp_exact_0305 <- subset(Hyp_exact, Reported.P.Value > .03 & Reported.P.Value <= .05) #subset of 'Hyp' with all exactly reported p-values in the range (.03 - .05]
+### *4.5.1 Descriptive information p-value range (.03-.05]*
+Creating a new data frame with *p*-values in the range (.03-.05].
+```{r selecting p-values in the range (.03-.05] from Hyp, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
+Hyp_exact_0305 <- subset(Hyp_exact, Reported.P.Value > .03 & Reported.P.Value <= .05) #subset of 'Hyp' with all exactly reported p-values in the range (.03-.05]
 Hyp_exact_0305["pval_03_05"] <- NA #new column in which it will be indicated whether a result is just significant or not
 Hyp_exact_0305 <- Hyp_exact_0305 %>% mutate(pval_03_05 = ifelse(Reported.P.Value <= .04, "(.03-.04]", "(.04-.05]")) #indicating just (non-)significance
-
-#Calculating numbers of results with p-values in range (.04-.06] and the number of articles they came from.
 nhyp_exact_0305 <- nrow(Hyp_exact_0305) #object containing the number of rows
 nhyp_exact_0305 #n = 14 results
-Hyp_exact_0305 <- Hyp_exact_0305[!duplicated(Hyp_exact_0305$Article_numb), ] #removing duplicates to count articles
-nhyp_exact_0305_nd <- nrow(Hyp_exact_0305) #object containing the number of rows
-nhyp_exact_0305_nd #n = 7 articles
 ```
 \
 Creating frequency and proportion tables for the bump in *p*-values in the *p*-value range (.03-.05] for different categories.
 ```{r tables bump in p-values with binwidth .01 (Hyp), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#P-values in the range (.03 - .05] and journal
+#P-values in the range (.03-.05] and journal
 jrnl_0305hyp_t <- xtabs(~ Journal+pval_03_05, data=Hyp_exact_0305) #frequency table
 jrnl_0305hyp_t <- addmargins(jrnl_0305hyp_t ,margin=2) #adding row margins
 jrnl_0305hyp_m <- as.matrix(jrnl_0305hyp_t)
@@ -2159,7 +2071,7 @@ jrnl_0305hyp_p100 <- jrnl_0305hyp_p *100 #turning proportions into percentages
 jrnl_0305hyp_p100 <- addmargins(jrnl_0305hyp_p100 ,margin=2) #adding row margins
 jrnl_0305hyp_p100 <- jrnl_0305hyp_p100[c(2:1, 3),] #changing row order
 
-#P-values in the range (.03 - .05] and year
+#P-values in the range (.03-.05] and year
 yr_0305hyp_t <- xtabs(~ Year+pval_03_05, data=Hyp_exact_0305) #frequency table
 yr_0305hyp_t <- addmargins(yr_0305hyp_t, margin=2) #adding row margins
 yr_0305hyp_m <- as.matrix(yr_0305hyp_t)
@@ -2168,7 +2080,7 @@ yr_0305hyp_p <- with(Hyp_exact_0305, table(Year, pval_03_05)) %>%
 yr_0305hyp_p100 <- yr_0305hyp_p *100 #turning proportions into percentages
 yr_0305hyp_p100 <- addmargins(yr_0305hyp_p100 ,margin=2) #adding row margins
 
-#Total of p-values in the range (.03 - .05] 
+#Total of p-values in the range (.03-.05] 
 tot_0305hyp_t <- table(Hyp_exact_0305$pval_03_05) #frequency table
 tot_0305hyp_sum <- sum(tot_0305hyp_t) #calculating the total frequency
 tot_0305hyp_tp <- round(100*prop.table(tot_0305hyp_t),digits=3) #proportion table
@@ -2177,26 +2089,20 @@ tot_0305hyp_p <- addmargins(tot_0305hyp_tp) #adding row margin
 \
 \
 
-### *4.4.2 Descriptive information p-value range (.01 - .05]*
-Creating a new data frame with *p*-values in the range (.01 - .05].
-```{r selecting p-values in the range (.01 - .05] (Hyp), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Subsetting the data.
-Hyp_exact_0105 <- subset(Hyp_exact, Reported.P.Value > .01 & Reported.P.Value <= .05) #subset of 'Hyp' with exactly reported p-values in the range (.01 - .05]
+### *4.5.2 Descriptive information p-value range (.01-.05]*
+Creating a new data frame with *p*-values in the range (.01-.05].
+```{r selecting p-values in the range (.01-.05] (Hyp), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
+Hyp_exact_0105 <- subset(Hyp_exact, Reported.P.Value > .01 & Reported.P.Value <= .05) #subset of 'Hyp' with exactly reported p-values in the range (.01-.05]
 Hyp_exact_0105["pval_01_05"] <- NA #new column indicating just (non-)significance
 Hyp_exact_0105 <- Hyp_exact_0105 %>% mutate(pval_01_05 = ifelse(Reported.P.Value <= .03, "(.01-.03]", "(.03-.05]")) #indicating just (non-)significance
-
-#Calculating numbers of results with p-values in range (.04-.06] and the number of articles they came from.
 nhyp_exact_0105 <- nrow(Hyp_exact_0105) #object containing the number of rows
 nhyp_exact_0105 #n = 37 results
-Hyp_exact_0105_nd <- Hyp_exact_0105[!duplicated(Hyp_exact_0105$Article_numb), ] #removing duplicates to count articles
-nhyp_exact_0105_nd <- nrow(Hyp_exact_0105_nd) #object containing the number of rows
-nhyp_exact_0105_nd #n = 12 articles
 ```
 \ 
 
 Creating frequency and proportion tables for the bump in *p*-values in the *p*-value range (.01-.05] for different categories.
 ```{r tables bump in p-values with binwidth .02 (Hyp), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#P-values in the range (.01 - .05] and journal
+#P-values in the range (.01-.05] and journal
 jrnl_0105hyp_t <- xtabs(~ Journal+pval_01_05, data=Hyp_exact_0105) #frequency table
 jrnl_0105hyp_t <- addmargins(jrnl_0105hyp_t ,margin=2) #adding row margins
 jrnl_0105hyp_m <- as.matrix(jrnl_0105hyp_t)
@@ -2207,7 +2113,7 @@ jrnl_0105hyp_p100 <- jrnl_0105hyp_p *100 #turning proportions into percentages
 jrnl_0105hyp_p100 <- addmargins(jrnl_0105hyp_p100 ,margin=2) #adding row margins
 jrnl_0105hyp_p100 <- jrnl_0105hyp_p100[c(2:1, 3),] #changing row order
 
-#P-values in the range (.01 - .05] and year
+#P-values in the range (.01-.05] and year
 yr_0105hyp_t <- xtabs(~ Year+pval_01_05, data=Hyp_exact_0105) #frequency table
 yr_0105hyp_t <- addmargins(yr_0105hyp_t, margin=2) #adding row margins
 yr_0105hyp_m <- as.matrix(yr_0105hyp_t)
@@ -2216,7 +2122,7 @@ yr_0105hyp_p <- with(Hyp_exact_0105, table(Year, pval_01_05)) %>%
 yr_0105hyp_p100 <- yr_0105hyp_p *100 #turning proportions into percentages
 yr_0105hyp_p100 <- addmargins(yr_0105hyp_p100 ,margin=2) #adding row margins
 
-#Total of p-values in the range (.01 - .05] 
+#Total of p-values in the range (.01-.05] 
 tot_0105hyp_t <- table(Hyp_exact_0105$pval_01_05) #frequency table
 tot_0105hyp_sum <- sum(tot_0105hyp_t) #calculating the total frequency
 tot_0105hyp_tp <- round(100*prop.table(tot_0105hyp_t),digits=3) #proportion table
@@ -2226,7 +2132,7 @@ tot_0105hyp_p <- addmargins(tot_0105hyp_tp) #adding row margin
 \
 
 
-### *4.4.3 Final tables bump in p-values*
+### *4.5.3 Final tables bump in p-values*
 
 Binding tables with information on the bump in *p*-values together for frequencies and percentages, respectively.
 ```{r binding tables on the bump in p-values together (Hyp), warning=FALSE, message = FALSE, echo = TRUE}
@@ -2261,7 +2167,7 @@ tot_bump_hyp %>%
   column_spec (4, border_left = F, border_right = T, extra_css = "border-right:2px solid lightgrey;")%>% #vertical, solid lightgrey line separates binwidths 
   kable_styling(bootstrap_options = "striped", full_width = F) #styling
 
- tot_bump_perc_hyp %>%
+tot_bump_perc_hyp %>%
   kable(format = "html", align = "c", caption = "<b>Table 20. Bump in p-values (%)<b>", digits = 1) %>% #format html, centered alignment, bold-faced caption
   pack_rows("Journal", 1, 3) %>% #grouping journals
   pack_rows("Year", 4, 6) %>% #grouping years
@@ -2270,102 +2176,52 @@ tot_bump_hyp %>%
 ```
 \
 \
-
-### *4.4.4 Data visualisation*
-
-Creating a histogram of *p*-values in the range [0 - .10] of results related to explicitly stated hypotheses.
-```{r figure exactly reported p-values in the range [0 - .10], warning=FALSE, message = FALSE, echo = TRUE,  results = 'hide'}
-pb_bump_Hyp <- subset(Hyp_exact, Reported.P.Value >= 0 & Reported.P.Value <= .1) #n = 514
-pb_bump_Hyp <- pb_bump_Hyp[ ,c("Reported.P.Value")]
-write.table(pb_bump_Hyp, "C:/Users/EliseSchramkowski/Documents/Master's thesis/Excel/pb_bump_Hyp.txt", sep = ",", eol = "\r")
-
-plot_Hyp <- ggplot() + 
-    geom_histogram(data = Hyp_exact, aes(x = Reported.P.Value), fill = 'grey', colour='black', #10 bins of width .01, black bin lines of the bins are black, bins colored grey, bins close on the left
-                 bins=10, binwidth = .01, boundary = 0, closed = "right") + #ticks on the x-axis with intervals of .01
-  scale_x_continuous(expand = c(0, 0), breaks = seq(0, .10, by = .01), lim = c(0,.105)) + #ticks on the x-axis in the range [0, 200] with intervals of 25
-  scale_y_continuous(breaks = seq(0,200, by = 5)) + #ticks on the y-axis in the range [0, 200]  
-  labs(title = "n = 167", x = "*p*-value") +  #add title and label to the x-axis
-  theme_classic(base_size = 14) + #theme with x and y axis lines and no gridline 
-  theme(plot.title = element_text(size = 10)) #adapt title size
-
-txt_hyp_plot <- c("**Exactly reported *p*-values related to explicitly stated hypotheses in the range [0, .10]**") #title of the figure
-txt_hyp_plot_out <- grid.arrange(plot_Hyp, ncol=1, nrow = 1,  top = richtext_grob(txt_hyp_plot,gp=gpar(fontsize=12,font=2)))
-
-```
-\
-\
 \
 
 ## 4.6 Marginal significance
-### *4.6.1 Descriptive information tables results level*
-Selecting only the 206 results with reported *p*-values in the range (.05 - .1] that are not reported underneath tables. Results that are reported using the sign '>' are not taken into account, since these do not imply results were near the conventional significance level, i.e., *p* = .05.
-```{r selecting only results relevant for studying marginal significance (Hyp), warning=FALSE, message = FALSE, echo = TRUE,  results = 'hide'}
-Hyp_marg <- subset(Hyp, Reported.P.Value > .05 & Reported.P.Value <= .1 & Reported.Comparison != 2 & Reported.Comparison != 5) #subsetting the data 
-Hyp_marg_n <- nrow(Hyp_marg) #n = 130
-Hyp_marg_1 <- subset(Hyp_marg, Marg.sig == 1) #only results reported as marginally significant
-Hyp_marg_1_n <- nrow(Hyp_marg_1) #n = 106
-Hyp_marg_0 <- subset(Hyp_marg, Marg.sig == 0) #only results not reported as marginally significant
-Hyp_marg_0_n <- nrow(Hyp_marg_0) #24
-```
-\
 
-Creating frequency and proportion tables for marginally significance for different categories. 
-```{r tables on marginal significance at the results level (Hyp), warning=FALSE, message = FALSE, echo = TRUE,  results = 'hide'}
-#Total
-Hyp_marg_perc <- (Hyp_marg_1_n/Hyp_marg_n)*100 #% results reported as marginally significant
-Hyp_marg_perc <- round(Hyp_marg_perc, digits = 1) #rounding % results reported as marginally significant
-Hyp_tot_marg <- as.data.frame(cbind(Hyp_marg_n, Hyp_marg_0_n, Hyp_marg_1_n, Hyp_marg_perc))
-names(Hyp_tot_marg)[1:4] <- c("Total","No","Yes", "% Yes") #changing column names
+### *4.6.1 Preliminary calculations*
+Firstly, we calculate some basic statistics relevant to marginal significance at the article and results level. These will be used to calculate other statistics later on. Results that are reported using the signs '>' or '$\ge$' are not taken into account, since these do not imply results were near the conventional significance level, i.e., *p* = .05. 
+```{r some basic statistics marginal significance (Hyp), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
+#Selecting relevant data.
+Hyp_marg <- subset(Hyp, Reported.P.Value > .05 & Reported.P.Value <= .1 & Reported.Comparison != 2 & Reported.Comparison != 5) #subsetting the data, no results with '>' or '>='   
+Hyp_marg_n <- nrow(Hyp_marg) 
+Hyp_marg_n #n = 130 results with p-values in range (.05-.10]
 
-#Per journal
-jrnl_Hyp_marg_tot <- as.matrix(table(Hyp_marg$Journal)) #number of results with p-values in the range (.05-.0) per journal
-jrnl_Hyp_marg_1 <- as.matrix(table(Hyp_marg_1$Journal)) #number of results reported as marginally significant per journal
-jrnl_Hyp_marg_0 <- as.matrix(table(Hyp_marg_0$Journal)) #number of results not reported as marginally significant per journal
-jrnl_Hyp_marg <- cbind(jrnl_Hyp_marg_tot, jrnl_Hyp_marg_0, jrnl_Hyp_marg_1)
-jrnl_Hyp_marg <- as.data.frame(jrnl_Hyp_marg)
-jrnl_Hyp_marg <- jrnl_Hyp_marg %>% 
-  mutate(percentage = percent(jrnl_Hyp_marg_1/jrnl_Hyp_marg_tot, accuracy = 0.1))
-names(jrnl_Hyp_marg)[1:4] <- c("Total","No","Yes", "% Yes") #changing column names
-jrnl_Hyp_marg <- jrnl_Hyp_marg[c(2:1, 3),] #changing row order
+#Subset marginally significant results.
+Hyp_marg_1 <- subset(Hyp_marg, Marg.sig == 1) 
+Hyp_marg_1_n <- nrow(Hyp_marg_1) 
+Hyp_marg_1_n #n = 106 results reported as marginally significant
 
-#Per year
-yr_Hyp_marg_tot <- as.matrix(table(Hyp_marg$Year)) #number of results with p-values in the range (.05-.0) per journal
-yr_Hyp_marg_1 <- as.matrix(table(Hyp_marg_1$Year)) #number of results reported as marginally significant per journal
-yr_Hyp_marg_0 <- as.matrix(table(Hyp_marg_0$Year)) #number of results not reported as marginally significant per journal
-yr_Hyp_marg <- cbind(yr_Hyp_marg_tot, yr_Hyp_marg_0, yr_Hyp_marg_1)
-yr_Hyp_marg <- as.data.frame(yr_Hyp_marg)
-yr_Hyp_marg <- yr_Hyp_marg %>% 
-  mutate(percentage = percent(yr_Hyp_marg_1/yr_Hyp_marg_tot, accuracy = 0.1))
-names(yr_Hyp_marg)[1:4] <- c("Total","No","Yes", "% Yes") #changing column names
+#Removing duplicates to count number of articles.
+Hyp_marg_nd <- Hyp_marg[!duplicated(Hyp_marg$Article_numb), ] 
+Hyp_marg_nd_nrow <- nrow(Hyp_marg_nd) 
+Hyp_marg_nd_nrow #n = 30 articles with p-values in range (.05-.10]
+Hyp_marg_perc <- round(((Hyp_marg_1_n/Hyp_marg_n)*100), digits = 1) #percentage
 
-#Combining data on totals, journals and years.
-tbl_marg_Hyp <- bind_rows(jrnl_Hyp_marg, yr_Hyp_marg) #binding rows journals and years
-tbl_marg_Hyp <- rbind(tbl_marg_Hyp, Hyp_tot_marg) #adding the total row
-tbl_marg_Hyp <- tbl_marg_Hyp[, c("Yes", "% Yes", "No", "Total")] #changing column order
-rownames(tbl_marg_Hyp)[7] <- "Total" #naming the 'total' row
+#Data set with all articles with at least one marginally significant result.
+Hyp_marg_1_nd <- Hyp_marg_1[!duplicated(Hyp_marg_1$Article_numb), ] 
+Hyp_marg_1_nd_nrow <- nrow(Hyp_marg_1_nd) #n = 19 articles with reported marginal significance
+Hyp_marg_nd_perc <- (Hyp_marg_1_nd_nrow/Hyp_marg_nd_nrow)*100 #percentage
+
+#Subset results that are reported as not marginally significant.
+Hyp_marg_0 <- subset(Hyp_marg, Marg.sig == 0)
+Hyp_marg_0_n <- nrow(Hyp_marg_0) 
+Hyp_marg_0_n #n = 24
+
+#Articles with no p-values in the range (.05-.10] that are reported as marginally significant.
+Hyp_marg_0_nd_nrow <- Hyp_marg_nd_nrow - Hyp_marg_1_nd_nrow 
+Hyp_marg_0_nd_nrow #n = 19
 ```
 \
 \
 
 ### *4.6.2 Descriptive information article level*
-Creating frequency and proportion tables for articles with (1) at least one result with a *p*-value in the range (.01-05] or reported as marginal significant (2) no such results for different categories.
+Creating tables containing information on marginal significance at the article level. Data for journals and years are included.
 ```{r tables on marginal significance at the article level (Hyp), warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
-#Removing duplicates to count number of articles.
-Hyp_marg_nd <- Hyp_marg[!duplicated(Hyp_marg$Article_numb), ] 
-Hyp_marg_nd_nrow <- nrow(Hyp_marg_nd) #n = 30 articles with relevant p-values  
-#Subset marginally significant results.
-Hyp_marg_1 <- subset(Hyp_marg, Marg.sig == 1) 
-nrow(Hyp_marg_1) #n = 106
-#Data set with all articles with at least one marginally significant result.
-Hyp_marg_1_nd <- Hyp_marg_1[!duplicated(Hyp_marg_1$Article_numb), ] 
-Hyp_marg_1_nd_nrow <- nrow(Hyp_marg_1_nd) #n = 19 articles with reported marginal significance
-
 #Total articles with marginally significant results.
-Hyp_marg_0_nd_nrow <- Hyp_marg_nd_nrow - Hyp_marg_1_nd_nrow #0 reported as marginally significant
-Hyp_marg_nd_perc <- (Hyp_marg_1_nd_nrow/Hyp_marg_nd_nrow)*100
 Hyp_tot_marg_nd <- as.data.frame(cbind(Hyp_marg_nd_nrow, Hyp_marg_0_nd_nrow, Hyp_marg_1_nd_nrow, Hyp_marg_nd_perc)) #combining objects
 names(Hyp_tot_marg_nd)[1:4] <- c("Total","No","Yes", "% Yes") #changing column names
-
 
 #Marginal significance and journals
 Hyp_jrnl_marg_tot_nd <- as.matrix(table(Hyp_marg_nd$Journal)) #>= 1 relevant p-value 
@@ -2390,8 +2246,66 @@ tbl_marg_Hyp_nd <- tbl_marg_Hyp_nd[, c("Yes", "% Yes", "No", "Total")] #changing
 rownames(tbl_marg_Hyp_nd)[7] <- "Total" #naming the 'total' row
 ```
 \
+\
 
-### *4.6.3 Final tables on marginal significance * 
+### *4.6.3 Descriptive information tables results level*
+Creating tables containing information on marginal significance at the results level. Data for journals and years are included.
+```{r tables on marginal significance at the results level (Hyp), warning=FALSE, message = FALSE, echo = TRUE,  results = 'hide'}
+#Total
+Hyp_tot_marg <- as.data.frame(cbind(Hyp_marg_n, Hyp_marg_0_n, Hyp_marg_1_n, Hyp_marg_perc))
+names(Hyp_tot_marg)[1:4] <- c("Total", "No", "Yes", "% Yes") #changing column names
+
+#Per journal
+jrnl_Hyp_marg_tot <- as.matrix(table(Hyp_marg$Journal)) #number of results with p-values in the range (.05-.10) per journal
+jrnl_Hyp_marg_1 <- as.matrix(table(Hyp_marg_1$Journal)) #number of results reported as marginally significant per journal
+jrnl_Hyp_marg_0 <- as.matrix(table(Hyp_marg_0$Journal)) #number of results not reported as marginally significant per journal
+jrnl_Hyp_marg <- cbind(jrnl_Hyp_marg_tot, jrnl_Hyp_marg_0, jrnl_Hyp_marg_1) #binding together results
+jrnl_Hyp_marg <- as.data.frame(jrnl_Hyp_marg) 
+jrnl_Hyp_marg <- jrnl_Hyp_marg %>% #calculating percentages results reported as marginally significant
+  mutate(percentage = percent(jrnl_Hyp_marg_1/jrnl_Hyp_marg_tot, accuracy = 0.1))
+names(jrnl_Hyp_marg)[1:4] <- c("Total", "No", "Yes", "% Yes") #changing column names
+jrnl_Hyp_marg <- jrnl_Hyp_marg[c(2:1, 3),] #changing row order
+
+#Per year
+yr_Hyp_marg_tot <- as.matrix(table(Hyp_marg$Year)) #number of results with p-values in the range (.05-.10) per year
+yr_Hyp_marg_1 <- as.matrix(table(Hyp_marg_1$Year)) #number of results reported as marginally significant per year
+yr_Hyp_marg_0 <- as.matrix(table(Hyp_marg_0$Year)) #number of results not reported as marginally significant per year
+yr_Hyp_marg <- cbind(yr_Hyp_marg_tot, yr_Hyp_marg_0, yr_Hyp_marg_1) #binding together results
+yr_Hyp_marg <- as.data.frame(yr_Hyp_marg) #creating a data frame
+yr_Hyp_marg <- yr_Hyp_marg %>% #calculating percentages results reported as marginally significant
+  mutate(percentage = percent(yr_Hyp_marg_1/yr_Hyp_marg_tot, accuracy = 0.1))
+names(yr_Hyp_marg)[1:4] <- c("Total","No","Yes", "% Yes") #changing column names
+
+#Combining data on totals, journals and years.
+tbl_marg_Hyp <- bind_rows(jrnl_Hyp_marg, yr_Hyp_marg) #binding rows journals and years
+tbl_marg_Hyp <- rbind(tbl_marg_Hyp, Hyp_tot_marg) #adding the total row
+tbl_marg_Hyp <- tbl_marg_Hyp[, c("Yes", "% Yes", "No", "Total")] #changing column order
+rownames(tbl_marg_Hyp)[7] <- "Total" #naming the 'total' row
+```
+\
+\
+
+### *4.6.4 Difference marginally significant results 'AllP' and 'Hyp'*
+
+We conducted a *z*-test for 2 independent proportions using the following formula:
+
+$$ z = \frac{dif}{SE_0} = \frac{p_1 - p_2 = \hat{p}}{\hat{p}\cdot(1 - \hat{p})\cdot (\frac{1}{n_1}+\frac{1}{n_2})}, $$ where $p_1$ and $p_2$ denote the proportions of results to which marginal significance was assigned in the 'Hyp' and 'AllP' data sets, respectively, and $n_1$ and $n_2$ denote the total amounts of *p*-values in the range (.05-.10] for the 'Hyp' and 'AllP' data sets, respectively.
+\   
+
+The percentage of *p*-values in interval (.05-.10] reported as marginally significant is much higher for manually retrieved statistical results related to explicitly stated hypotheses in ‘Hyp’ (81.5%) than for reported *p*-values in ‘AllP’ (35%), *z* = 8.33, *p* < .001.
+
+```{r calculation difference marginally significant results, warning=FALSE, message = FALSE}
+p1 <- (106/130) #proportion marginally significant results 'Hyp'
+p2 <- (72/206) #proportion marginally significant results 'AllP'
+p <- ((106/130)-(72/206)) #p1 - p2
+z <- (p1-p2)/sqrt(p*(1-p)*((1/130)+(1/206))) #calculate z
+z #z = 8.33
+2*(1 - pnorm(z)) #p < .001
+```
+\
+\
+
+### *4.6.5 Final tables on marginal significance * 
 ```{r final tables on marginal significance Hyp, warning=FALSE, message = FALSE, echo = FALSE}
 #article level
 tbl_marg_Hyp_nd %>%
@@ -2407,10 +2321,5 @@ tbl_marg_Hyp %>%
   pack_rows("Year", 4, 6) %>% #grouping years
   kable_styling(bootstrap_options = "striped", full_width = F, position = "float_left") #styling
 ```
-
-```{r calculation difference marginally significant results, warning=FALSE, message = FALSE, echo = FALSE}
-p1 <- (106/130)
-p2 <- (72/206)
-p <- ((106/130)-(72/206))
-z <- (p1-p2)/sqrt(p*(1-p)*((1/130)+(1/206)))
-```
+\
+\
