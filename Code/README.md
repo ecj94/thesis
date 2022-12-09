@@ -1,6 +1,6 @@
 # R Code
 
-The .Rmd file in this map contains the code used to obtain the results in our study for 'APA', 'AllP', and 'Hyp'. The layout of the file looks somewhat like this:\
+The .Rmd file in this map contains the code used to obtain the results in our study for 'APA', 'AllP', and 'Hyp'. The layout of the file looks somewhat like this:
 
 1. Preliminary procedures:
     - loading packages, among which statcheck (Epskamp & Nuijten, 2016)
