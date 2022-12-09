@@ -15,9 +15,9 @@ The .Rmd file in this map contains the code used to obtain the results in our st
     - statistical reporting errors: descriptive results 
     - publication bias: descriptive results 
     - bump in *p*-values: descriptive results 
-    - marginal significance: descriptive results  
+    - marginal significance: descriptive results, independent *z*-test two proportions
 
 
-### **References**\
+### **References**
 Epskamp, S., & Nuijten, M. B. (2016). Statcheck: Extract statistics from articles and recompute p values. Retrieved    
 &nbsp;&nbsp;&nbsp;&nbsp;from https://cran.r-project.org/src/contrib/Archive/statcheck/
