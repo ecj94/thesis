@@ -19,6 +19,8 @@ For different topics, different data sets were used. Here is a list of the diffe
 - 'Hyp': contains all manually retrieved *p*-values and reproducible results related to explicitly stated hypotheses. These data were retrieved from the 2014-2016 volumes of *ASR*, *AJS*, and *SQ* and were used to study statistical reporting errors, publication bias, the 'bump' in *p*-values, and marginal significance.
 - inclusion_Hyp: contains information on which articles from the 2014-2016 volumes of *ASR*, *AJS*, and *SQ* were included in 'Hyp'.
 
+Note: the articles used for this study are not part of this archive, since these articles are not publicly available. Therefore, if one wishes to fully reproduce our study, one will have to download the 2014-2016 volumes of the sociology journals included in our study.
+
 
 ### References
 Clarivate Analytics’ Web of Science. (2016). Journal citation reports: Sociology, 2016. com.proxy.library.uu.nl/JCRJournalHomeAction.\
