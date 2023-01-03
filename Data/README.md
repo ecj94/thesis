@@ -1,3 +1,5 @@
+# Data sets 
+
 This file contains information on the different data sets used for this study. These are:
 
 - 'SRG': contains information on statistical reporting guidelines for sociology journals mentioned in Clarivate Analytics' Web of Science (2016). More specifically, it contains information on (1) the guidelines to which journals request authors' adherence and (2) guidelines authors are allowed to follow by journals. This data set was created to see how many sociology journals request that authors use the APA manual, and thus, the APA statistical reporting guidelines.
