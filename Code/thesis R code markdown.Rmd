@@ -13,10 +13,14 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Software version used: Rstudio Version 1.3.959.
+
 # 1. Preliminary procedures
 
 Loading packages used later on in the code.
 ```{r loading packages, warning=FALSE, message = FALSE}
+#checking for dependencies
+#install.packages("dependencies")
 #statcheck is used to retrieve p-values and fully APA-reported results from the text of articles
 library("statcheck") 
 
@@ -37,7 +41,14 @@ library("ggpubr") #putting together ggplots
 ```
 \
 
-We found that for *JMF*, statcheck did not succeed in extracting results with a '-' sign. After contacting the author, Mich&#232;le Nuijten, about this problem, she adapted the GitHub Version of the package such that this problem would be solved. Below, the GitHub version of the package is loaded into R. 
+Checking for dependencies (change chunk to eval = TRUE to view results in .Rmd file).
+```{r checking dependencies, warning=FALSE, message = FALSE, eval = FALSE}
+#checking for dependencies
+renv::dependencies()
+```
+\
+
+Since we found that for *JMF*, statcheck did not succeed in extracting results with a '-' sign. After contacting the author, Mich&#232;le Nuijten, about this problem, she adapted the GitHub Version of the package such that this problem would be solved. Below, the GitHub version of the package is loaded into R. 
   ```{r loading Github version of statcheck, warning=FALSE, message = FALSE, eval = FALSE}
 devtools::install_github("MicheleNuijten/statcheck")
 ```

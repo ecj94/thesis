@@ -2936,10 +2936,13 @@ div.tocify {
 </div>
 
 
+<p>Software version used: Rstudio Version 1.3.959.</p>
 <div id="preliminary-procedures" class="section level1">
 <h1>1. Preliminary procedures</h1>
 <p>Loading packages used later on in the code.</p>
-<pre class="r"><code>#statcheck is used to retrieve p-values and fully APA-reported results from the text of articles
+<pre class="r"><code>#checking for dependencies
+#install.packages(&quot;dependencies&quot;)
+#statcheck is used to retrieve p-values and fully APA-reported results from the text of articles
 library(&quot;statcheck&quot;) 
 
 library(&#39;readxl&#39;) #reading in .xlsx files
@@ -2958,7 +2961,12 @@ library(&quot;cowplot&quot;) #adding a label to the final containing multiple pl
 library(&quot;ggpubr&quot;) #putting together ggplots</code></pre>
 <p><br />
 </p>
-<p>We found that for <em>JMF</em>, statcheck did not succeed in extracting results with a ‘-’ sign. After contacting the author, Michèle Nuijten, about this problem, she adapted the GitHub Version of the package such that this problem would be solved. Below, the GitHub version of the package is loaded into R.</p>
+<p>Checking for dependencies (change chunk to eval = TRUE to view results in .Rmd file).</p>
+<pre class="r"><code>#checking for dependencies
+renv::dependencies()</code></pre>
+<p><br />
+</p>
+<p>Since we found that for <em>JMF</em>, statcheck did not succeed in extracting results with a ‘-’ sign. After contacting the author, Michèle Nuijten, about this problem, she adapted the GitHub Version of the package such that this problem would be solved. Below, the GitHub version of the package is loaded into R.</p>
 <pre class="r"><code>devtools::install_github(&quot;MicheleNuijten/statcheck&quot;)</code></pre>
 <p><br />
 </p>
@@ -5900,8 +5908,8 @@ grViz(&quot;digraph{
       E -&gt; H
       F -&gt; I
            }&quot;)</code></pre>
-<div id="htmlwidget-861ab11298135ba661bd" style="width:672px;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-861ab11298135ba661bd">{"x":{"diagram":"digraph{\n\n      graph[rankdir = LR]\n  \n      node[shape = rectangle]\n  \n      subgraph cluster_0 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Total number of articles\\n (n = 322)\"\n        node[shape = rectangle, margin = 0.25]\n        A[label = \"ASR = 139\", fixedsize = true, width = 1.35, height = 0.7]\n        B[label = \"AJS = 105\", fixedsize = true, width = 1.35, height = 0.7]\n        C[label = \"SQ = 78\", fixedsize = true, width = 1.35, height = 0.7]\n      }\n  \n      subgraph cluster_1 {\n         graph[shape = rectangle]\n         style = rounded\n         \n         label = \"Articles with explicitly stated hypotheses\\n (n = 99, 30.7%)\"\n         node[shape = rectangle, margin = 0.25]\n         D[label = \"ASR = 55 (39.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         E[label = \"AJS = 29 (27.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         F[label = \"SQ = 15 (19.2%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      subgraph cluster_2 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Articles with required statistics\\n (n = 91, 28.3%)\"\n        node[shape = rectangle, margin = 0.25]\n        G[label = \"ASR = 52 (37.4%)\", fixedsize = true, width = 1.8, height = 0.7]\n        H[label = \"AJS = 26 (24.8%)\", fixedsize = true, width = 1.8, height = 0.7]\n        I[label = \"SQ = 13 (16.7%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      edge[color = black, arrowhead = vee, arrowsize = 1.25]\n      A -> D\n      B -> E\n      C -> F\n      D -> G\n      E -> H\n      F -> I\n           }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ee3b41969810863b4c90" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ee3b41969810863b4c90">{"x":{"diagram":"digraph{\n\n      graph[rankdir = LR]\n  \n      node[shape = rectangle]\n  \n      subgraph cluster_0 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Total number of articles\\n (n = 322)\"\n        node[shape = rectangle, margin = 0.25]\n        A[label = \"ASR = 139\", fixedsize = true, width = 1.35, height = 0.7]\n        B[label = \"AJS = 105\", fixedsize = true, width = 1.35, height = 0.7]\n        C[label = \"SQ = 78\", fixedsize = true, width = 1.35, height = 0.7]\n      }\n  \n      subgraph cluster_1 {\n         graph[shape = rectangle]\n         style = rounded\n         \n         label = \"Articles with explicitly stated hypotheses\\n (n = 99, 30.7%)\"\n         node[shape = rectangle, margin = 0.25]\n         D[label = \"ASR = 55 (39.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         E[label = \"AJS = 29 (27.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         F[label = \"SQ = 15 (19.2%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      subgraph cluster_2 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Articles with required statistics\\n (n = 91, 28.3%)\"\n        node[shape = rectangle, margin = 0.25]\n        G[label = \"ASR = 52 (37.4%)\", fixedsize = true, width = 1.8, height = 0.7]\n        H[label = \"AJS = 26 (24.8%)\", fixedsize = true, width = 1.8, height = 0.7]\n        I[label = \"SQ = 13 (16.7%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      edge[color = black, arrowhead = vee, arrowsize = 1.25]\n      A -> D\n      B -> E\n      C -> F\n      D -> G\n      E -> H\n      F -> I\n           }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p><br />
 <br />
 <br />
