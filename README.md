@@ -19,7 +19,11 @@ For different topics, different data sets were used. Here is a list of the diffe
 - 'Hyp': contains all manually retrieved *p*-values and reproducible results related to explicitly stated hypotheses. These data were retrieved from the 2014-2016 volumes of *ASR*, *AJS*, and *SQ* and were used to study statistical reporting errors, publication bias, the 'bump' in *p*-values, and marginal significance.
 - inclusion_Hyp: contains information on which articles from the 2014-2016 volumes of *ASR*, *AJS*, and *SQ* were included in 'Hyp'.
 
-Note: the articles used for this study are not part of this archive, since these articles are not publicly available. Therefore, if one wishes to fully reproduce our study, one will have to download the 2014-2016 volumes of the sociology journals included in our study.
+Note: the articles used for this study are not part of this archive, since these articles are not publicly available. Therefore, if one wishes to fully reproduce our study, one will have to download the 2014-2016 volumes of the sociology journals included in our study. 
+
+
+### Ethics, permisson & access
+This study is a systematic review in which journals, articles, and results from articles were units of analyses. Thus, no human participants were involved in the study. Data will be available to all possible parties through the following Github repository: https://github.com/elisecj94/thesis/tree/development. The storage of data Utrecht University will be in accordance with the faculty protocol of the Faculty of Social & Behavioral Sciences. The author is responsible for the publicly available research archive. The contact information of the author is:
 
 
 ### References
