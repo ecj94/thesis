@@ -23,7 +23,7 @@ Note: the articles used for this study are not part of this archive, since these
 
 
 ### Ethics, permisson & access
-This study is a systematic review in which journals, articles, and results from articles were units of analyses. Thus, no human participants were involved in the study. Data will be available to all possible parties through the following Github repository: https://github.com/elisecj94/thesis/tree/development. The storage of data Utrecht University will be in accordance with the faculty protocol of the Faculty of Social & Behavioral Sciences. The author is responsible for the publicly available research archive. The contact information of the author is:
+This study is a systematic review in which journals, articles, and results from articles were units of analyses. Thus, no human participants were involved in the study. Data will be made available to all possible parties through the following Github repository: https://github.com/elisecj94/thesis/tree/development. The storage of data at Utrecht University will be in accordance with the faculty protocol of the Faculty of Social & Behavioral Sciences. The author is responsible for the publicly available research archive. 
 
 
 ### References
