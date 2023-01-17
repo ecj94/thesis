@@ -8,32 +8,36 @@ output:
     latex_engine: xelatex
     fig_caption: yes
     keep_tex: yes
-    extra_dependencies: ["float"]
+    #extra_dependencies: ["float"]
   html_document:
     df_print: paged
   word_document: default
-csl: apa.csl
+csl: apa7.csl #credits to bwiernik, see https://github.com/citation-style-language/styles/blob/master/apa.csl
 bibliography: ref_thesis.bib
 nocite: |
   @APA_list_journals, @APA_numb_stat_guide
 header-includes:
-- \usepackage{setspace}\doublespacing
-- \newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}}
-  \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
-- \usepackage{caption}
-- \usepackage{float}
-- \usepackage{booktabs}
+- \usepackage{setspace}\doublespacing #use double spacing
+- \newcommand{\beginsupplement}{\setcounter{table}{0} #counter for tables in supplement
+- \renewcommand{\thetable}{S\arabic{table}}
+- \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
+- \usepackage{caption} #nice table and figure captions
+- \captionsetup[table]{textfont={it}, labelfont={bf}, singlelinecheck=false, labelsep=newline} #APA captions tables
+- \captionsetup[figure]{textfont={it}, labelfont={bf}, singlelinecheck=false, labelsep=newline} #APA captions figures
+- \usepackage{floatrow}
+- \floatsetup[figure]{capposition=top} #Caption figure top.
+- \floatsetup[table]{capposition=top} #Caption table top.
+#- \usepackage{float} #setting in place figures and tables
+- \usepackage{booktabs} #enhancement of table quality
 - \usepackage{cprotect}
 - \usepackage{fvextra}
 - \usepackage{textcomp}
-- \usepackage{amssymb}
-- \usepackage{amsmath}
-- \usepackage{longtable}
-- \usepackage{multicol}
-- \usepackage{threeparttable}
-- \usepackage{caption}
-- \setlength{\marginparwidth }{2cm}
-- \usepackage{todonotes}
+- \usepackage{amssymb}  #latex features for (mathematical) symbols
+- \usepackage{amsmath} #latex features for mathematical symbols
+- \usepackage{longtable} #creating tables longer than one page
+- \usepackage{multicol} #creating multiple column tables
+- \usepackage{threeparttable} #adding structured footnotes to tables
+- \setlength{\marginparwidth }{2cm} #setting margins to 2cm
 fontsize: 12pt
 spacing: double
 ---
@@ -98,6 +102,7 @@ For each sociology journal in @WOS, we verified if it explicitly required author
 library('dplyr') #using pipes
 library('knitr') 
 library('kableExtra') #making a nice table
+library(tidyverse)
 
 #Creating content table cells.
 data_table1 <- c("all", "all", "\\emph{ASR}/\\emph{AJS}/\\emph{SQ}", #journals
@@ -116,8 +121,8 @@ colnames(table1) <- paste(c("‘AllP’", "‘APA’", "‘Hyp’"))
 
 #Creating Table 1.
 table1 %>%
-  #format latex, centered alignment, bold-faced caption
-  kable(booktabs = T, align = "c", caption = "Overview of information provided by ‘AllP', ‘APA', and ‘Hyp'.", escape = FALSE) %>% #centered alignment, bold-faced caption
+  #format latex, centered alignment, caption
+  kable(booktabs = T, align = "c", caption = "Overview of information provided by ‘AllP', ‘APA', and ‘Hyp'.", escape = FALSE) %>% #booktabs used, centered alignment, caption caption
   kable_styling(latex_options = "HOLD_position", full_width = F)
 ```
 
@@ -149,8 +154,8 @@ colnames(table2) <- paste(c("‘AllP'", "‘APA'", "‘Hyp'"))
 
 #Creating Table 2.
 table2 <- table2 %>%
-  #format latex, centered alignment, bold-faced caption
-  kable(booktabs = T, align = "c", caption = "Overview of numbers of statistical results and accompanying articles used in analyses of results-related topics for ‘AllP', ‘APA', and ‘Hyp'.") %>% 
+  #centered alignment
+  kable(booktabs = T, align = "c", caption = "Overview of numbers of statistical results and accompanying articles used in analyses of results-related topics for ‘AllP', ‘APA', and ‘Hyp'.") %>%  #booktabs used, centered alignment, caption caption
   kable_styling(latex_options = c("striped", "HOLD_position"), font_size = 12, full_width = F) 
 
 table2 %>%
@@ -162,7 +167,7 @@ table2 %>%
   pack_rows("Bump in \\emph{p}-values", 9, 11, escape = FALSE) %>%
   pack_rows("Marginal significance", 12, 13) %>%
   #adding footnote
-  add_footnote("Note. Numbers of articles from which statistical results were used in analyses are shown", notation = "none", escape = F) %>%
+  add_footnote("\\emph{Note}. Numbers of articles from which statistical results were used in analyses are shown", notation = "none", escape = F) %>%
   add_footnote("between parentheses.", notation = "none")
 ```
 \
@@ -195,12 +200,12 @@ colnames(table3) <- paste(c("Type of Rep\\emph{P}", "Inconsistent if...", "Gross
 
 #Creating Table 3.
 table3 %>%
-  #format latex, centered alignment, bold-faced caption
-  kable(booktabs = T,  align = "c", caption = "Inconsistencies and gross inconsistencies as determined for different types of reported \\emph{p}-values in  ‘Hyp'.", escape = FALSE) %>% 
+  #booktabs used, centered alignment, caption caption
+  kable(booktabs = T,  align = "c", caption = "Inconsistencies and gross inconsistencies as determined for different types of reported p-values in  ‘Hyp'.", escape = FALSE) %>% 
   #table will appear in correspondence with its place in this document
   kable_styling(latex_options = c("HOLD_position"), full_width = F) %>% 
   #Adding footnotes
-  add_footnote("Note. Cal\\emph{P} = recalculated \\emph{p}-value, Rep\\emph{P} = reported \\emph{p}-value, ns = non-significant.", notation = "none", escape = FALSE)  %>% 
+  add_footnote("\\emph{Note}. Cal\\emph{P} = recalculated \\emph{p}-value, Rep\\emph{P} = reported \\emph{p}-value, ns = non-significant", notation = "none", escape = FALSE)  %>%
   add_footnote("See Table 4 for methods used to determine whether a difference between recalculated and", notation = "symbol", escape = FALSE) %>%
   add_footnote(" reported \\emph{p}-values could be due to correct rounding or not.", notation = "none", escape = FALSE)  %>%
   #specifying font size
@@ -244,8 +249,8 @@ table4 <- matrix(data_table4, ncol = 1, nrow = 24, byrow = TRUE)
 
 #Creating Table 4.
 table4 %>%
-  #format latex, alignment to the left, bold-faced caption
-  kable(booktabs = T,  align = "l", longtable = T, caption = "Ways of determining whether discrepancies between exactly reported \\emph{p}-values and their recalculated counterparts from  ‘Hyp' could be due to correct rounding or indicate an inconsistency.", escape = FALSE) %>% 
+  #format latex, alignment to the left, caption
+  kable(booktabs = T,  align = "l", longtable = T, caption = "Ways of determining whether discrepancies between exactly reported p-values and their recalculated counterparts from  ‘Hyp' could be due to correct rounding or indicate an inconsistency.", escape = FALSE) %>% 
   #grouping data for the different methods of recalculation
   pack_rows("b & SE", 1,14) %>%
   pack_rows("test statistics", 15, 24) %>%
@@ -257,7 +262,7 @@ table4 %>%
   #adding footnotes
   footnote(general = "\\\\emph{b}\\\\textsubscript{ub} = upper bound \\\\emph{b}, SE\\\\textsubscript{lb} = lower bound SE, SE\\\\textsubscript{ub} = upper bound SE.", escape = FALSE, fixed_small_size = T, footnote_as_chunk = T, general_title = "") %>%
   footnote(general = "recalculated \\\\emph{p}-value, Cal\\\\emph{P}\\\\textsubscript{ub} = upper bound recalculated \\\\emph{p}-value, \\\\emph{b}\\\\textsubscript{lb} = lower bound \\\\emph{b}", escape = FALSE, fixed_small_size = T, footnote_as_chunk = T, general_title = "") %>% 
-  footnote(general = "Note. Rep\\\\emph{P} = reported \\\\emph{p}-value, Cal\\\\emph{P} = recalculated \\\\emph{p}-value, Cal\\\\emph{P}\\\\textsubscript{lb} = lower bound", general_title = "", escape = FALSE, fixed_small_size = T, footnote_as_chunk = T) 
+  footnote(general = "\\\\emph{Note}. Rep\\\\emph{P} = reported \\\\emph{p}-value, Cal\\\\emph{P} = recalculated \\\\emph{p}-value, Cal\\\\emph{P}\\\\textsubscript{lb} = lower bound", general_title = "", escape = FALSE, fixed_small_size = T, footnote_as_chunk = T) 
 ```
 
 
@@ -304,7 +309,7 @@ colnames(table5) <- paste(c("Number of journals (% of total)"))
 
 #Creating Table 5.
 table5 %>%
-  #format latex, centered alignment, bold-faced caption
+  #format latex, centered alignment, caption
   kable(booktabs = T, align = "c", longtable = TRUE, caption = "Numbers and percentages of sociology journals in ‘SRG' requesting/allowing adherence to different types of statistical reporting guidelines.") %>% 
   #grouping data
   pack_rows("Required", 1, 19) %>%
@@ -360,21 +365,21 @@ colnames(table6) <- paste(c("Articles", "Results", "Inconsistencies", "Gross inc
 
 #Creating Table 6.
 table6 %>%
-  #format latex, centered alignment, bold-faced caption
-  kable(booktabs = T, align = "c", caption = "Descriptive statistics on (gross) inconsistencies for ‘APA' and ‘Hyp'.") %>% 
+  #format latex, centered alignment, table continues on next page, caption
+  kable(booktabs = T, align = "c", longtable = T, caption = "Descriptive statistics on (gross) inconsistencies for ‘APA' and ‘Hyp'.") %>% 
   #adding indentation for the categories of all variables
   add_indent(c(2,3, 5:9, 11:13, 16:18, 20:22)) %>% 
   #grouping data for the two data sets
   pack_rows("‘APA'", 1, 14) %>%
   pack_rows("‘Hyp'", 15, 23) %>%
-  #table will appear in correspondence with its place in this document, table is scaled-down to fit page size
-  kable_styling(latex_options = c("striped", "HOLD_position"), full_width = F)
+  #table will appear in correspondence with its place in this document, table continues on next page
+  kable_styling(latex_options = c("striped", "HOLD_position", "repeat_header"), full_width = F) 
 ```
 
 ## Publication bias	
 In ‘AllP’, there was no evidence of publication bias. Overall, for binwidth .01, 32 out of 73 results were just significant (43.8%), and for binwidth .02, 64 out of 127 results were just significant (50.4%) (see Table 7 and Figures 2.1A and 2.1B). Splitting data among results not related to hypotheses (Figures 2.2A and 2.2B) and results that were related to hypotheses (Figures 2.3A and 2.3B), percentages were also around 50. Hence, we could not reject H~0~ for our hypotheses on publication bias (H3a and H3b). For H3a, there were $\frac{1}{.877} \approx 1.140$ times less just significant *p*-values among results of explicitly stated hypotheses than among results not related to explicitly stated hypotheses for binwidth .01, *b* = -.132, *p* = .794, OR = .877, 95% CI [.321, 2.345]. In case of H3b for binwidth .02, H~0~ could not be rejected either, since *b* = -.251, *p* = .521, OR = .778, 95% CI [.358, 1.674] (full results of the logistic regressions used to test H3a and H3b can be found in Table S3). Similarly, for ‘Hyp’, no evidence of publication bias was found among results related to explicitly stated hypotheses; we found (slightly) more just significant *p*-values than just nonsignificant ones, namely 9 out of 14 results (64.3%) for binwidth .01, and 14 out of 26 (53.8%) for binwidth .02 (see Figure 3 and Table 7). 
 
-```{r plots publication bias/bump in p-values AllP, warning=FALSE, message = FALSE, echo = FALSE, results = 'hide', fig.height=8, fig.cap="Histograms with binwidths .01 and .02 of exactly reported \\emph{p}-values in the range [.01-.11] from ‘AllP’. Specifically, information is provided for the totals of exactly reported \\emph{p}-values (2.1A & 2.1B, for which \\emph{n} = 331), as well as for exactly reported \\emph{p}-values not related to explicitly stated hypotheses (2.2A & 2.2B, for which \\emph{n} = 234) and exactly reported \\emph{p}-values related to explicitly stated hypotheses (2.3A & 2.3B, for which \\emph{n} = 97)."}
+```{r plots publication bias/bump in p-values AllP, warning=FALSE, message = FALSE, echo = FALSE, fig.height=8, fig.cap="Histograms with binwidths .01 and .02 of exactly reported p-values in the range [.01-.11] from ‘AllP’. Information is provided for the totals of exactly reported p-values, and for exactly reported p-values (not) related to explicitly stated hypotheses."}
 library('readxl') #reading in data files
 library('ggplot2') #plotting
 library('ggtext') #adapting title size
@@ -410,7 +415,7 @@ AllP_exact <- subset(AllP, Reported.Comparison == "=" & !is.na(AllP$Result.Hypot
 ###################################################
 
 #Plot binwidth .01. 
-sum(AllP_exact$Reported.P.Value >= 0.01 & AllP_exact$Reported.P.Value <= .11) #n = 331
+#sum(AllP_exact$Reported.P.Value >= 0.01 & AllP_exact$Reported.P.Value <= .11) #n = 331
 AllP_binw_01 <- ggplot() + 
   geom_histogram(data = AllP_exact, aes(x = Reported.P.Value), fill = 'grey', colour='black', bins=10, binwidth = .01, boundary = 0.01, closed = "right") + #10 bins, width .01, black bin lines, grey bins, lines of bins are black, bins close on the right
   scale_x_continuous(expand = c(0, 0), breaks = seq(.01, .11, by = .01), lim = c(.005,.115)) + #ticks on the x-axis with intervals of .01         
@@ -441,7 +446,7 @@ AllP_exact_nh <- subset(AllP_exact, Result.Hypothesis == 0) #data set containing
 AllP_exact_h <- subset(AllP_exact, Result.Hypothesis == 1)  #data set containing only results not related to explicitly stated hypotheses
 
 #Plot binwidth .01.
-sum(AllP_exact_nh$Reported.P.Value >= 0.01 & AllP_exact_nh$Reported.P.Value <= .11) #n = 234
+#sum(AllP_exact_nh$Reported.P.Value >= 0.01 & AllP_exact_nh$Reported.P.Value <= .11) #n = 234
 AllP_binw_01_nh <- ggplot() + 
   geom_histogram(data = AllP_exact_nh, aes(x = Reported.P.Value), fill = 'grey', colour='black', bins=10, binwidth = .01, boundary = 0.01, closed = "right") + #10 bins, width .01, black bin lines, grey bins, bins close on the left
   scale_x_continuous(expand = c(0, 0), breaks = seq(.01, .11, by = .01), lim = c(.005,.115)) + #ticks on the x-axis     
@@ -468,7 +473,7 @@ AllP_binw_02_nh <- ggplot() +
 ##################################################
 
 #Plot binwidth .01.
-sum(AllP_exact_h$Reported.P.Value >= 0.01 & AllP_exact_h$Reported.P.Value <= .11) #n = 97
+#sum(AllP_exact_h$Reported.P.Value >= 0.01 & AllP_exact_h$Reported.P.Value <= .11) #n = 97
 AllP_binw_01_h <- ggplot() + 
   geom_histogram(data = AllP_exact_h, aes(x = Reported.P.Value), fill = 'grey', colour='black', bins=10, binwidth = .01, boundary = .01,, closed = "right") + #10 bins, width .01, black bin lines, grey bins, bins close on the left
   scale_x_continuous(expand = c(0, 0), breaks = seq(.01, .11, by = .01), lim = c(.005,.115)) +     
@@ -495,11 +500,13 @@ AllP_binw_02_h <- ggplot() +
 ###########################
 
 #Putting the plots created above in one figure. 
-title_plots_AllP <- c("**Exactly reported *p*-values in the range [.01, .11] from 'AllP'**") #title of the figure
-plots_AllP <- grid.arrange(AllP_binw_01, AllP_binw_02, AllP_binw_01_nh, AllP_binw_02_nh, AllP_binw_01_h, AllP_binw_02_h, ncol=2, top = richtext_grob(title_plots_AllP,gp=gpar(fontsize=12, font=1))) #creating one Figure with four plots, and adding a title
+notes_plots_AllP <- c("*Note*. For 2.1A & 2.1B, *n* = 331. For 2.2A & 2.2B, *n* = 234. For 2.3A & 2.3B, *n* = 97.") #notes of the figure
+plots_AllP <- grid.arrange(AllP_binw_01, AllP_binw_02, AllP_binw_01_nh, AllP_binw_02_nh, AllP_binw_01_h, AllP_binw_02_h, ncol=2, bottom = richtext_grob(notes_plots_AllP, hjust = .571, gp = gpar(fontfamily = "serif"))) #creating one figure with four plots, and adding a note (left-justified, serif font)
 plots_AllP <- as_ggplot(plots_AllP) #putting created figure into ggplot format
 ```
-```{r plots publication bias/bump in p-values Hyp, warning=FALSE, message = FALSE, echo = FALSE, results = 'hide', fig.height=3, fig.cap="Histograms with binwidths .01 (3A) and .02 (3B) of exactly reported \\emph{p}-values related to explicitly stated hypotheses in the range [.01-.11] from 'Hyp’ (\\emph{n} = 67)."}
+
+
+```{r plots publication bias/bump in p-values Hyp, warning=FALSE, message = FALSE, echo = FALSE, fig.height=3, fig.cap="Histograms with binwidths .01 (3A) and .02 (3B) of exactly reported p-values related to explicitly stated hypotheses in the range [.01-.11] from 'Hyp'."}
 setwd("..") #setting working directory to 'thesis'
 setwd("./Data") #setting working directory to 'Data'
 
@@ -528,7 +535,7 @@ Hyp$Reported.P.Value<- as.numeric(Hyp$Reported.P.Value)
 #Subset exactly reported p-values in range [.0-.10].
 Hyp_all_jrnl_exact <- subset(Hyp, Reported.Comparison == "=")
 pb_bump_Hyp <- subset(Hyp_all_jrnl_exact, Reported.P.Value >= 0.01 & Reported.P.Value <= .11) 
-nrow(pb_bump_Hyp) #n = 67
+#nrow(pb_bump_Hyp) #n = 67
 #Keeping only the variable 'Reported.P.Value' for plotting purposes.
 pb_bump_Hyp <- pb_bump_Hyp[ ,c("Reported.P.Value")]
 
@@ -545,12 +552,12 @@ Hyp_binw_01 <- ggplot() +
   theme(axis.title.x = ggtext::element_markdown()) #enabling markdown text in label x-axis
 
 #Plot binwidth .02.
-sum(Hyp_all_jrnl_exact$Reported.P.Value >= 0.01 & Hyp_all_jrnl_exact$Reported.P.Value <= .11) #n = 67
+#sum(Hyp_all_jrnl_exact$Reported.P.Value >= 0.01 & Hyp_all_jrnl_exact$Reported.P.Value <= .11) #n = 67
 Hyp_binw_02 <- ggplot() + 
     geom_histogram(data = Hyp_all_jrnl_exact, aes(x = Reported.P.Value), fill = 'grey', colour='black', #10 bins of width .01, black bin lines, grey bins, closing left
                  bins=10, binwidth = .02, boundary = .01, closed = "right") + #ticks x-axis, intervals of .01
   scale_x_continuous(expand = c(0, 0), breaks = seq(.01, .11, by = .02), lim = c(0,.115)) + #ticks on the x-axis in the range [0, .105] with intervals of .01
-  scale_y_continuous(expand = c(0, 0), breaks = seq(0, 40, by = 10), , lim = c(0, 40)) + #ticks on the y-axis in the range [0, 200] 
+  scale_y_continuous(expand = c(0, 0), breaks = seq(0, 40, by = 10), lim = c(0, 40)) + #ticks on the y-axis in the range [0, 200] 
   geom_vline(xintercept = .05, linetype = "dotted") + #dotted vertical line at p = .05 
   labs(title = "3B: binwidth .02", x = "*p*-value") +  #title label x-axis
   theme_classic(base_size = 10) + #theme with x and y axis lines and no gridline 
@@ -558,13 +565,13 @@ Hyp_binw_02 <- ggplot() +
   theme(axis.title.x = ggtext::element_markdown()) #enabling markdown text in label x-axis
 
 #Putting the plots created above in one figure. 
-title_plots_Hyp <- c("**Exactly reported *p*-values in the range [.01, .11] from 'Hyp'**") #title of the figure
-plots_Hyp <- grid.arrange(Hyp_binw_01, Hyp_binw_02, ncol=2, nrow=1, top = richtext_grob(title_plots_Hyp,gp=gpar(fontsize=12, font=1))) #creating one Figure with four plots, and adding a title
+note_plots_Hyp <- c("*Note*. *n* = 67.") #note plot
+plots_Hyp <- grid.arrange(Hyp_binw_01, Hyp_binw_02, ncol=2, nrow=1, bottom = richtext_grob(note_plots_Hyp, hjust = 3.75, gp = gpar(fontfamily = "serif"))) #creating one figure with two plots, and adding a note (left-justified, serif font)
 plots_Hyp <- as_ggplot(plots_Hyp) #putting created figure into ggplot format
 ```
 
-\pagebreak
 
+\clearpage
 ```{r Table 7 publication bias, echo = FALSE, warning = FALSE, message = FALSE}
 #Creating content table cells.
 data_table7 <- c("", "", "", "",  "", "",
@@ -603,8 +610,8 @@ colnames(table7) <- paste(c("(.04-.05]", "(.05-.06]", "Total", "(.03-.05]", "(.0
 
 #Creating Table 7.
 table7 <- table7 %>%
-  #format latex, centered alignment, bold-faced caption
-  kable(booktabs = T, align = "c", caption = "Descriptive statistics on publication bias for ‘AllP’ and ‘Hyp’.", longtable = T) %>% 
+  #format latex, centered alignment, caption
+  kable(booktabs = T, align = "c", caption = "Descriptive statistics on publication bias among reported p-values for ‘AllP’ and ‘Hyp’.", longtable = T) %>% 
   #table will appear in correspondence with its place in this document, table is scaled-down to fit page size
   kable_styling(latex_options = c("striped", "HOLD_position", "repeat_header"), full_width = F) %>%
   kable_styling(font_size = 10) 
@@ -665,14 +672,15 @@ rownames(table8) <- paste(c("Relation to hypothesis", "Yes", "No", "Journal",
                             "2014", "2015", "2016", "Total", "Journal", 
                             "ASR", "AJS", "SQ", "Year", 
                             "2014", "2015", "2016", "Total"))
-colnames(table8) <- paste(c("(.03-.04]", "(.04-.05]", "Total", "(.01-.03]", "(.03-.05]", "Total"))
 
 #Creating Table 8.
 table8 <- table8 %>%
-  #format html, centered alignment, bold-faced caption
-  kable(booktabs = T, align = "c", caption = "Descriptive statistics on the bump in just significant results for ‘AllP’ and ‘Hyp’.") %>% 
+  #format html, centered alignment, caption
+  kable(booktabs = T, align = "c", 
+       col.names = c("(.03-.04]", "(.04-.05]", "Total", "(.01-.03]", "(.03-.05]", "Total"),
+       caption = "Descriptive statistics on the bump in just significant reported p-values for ‘AllP' and ‘Hyp'.") %>% 
   #table will appear in correspondence with its place in this document, table is scaled-down to fit page size
-  kable_styling(latex_options = c("striped", "HOLD_position", "scale_down"), full_width = F) 
+  kable_styling(latex_options = c("HOLD_position", "scale_down"), full_width = F) 
 
 table8 %>%
   #adding indentation for the categories of all variables
@@ -730,10 +738,9 @@ colnames(table9) <- paste(c("Yes", "No", "Total", "Yes", "No", "Total"))
 
 #Creating Table 9.
 table9 <- table9 %>%
-  #format html, centered alignment, bold-faced caption
-  kable(booktabs = T, align = "c", longtable = T, caption = "Descriptive statistics on marginal significance for ‘AllP’ and ‘Hyp’.") %>% 
-  #table will appear in correspondence with its place in this document, table is scaled-down to fit page size
-  #kable_styling(latex_options = c("striped", "HOLD_position", "scale_down"), full_width = F)
+  #format html, centered alignment, caption
+  kable(booktabs = T, align = "c", longtable = T, caption = "Descriptive statistics on marginal significance among reported p-values for ‘AllP’ and ‘Hyp’.") %>% 
+  #table will appear in correspondence with its place in this document, continues on next page
   kable_styling(latex_options = c("HOLD_position", "repeat_header"), full_width = F) 
 
 table9 %>%
@@ -795,20 +802,20 @@ Our study has some limitations related to amounts of retrieved data. Firstly, we
 #devtools::install_version("knitr", "1.37")
 
 #Creating content table cells.
-hyp_table_err <- c("-1.820", ".157", "< .001", ".162 [.118, .218]", #intercept H1
-                 "-.073", ".278", ".793", ".930 [.531, 1.585]", #relation hypothesis H1
-                 "-4.422", ".503", "< .001", ".012 [.004, .028]", #intercept H2
-                 ".708", ".714", ".321", "2.030 [.475, 8.685]") #relation hypothesis H2
+hyp_table_err <- c("-1.820", ".157", "-11.573", "< .001", ".162 [.118, .218]", #intercept H1
+                 "-.073", ".278", "-.262", ".793", ".930 [.531, 1.585]", #relation hypothesis H1
+                 "-4.422", ".503", "-8.791", "< .001", ".012 [.004, .028]", #intercept H2
+                 ".708", ".714", ".993", ".321", "2.030 [.475, 8.685]") #relation hypothesis H2
 #Putting content table cells into a matrix.
-hyp_table_err <- matrix(hyp_table_err, ncol = 4, nrow = 4, byrow = TRUE)
+hyp_table_err <- matrix(hyp_table_err, ncol = 5, nrow = 4, byrow = TRUE)
 
 #Giving matrix row and column names.
-colnames(hyp_table_err) <- c("b", "SE", "p", "OR [95% CI]")
+colnames(hyp_table_err) <- c("b", "SE", "z",  "p", "OR [95% CI]")
 rownames(hyp_table_err) <- paste(c("Intercept", "Result hypothesis", "Intercept", "Result hypothesis"))
 
 #Creating Table S1.
 hyp_table_err %>%
-  #format latex, centered alignment, bold-faced caption
+  #format latex, centered alignment, caption
 kable(booktabs = T, format ="latex", align = "c", caption = "Logistic regressions for H1 and H2, which concern the difference in prevalence of (gross) inconsistencies in results related to hypotheses versus results not related to hypotheses.") %>% 
   #grouping data for the two hypotheses
   pack_rows("Inconsistencies (H1)", 1, 2) %>%
@@ -859,7 +866,7 @@ colnames(table6_S2) <- paste(c("Total", "With inconsistencies", "With gross inco
 
 #Creating Table S2.
 table6_S2 %>%
-  #format latex, centered alignment, bold-faced caption
+  #format latex, centered alignment, caption
   kable(booktabs = T, align = "c", caption = "Descriptive statistics on (gross) inconsistencies for ‘APA' and ‘Hyp'.") %>% 
   #grouping columns based on binwidth
   add_header_above(c(" ", "Article level" = 3, "Results level" = 3)) %>% 
@@ -868,14 +875,8 @@ table6_S2 %>%
   #grouping data for the two data sets
   pack_rows("‘APA'", 1, 14) %>%
   pack_rows("‘Hyp'", 15, 23) %>%
-  #specifying width of columns (gross) inconsistencies
-  #column_spec(3, width = "5em") %>%
-  #column_spec(4, width = "5em") %>%
   #table will appear in correspondence with its place in this document, table is scaled-down to fit page size
-  kable_styling(latex_options = c("striped", "HOLD_position", "scale_down"), full_width = F) %>%
-  #adding footnotes
-  add_footnote("Note. The numbers of articles for the results (not) related to explicitly stated hypotheses reflect the numbers of articles that", notation = "none") %>%
-  add_footnote("contain at least one result that is (not) related to an explicitly stated hypothesis.", notation = "none") 
+  kable_styling(latex_options = c("striped", "HOLD_position", "scale_down"), full_width = F)
 ```
 
 \hspace{20em}
@@ -884,20 +885,20 @@ table6_S2 %>%
 
 ```{r Table S3 logistic regressions publication bias, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
 #Creating content table cells.
-h3ab_table <- c("-.205", ".287", ".476", ".815 [.456, 1.428]",  #intercept H3a 
-                 "-.132", ".504", ".794", ".877 [.321, 2.345]", #relation hypothesis H3a
-                 ".089", ".211", ".673", "1.093 [.723, 1.658]", #intercept H3b
-                 "-.251", ".392", ".521", ".778 [.358, 1.674]") #relation hypothesis Hb
+h3ab_table <- c("-.205", ".287", "-.713", ".476", ".815 [.456, 1.428]",  #intercept H3a 
+                 "-.132", ".504", "-.261", ".794", ".877 [.321, 2.345]", #relation hypothesis H3a
+                 ".089", ".211", ".421", ".673", "1.093 [.723, 1.658]", #intercept H3b
+                 "-.251", ".392", "-.642", ".521", ".778 [.358, 1.674]") #relation hypothesis Hb
 #Putting content table cells into a matrix.
-h3ab_table <- matrix(h3ab_table, ncol = 4, nrow = 4, byrow = TRUE)
+h3ab_table <- matrix(h3ab_table, ncol = 5, nrow = 4, byrow = TRUE)
 
 #Giving matrix row and column names.
-colnames(h3ab_table) <- c("b", "SE", "p", "OR [95% CI]")
+colnames(h3ab_table) <- c("b", "SE", "z", "p", "OR [95% CI]")
 rownames(h3ab_table) <- paste(c("Intercept", "Result hypothesis", "Intercept", "Result hypothesis"))
 
 #Creating Table S3.
 h3ab_table %>%
-  #format latex, centered alignment, bold-faced caption
+  #format latex, centered alignment, caption
 kable(booktabs = T, format ="latex", align = "c", caption = "Logistic regressions for H3a and H3b, which concerns the difference in prevalence of publication bias in results related to hypotheses versus results not related to hypotheses.") %>% 
   #table will appear in correspondence with its place in this document
   #grouping data for the two hypotheses
@@ -910,20 +911,22 @@ kable(booktabs = T, format ="latex", align = "c", caption = "Logistic regression
 
 ```{r Table S4 logistic regression marginal significance, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
 #Creating content table cells.
-h4_table <- c("-.480", ".177", ".007", ".619 [.436, .871]",  #intercept H4 
-                 "-.437", ".318", ".170", ".646 [.342, 1.194]") #relation hypothesis H4
+h4_table <- c("-.480", ".177", "-2.718", ".007", ".619 [.436, .871]",  #intercept H4 
+                 "-.437", ".318", "-1.373", ".170", ".646 [.342, 1.194]") #relation hypothesis H4
 #Putting content table cells into a matrix.
-h4_table <- matrix(h4_table, ncol = 4, nrow = 2, byrow = TRUE)
+h4_table <- matrix(h4_table, ncol = 5, nrow = 2, byrow = TRUE)
 
-#Giving matrix row and column names.
-colnames(h4_table) <- c("b", "SE", "p", "OR [95% CI]")
+#Giving matrix row names.
 rownames(h4_table) <- paste(c("Intercept", "Result hypothesis"))
 
 #Creating Table S4.
-h4_table %>%
-  #format latex, centered alignment, bold-faced caption
-kable(booktabs = T, format ="latex", align = "c", caption = "Logistic regression for H4, which concerns the difference in prevalence of marginal significance in results related to hypotheses versus results not related to hypotheses.") %>%   #table will appear in correspondence with its place in this document
-  kable_styling(latex_options = c("HOLD_position", "striped"), full_width = F)
+#h4_table %>%
+  #centered alignment, caption, column names
+kable(h4_table, format = 'latex', booktabs = T, 
+      col.names = c("b", "SE", "p", "z", "OR [95% CI]"),
+      align = c("c", "c", "c","c"), 
+      caption = "Logistic regression for H4, which concerns the difference in prevalence of marginal significance in results related to hypotheses versus results not related to hypotheses.") %>%   #table will appear in correspondence with its place in this document 
+  kable_styling(latex_options = c("HOLD_position"), full_width = F)
 ```
 
 
