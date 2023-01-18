@@ -8,7 +8,6 @@ output:
     latex_engine: xelatex
     fig_caption: yes
     keep_tex: yes
-    #extra_dependencies: ["float"]
   html_document:
     df_print: paged
   word_document: default
@@ -19,19 +18,15 @@ nocite: |
 header-includes:
 - \usepackage{setspace}\doublespacing #use double spacing
 - \newcommand{\beginsupplement}{\setcounter{table}{0} #counter for tables in supplement
-- \renewcommand{\thetable}{S\arabic{table}}
-- \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
+- \renewcommand{\thetable}{S\arabic{table}} #giving Arabic numbers to tables
+- \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}} #setting Arabic counter for figures 
 - \usepackage{caption} #nice table and figure captions
-- \captionsetup[table]{textfont={it}, labelfont={bf}, singlelinecheck=false, labelsep=newline} #APA captions tables
-- \captionsetup[figure]{textfont={it}, labelfont={bf}, singlelinecheck=false, labelsep=newline} #APA captions figures
-- \usepackage{floatrow}
-- \floatsetup[figure]{capposition=top} #Caption figure top.
-- \floatsetup[table]{capposition=top} #Caption table top.
-#- \usepackage{float} #setting in place figures and tables
+- \captionsetup[table]{textfont={it}, labelfont={bf}, singlelinecheck=false, labelsep=newline} #APA style captions tables
+- \captionsetup[figure]{textfont={it}, labelfont={bf}, singlelinecheck=false, labelsep=newline} #APA style captions figures
+- \usepackage{floatrow} #package that helps handling floating objects
+- \floatsetup[figure]{capposition=top} #caption figure top
+- \floatsetup[table]{capposition=top} #caption table top
 - \usepackage{booktabs} #enhancement of table quality
-- \usepackage{cprotect}
-- \usepackage{fvextra}
-- \usepackage{textcomp}
 - \usepackage{amssymb}  #latex features for (mathematical) symbols
 - \usepackage{amsmath} #latex features for mathematical symbols
 - \usepackage{longtable} #creating tables longer than one page
@@ -39,14 +34,13 @@ header-includes:
 - \usepackage{threeparttable} #adding structured footnotes to tables
 - \setlength{\marginparwidth }{2cm} #setting margins to 2cm
 fontsize: 12pt
-spacing: double
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(knitr.table.format = "latex") 
 ```
-\pagenumbering{gobble} 
+\pagenumbering{gobble}
 \pagebreak
 
 In this article, several aspects of statistical reporting in sociology were studied: the number of sociology journals that require adherence to the APA statistical reporting guidelines, the prevalence of statistical reporting errors, the presence of publication bias and a ‘bump’ in just significant *p*-values, and the prevalence of marginal significance among individual results and articles. Data were automatically retrieved from the 2014-2016 volumes of five sociology journals using the R package statcheck [@statcheck122]. Furthermore, data were retrieved manually from the 2014-2016 volumes of three sociology journals previously studied in research on publication bias by @Gerber2008. We found that only 13 of 143 sociology journals (9.1%) requested authors to adhere to the APA statistical reporting guidelines. Using statcheck, we found a slightly higher prevalence of inconsistent results (13.7%) and a prevalence of grossly inconsistent results comparable to previous studies in psychology [@Nuijten2016]. In our manually retrieved statistical results related to explicitly stated hypotheses, 3.5% of results were inconsistent and 0.5% grossly inconsistent. No convincing evidence of publication bias and a ‘bump’ in *p*-values was found. Assignment of marginal significance was rather prevalent, with 81.5% of manually retrieved results with *p*-values in the interval (.05-.10] labelled as such. Furthermore, in 43% (automatically retrieved data) and 63.3% (manually retrieved data related to hypotheses) of articles with *p*-values in this interval, marginal significance was assigned at least once. Implications of these results for statistical reporting quality in sociology are discussed. 
@@ -98,11 +92,10 @@ For each sociology journal in @WOS, we verified if it explicitly required author
 
 
 ```{r Table 1 overview information data sets, echo = FALSE, warning = FALSE, message = FALSE}
-#tinytex::reinstall_tinytex()
 library('dplyr') #using pipes
-library('knitr') 
+library('knitr') #generating document
 library('kableExtra') #making a nice table
-library(tidyverse)
+library('tidyverse') 
 
 #Creating content table cells.
 data_table1 <- c("all", "all", "\\emph{ASR}/\\emph{AJS}/\\emph{SQ}", #journals
@@ -122,7 +115,7 @@ colnames(table1) <- paste(c("‘AllP’", "‘APA’", "‘Hyp’"))
 #Creating Table 1.
 table1 %>%
   #format latex, centered alignment, caption
-  kable(booktabs = T, align = "c", caption = "Overview of information provided by ‘AllP', ‘APA', and ‘Hyp'.", escape = FALSE) %>% #booktabs used, centered alignment, caption caption
+  kable(booktabs = T, align = "c", caption = "Overview of information provided by ‘AllP', ‘APA', and ‘Hyp'.", escape = FALSE) %>% #booktabs used, centered alignment, caption
   kable_styling(latex_options = "HOLD_position", full_width = F)
 ```
 
@@ -154,8 +147,9 @@ colnames(table2) <- paste(c("‘AllP'", "‘APA'", "‘Hyp'"))
 
 #Creating Table 2.
 table2 <- table2 %>%
-  #centered alignment
-  kable(booktabs = T, align = "c", caption = "Overview of numbers of statistical results and accompanying articles used in analyses of results-related topics for ‘AllP', ‘APA', and ‘Hyp'.") %>%  #booktabs used, centered alignment, caption caption
+  #booktabs used, centered alignment, caption
+  kable(booktabs = T, align = "c", caption = "Overview of numbers of statistical results and accompanying articles used in analyses of results-related topics for ‘AllP', ‘APA', and ‘Hyp'.") %>%  
+  #table will appear in correspondence with its place in this document
   kable_styling(latex_options = c("striped", "HOLD_position"), font_size = 12, full_width = F) 
 
 table2 %>%
@@ -184,7 +178,7 @@ We also obtained descriptive statistics on how many articles with *p*-values in 
 </center>
 
 &nbsp;&nbsp;&nbsp;&nbsp;There are some differences between our study on publication bias and that of @Gerber2008. @Gerber2008 performed caliper tests on *z*-values and *t*-values (converted to *z*-values) within 5%, 10%, 15%, or 20% of *z* = 1.64 (one-sided testing) and *z* = 1.96 (two-sided testing). If *z*-values or *t*-values were unavailable, regression coefficients and standard errors were used to calculate *z*-values. We used only exactly reported (not recalculated) *p*-values in the intervals (.04-.06] and (.03-.07] to study publication bias instead.^[It should be noted that these *p*-value intervals largely overlap with the 5% and 10% caliper tests of @Gerber2008. E.g., for two-sided tests, the 5% caliper had an equivalent *p*-value interval of (.039-.063), while the 10% caliper had an equivalent *p*-value interval of (.031-.077\].] We did this because it was often unknown what kind of distribution an analysis was based on, and because it allowed us to also include *p*-values based on *F*-values, *r*-values, and $\chi^2$-values. We did not mix reported and recalculated *p*-values in our analyses because @Krawczyk and @Hartgerink2016 found that there can be differences in reported and recalculated *p*-value distributions around *p* = .05, and @Hartgerink2016 have argued that these two types of *p*-values should therefore not be mixed in studies on reporting practices. Finally, @Gerber2008 excluded articles with more than 38 relevant coefficients because their inclusion could have a disproportionate impact on analyses. We did not do so since we wanted to include all *p*-values relevant for studying publication bias.\
-&nbsp;&nbsp;&nbsp;&nbsp;We organized all available aspects of a result of an explicitly stated hypothesis - *p*-value, regression coefficient (or odds ratio, proportional hazard, etc.), *z*-value, *t*-value, *F*-value, *r*-value, $\chi^2$-value, standard error, sample size, *df*, phrasing of the hypothesis a result belonged to as retrieved from the article, and, if applicable, text from the article in which a result was mentioned - as we did for ‘APA’. In total, ‘Hyp’ contained 4,929 results (see Table 1). It was used to study all our results-related phenomena of interest (see Table 2). Where possible, we checked whether statistical results were (grossly) inconsistent by recalculating their *p*-values using the following functions from the R stats package [@Rstats]: pt() for *t*-values and *r*-values^[In order to use the pt() function for results with *r*-values, *r*-values first had to be converted to *t*-values with the following formula: $$ t = \frac{r\sqrt{df}}{\sqrt{1-r^2}} $$ where *df* = *n* - 2.], pnorm() for *z*-values, pf() for *F*-values, and pchisq() for $\chi^2$-values. For detailed information on how this was done, see Table 3 and Table 4. We also manually added information to ‘Hyp’ on assignment of marginal significance to in-text *p*-values in the (.05-.10] interval as we did for ‘AllP’. For *p*-values in captions of tables and figures, we considered significance levels of *p* < .10 (indicated by, e.g., an asterisk) to be assignment of marginal significance. Finally, among articles in ‘Hyp’ with *p*-values in the interval (.05-.10], we studied the percentage of articles in which marginal significance was assigned at least once to a *p*-value in this interval. Note that ‘AllP’, ‘APA’, and ‘Hyp’ overlap. For instance, an in-text APA-reported result related to an explicitly stated hypothesis is included in all three data sets.
+&nbsp;&nbsp;&nbsp;&nbsp;We organized all available aspects of a result of an explicitly stated hypothesis - *p*-value, regression coefficient (or odds ratio, proportional hazard, etc.), *z*-value, *t*-value, *F*-value, *r*-value, $\chi^2$-value, standard error, sample size, *df*, phrasing of the hypothesis a result belonged to as retrieved from the article, and, if applicable, text from the article in which a result was mentioned - as we did for ‘APA’. In total, ‘Hyp’ contained 4,929 results (see Table 1). It was used to study all our results-related phenomena of interest (see Table 2). Where possible, we checked whether statistical results were (grossly) inconsistent by recalculating their *p*-values using the following functions from the R stats package [@Rstats]: pt() for *t*-values and *r*-values^[In order to use the pt() function on *r*-values, *r*-values first had to be converted to *t*-values with the formula: $$ t = \frac{r\sqrt{df}}{\sqrt{1-r^2}} $$ where *df* = *n* - 2.], pnorm() for *z*-values, pf() for *F*-values, and pchisq() for $\chi^2$-values. For detailed information on how this was done, see Table 3 and Table 4. We also manually added information to ‘Hyp’ on assignment of marginal significance to in-text *p*-values in the (.05-.10] interval as we did for ‘AllP’. For *p*-values in captions of tables and figures, we considered significance levels of *p* < .10 (indicated by, e.g., an asterisk) to be assignment of marginal significance. Finally, among articles in ‘Hyp’ with *p*-values in the interval (.05-.10], we studied the percentage of articles in which marginal significance was assigned at least once to a *p*-value in this interval. Note that ‘AllP’, ‘APA’, and ‘Hyp’ overlap. For instance, an in-text APA-reported result related to an explicitly stated hypothesis is included in all three data sets.
 \
 
 ```{r Table 3 definition consistencies and gross inconsistencies Hyp, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
@@ -200,7 +194,7 @@ colnames(table3) <- paste(c("Type of Rep\\emph{P}", "Inconsistent if...", "Gross
 
 #Creating Table 3.
 table3 %>%
-  #booktabs used, centered alignment, caption caption
+  #booktabs used, centered alignment, caption
   kable(booktabs = T,  align = "c", caption = "Inconsistencies and gross inconsistencies as determined for different types of reported p-values in  ‘Hyp'.", escape = FALSE) %>% 
   #table will appear in correspondence with its place in this document
   kable_styling(latex_options = c("HOLD_position"), full_width = F) %>% 
@@ -256,10 +250,10 @@ table4 %>%
   pack_rows("test statistics", 15, 24) %>%
   #Adding indentation 
   add_indent(c(3:14, 18:24)) %>% 
-  #table will appear in correspondence with its place in this document, table is scaled-down to fit page size, font size is 20
+  #table will appear in correspondence with its place in this document, table is scaled-down to fit page size, font size is 12
   kable_styling(latex_options = c("HOLD_position", "repeat_header"), full_width = F) %>%
   kable_styling(font_size = 12) %>% 
-  #adding footnotes
+  #adding footnotes with small font size
   footnote(general = "\\\\emph{b}\\\\textsubscript{ub} = upper bound \\\\emph{b}, SE\\\\textsubscript{lb} = lower bound SE, SE\\\\textsubscript{ub} = upper bound SE.", escape = FALSE, fixed_small_size = T, footnote_as_chunk = T, general_title = "") %>%
   footnote(general = "recalculated \\\\emph{p}-value, Cal\\\\emph{P}\\\\textsubscript{ub} = upper bound recalculated \\\\emph{p}-value, \\\\emph{b}\\\\textsubscript{lb} = lower bound \\\\emph{b}", escape = FALSE, fixed_small_size = T, footnote_as_chunk = T, general_title = "") %>% 
   footnote(general = "\\\\emph{Note}. Rep\\\\emph{P} = reported \\\\emph{p}-value, Cal\\\\emph{P} = recalculated \\\\emph{p}-value, Cal\\\\emph{P}\\\\textsubscript{lb} = lower bound", general_title = "", escape = FALSE, fixed_small_size = T, footnote_as_chunk = T) 
@@ -309,15 +303,15 @@ colnames(table5) <- paste(c("Number of journals (% of total)"))
 
 #Creating Table 5.
 table5 %>%
-  #format latex, centered alignment, caption
-  kable(booktabs = T, align = "c", longtable = TRUE, caption = "Numbers and percentages of sociology journals in ‘SRG' requesting/allowing adherence to different types of statistical reporting guidelines.") %>% 
+  #format latex, centered alignment, caption,
+  kable(booktabs = T, align = "c", caption = "Numbers and percentages of sociology journals in ‘SRG' requesting/allowing adherence to different types of statistical reporting guidelines.") %>% 
   #grouping data
   pack_rows("Required", 1, 19) %>%
   pack_rows("Other, namely...", 20, 22) %>%
   #adding indentation for different groups
   add_indent(c(2:3, 5:6, 8:9, 11:12)) %>%
   #table will appear in correspondence with its place in this document, table is scaled-down to fit page size, font size is 10
-  kable_styling(latex_options = c("HOLD_position", "repeat_header"), full_width = F) %>%
+  kable_styling(latex_options = c("HOLD_position"), full_width = F) %>%
   kable_styling(font_size = 10) %>% 
   #Adding footnote
   footnote(symbol = "We were unable to find which guidelines authors publishing in the journal \\\\emph{Society} are required or allowed to use. The link on the journal's website that should have provided access to this information gave a ‘page not found’ error.", escape = FALSE, threeparttable = T, footnote_as_chunk = T)
@@ -365,7 +359,7 @@ colnames(table6) <- paste(c("Articles", "Results", "Inconsistencies", "Gross inc
 
 #Creating Table 6.
 table6 %>%
-  #format latex, centered alignment, table continues on next page, caption
+  #booktabs used, centered alignment, table continues on next page, caption
   kable(booktabs = T, align = "c", longtable = T, caption = "Descriptive statistics on (gross) inconsistencies for ‘APA' and ‘Hyp'.") %>% 
   #adding indentation for the categories of all variables
   add_indent(c(2,3, 5:9, 11:13, 16:18, 20:22)) %>% 
@@ -386,7 +380,7 @@ library('ggtext') #adapting title size
 library('gridExtra') #arranging tables
 library('gridtext') #adapting text above final table
 library('grid') #font (size) options in grid.arrange function
-library('ggpubr') #creating a ggplot object out of multiple ggplots out together
+library('ggpubr') #creating one ggplot object out of multiple ggplots
 library("cowplot") #adding a label to the final plot
 
 setwd("..") #setting working directory to 'thesis'
@@ -473,7 +467,6 @@ AllP_binw_02_nh <- ggplot() +
 ##################################################
 
 #Plot binwidth .01.
-#sum(AllP_exact_h$Reported.P.Value >= 0.01 & AllP_exact_h$Reported.P.Value <= .11) #n = 97
 AllP_binw_01_h <- ggplot() + 
   geom_histogram(data = AllP_exact_h, aes(x = Reported.P.Value), fill = 'grey', colour='black', bins=10, binwidth = .01, boundary = .01,, closed = "right") + #10 bins, width .01, black bin lines, grey bins, bins close on the left
   scale_x_continuous(expand = c(0, 0), breaks = seq(.01, .11, by = .01), lim = c(.005,.115)) +     
@@ -610,10 +603,10 @@ colnames(table7) <- paste(c("(.04-.05]", "(.05-.06]", "Total", "(.03-.05]", "(.0
 
 #Creating Table 7.
 table7 <- table7 %>%
-  #format latex, centered alignment, caption
-  kable(booktabs = T, align = "c", caption = "Descriptive statistics on publication bias among reported p-values for ‘AllP’ and ‘Hyp’.", longtable = T) %>% 
+  #booktabs used, centered alignment, caption
+  kable(booktabs = T, align = "c", caption = "Descriptive statistics on publication bias among reported p-values for ‘AllP’ and ‘Hyp’.") %>% 
   #table will appear in correspondence with its place in this document, table is scaled-down to fit page size
-  kable_styling(latex_options = c("striped", "HOLD_position", "repeat_header"), full_width = F) %>%
+  kable_styling(latex_options = c("striped", "HOLD_position"), full_width = F) %>%
   kable_styling(font_size = 10) 
 
 table7 %>%
@@ -675,7 +668,7 @@ rownames(table8) <- paste(c("Relation to hypothesis", "Yes", "No", "Journal",
 
 #Creating Table 8.
 table8 <- table8 %>%
-  #format html, centered alignment, caption
+  #booktabs used, centered alignment, caption
   kable(booktabs = T, align = "c", 
        col.names = c("(.03-.04]", "(.04-.05]", "Total", "(.01-.03]", "(.03-.05]", "Total"),
        caption = "Descriptive statistics on the bump in just significant reported p-values for ‘AllP' and ‘Hyp'.") %>% 
@@ -738,7 +731,7 @@ colnames(table9) <- paste(c("Yes", "No", "Total", "Yes", "No", "Total"))
 
 #Creating Table 9.
 table9 <- table9 %>%
-  #format html, centered alignment, caption
+  #booktabs used, centered alignment, caption, table continues on next page
   kable(booktabs = T, align = "c", longtable = T, caption = "Descriptive statistics on marginal significance among reported p-values for ‘AllP’ and ‘Hyp’.") %>% 
   #table will appear in correspondence with its place in this document, continues on next page
   kable_styling(latex_options = c("HOLD_position", "repeat_header"), full_width = F) 
@@ -751,8 +744,6 @@ table9 %>%
   #grouping variables for the two data sets
   pack_rows("‘AllP'", 1, 14) %>%
   pack_rows("‘Hyp'", 15, 23) #%>%
-  #fixing large spaces between columns with data at the article level 
-  #column_spec(5:6, width = "5em")
 ```
 \vspace{2cm}
 
@@ -797,10 +788,6 @@ Our study has some limitations related to amounts of retrieved data. Firstly, we
 # Supplement
 
 ```{r Table S1 logistic regressions statistical reporting errors, echo = FALSE, warning = FALSE, message = FALSE, include=knitr::is_latex_output()}
-#install.packages("knitr")
-#library(knitr)
-#devtools::install_version("knitr", "1.37")
-
 #Creating content table cells.
 hyp_table_err <- c("-1.820", ".157", "-11.573", "< .001", ".162 [.118, .218]", #intercept H1
                  "-.073", ".278", "-.262", ".793", ".930 [.531, 1.585]", #relation hypothesis H1
@@ -815,8 +802,8 @@ rownames(hyp_table_err) <- paste(c("Intercept", "Result hypothesis", "Intercept"
 
 #Creating Table S1.
 hyp_table_err %>%
-  #format latex, centered alignment, caption
-kable(booktabs = T, format ="latex", align = "c", caption = "Logistic regressions for H1 and H2, which concern the difference in prevalence of (gross) inconsistencies in results related to hypotheses versus results not related to hypotheses.") %>% 
+  #booktabs used, centered alignment, caption
+kable(booktabs = T, align = "c", caption = "Logistic regressions for H1 and H2, which concern the difference in prevalence of (gross) inconsistencies in results related to hypotheses versus results not related to hypotheses.") %>% 
   #grouping data for the two hypotheses
   pack_rows("Inconsistencies (H1)", 1, 2) %>%
   pack_rows("Gross inconsistencies (H2)", 3, 4) %>%
@@ -866,7 +853,7 @@ colnames(table6_S2) <- paste(c("Total", "With inconsistencies", "With gross inco
 
 #Creating Table S2.
 table6_S2 %>%
-  #format latex, centered alignment, caption
+  #booktabs used, centered alignment, caption
   kable(booktabs = T, align = "c", caption = "Descriptive statistics on (gross) inconsistencies for ‘APA' and ‘Hyp'.") %>% 
   #grouping columns based on binwidth
   add_header_above(c(" ", "Article level" = 3, "Results level" = 3)) %>% 
@@ -898,12 +885,12 @@ rownames(h3ab_table) <- paste(c("Intercept", "Result hypothesis", "Intercept", "
 
 #Creating Table S3.
 h3ab_table %>%
-  #format latex, centered alignment, caption
-kable(booktabs = T, format ="latex", align = "c", caption = "Logistic regressions for H3a and H3b, which concerns the difference in prevalence of publication bias in results related to hypotheses versus results not related to hypotheses.") %>% 
-  #table will appear in correspondence with its place in this document
+  #booktabs used, centered alignment, caption
+kable(booktabs = T, align = "c", caption = "Logistic regressions for H3a and H3b, which concerns the difference in prevalence of publication bias in results related to hypotheses versus results not related to hypotheses.") %>% 
   #grouping data for the two hypotheses
   pack_rows("Binwidth .01 (H3a)", 1, 2) %>%
   pack_rows("Binwidth .02 (H3b)", 3, 4) %>%
+  #table will appear in correspondence with its place in this document
   kable_styling(latex_options = c("HOLD_position", "striped"), full_width = F)
 ```
 \hspace{20em}
@@ -917,15 +904,15 @@ h4_table <- c("-.480", ".177", "-2.718", ".007", ".619 [.436, .871]",  #intercep
 h4_table <- matrix(h4_table, ncol = 5, nrow = 2, byrow = TRUE)
 
 #Giving matrix row names.
+colnames(h4_table) <- c("b", "SE", "z", "p", "OR [95% CI]")
 rownames(h4_table) <- paste(c("Intercept", "Result hypothesis"))
 
+
 #Creating Table S4.
-#h4_table %>%
-  #centered alignment, caption, column names
-kable(h4_table, format = 'latex', booktabs = T, 
-      col.names = c("b", "SE", "p", "z", "OR [95% CI]"),
-      align = c("c", "c", "c","c"), 
-      caption = "Logistic regression for H4, which concerns the difference in prevalence of marginal significance in results related to hypotheses versus results not related to hypotheses.") %>%   #table will appear in correspondence with its place in this document 
+h4_table %>%
+  #centered alignment, caption
+kable(booktabs = T, align = "c", caption = "Logistic regression for H4, which concerns the difference in prevalence of marginal significance in results related to hypotheses versus results not related to hypotheses.") %>%   
+  #table will appear in correspondence with its place in this document 
   kable_styling(latex_options = c("HOLD_position"), full_width = F)
 ```
 

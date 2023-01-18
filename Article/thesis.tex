@@ -61,27 +61,28 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 \usepackage{setspace}\doublespacing
-\newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
+\newcommand{\beginsupplement}{\setcounter{table}{0}
+\renewcommand{\thetable}{S\arabic{table}}
+\setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
 \usepackage{caption}
-\usepackage{float}
+\captionsetup[table]{textfont={it}, labelfont={bf}, singlelinecheck=false, labelsep=newline}
+\captionsetup[figure]{textfont={it}, labelfont={bf}, singlelinecheck=false, labelsep=newline}
+\usepackage{floatrow}
+\floatsetup[figure]{capposition=top}
+\floatsetup[table]{capposition=top}
 \usepackage{booktabs}
-\usepackage{cprotect}
-\usepackage{fvextra}
-\usepackage{textcomp}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{longtable}
 \usepackage{multicol}
 \usepackage{threeparttable}
-\usepackage{caption}
 \setlength{\marginparwidth }{2cm}
-\usepackage{todonotes}
-\usepackage{float}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
 \usepackage{multirow}
 \usepackage{wrapfig}
+\usepackage{float}
 \usepackage{colortbl}
 \usepackage{pdflscape}
 \usepackage{tabu}
@@ -93,12 +94,12 @@
 
 \title{The reporting of statistical results in sociology: a systematic review}
 \author{Supervisor: Marcel van Assen}
-\date{30 November 2022}
+\date{18 January 2023}
 
 \begin{document}
 \maketitle
 
-\pagenumbering{gobble} 
+\pagenumbering{gobble}
 \pagebreak
 
 In this article, several aspects of statistical reporting in sociology
@@ -115,19 +116,18 @@ Malhotra (2008). We found that only 13 of 143 sociology journals (9.1\%)
 requested authors to adhere to the APA statistical reporting guidelines.
 Using statcheck, we found a slightly higher prevalence of inconsistent
 results (13.7\%) and a prevalence of grossly inconsistent results
-comparable to previous studies in psychology (Nuijten, Hartgerink, Van
-Assen, Epskamp, \& Wicherts, 2016). In our manually retrieved
-statistical results related to explicitly stated hypotheses, 3.5\% of
-results were inconsistent and 0.5\% grossly inconsistent. No convincing
-evidence of publication bias and a `bump' in \emph{p}-values was found.
-Assignment of marginal significance was rather prevalent, with 81.5\% of
-manually retrieved results with \emph{p}-values in the interval
-(.05-.10{]} labelled as such. Furthermore, in 43\% (automatically
-retrieved data) and 63.3\% (manually retrieved data related to
-hypotheses) of articles with \emph{p}-values in this interval, marginal
-significance was assigned at least once. Implications of these results
-for statistical reporting quality in sociology are discussed.
-\pagenumbering{arabic}\\
+comparable to previous studies in psychology (Nuijten et al., 2016). In
+our manually retrieved statistical results related to explicitly stated
+hypotheses, 3.5\% of results were inconsistent and 0.5\% grossly
+inconsistent. No convincing evidence of publication bias and a `bump' in
+\emph{p}-values was found. Assignment of marginal significance was
+rather prevalent, with 81.5\% of manually retrieved results with
+\emph{p}-values in the interval (.05-.10{]} labelled as such.
+Furthermore, in 43\% (automatically retrieved data) and 63.3\% (manually
+retrieved data related to hypotheses) of articles with \emph{p}-values
+in this interval, marginal significance was assigned at least once.
+Implications of these results for statistical reporting quality in
+sociology are discussed. \pagenumbering{arabic}\\
 
 \textbf{Keywords} statcheck, publication bias, statistical reporting
 errors, marginal significance, statistical reporting guidelines
@@ -190,25 +190,23 @@ statistically significant result, but \emph{t}(50) = 1.99 implies
 To our knowledge, no research on the prevalence of statistical reporting
 errors in sociology has previously been conducted. However, research in
 psychology found that 4.3\%-12.8\% of results are inconsistent (Bakker
-\& Wicherts, 2011; Krawczyk, 2015; Nuijten et al., 2016; Veldkamp,
-Nuijten, Dominguez-Alvarez, Van Assen, \& Wicherts, 2014; Vermeulen et
-al., 2015; Wicherts, Bakker, \& Molenaar, 2011). Gross inconsistencies
-make up 0.8\%-2.5\% of reported results in psychology (Bakker \&
-Wicherts, 2011; Nuijten et al., 2016; Veldkamp et al., 2014; Vermeulen
-et al., 2015), and occur relatively often in results which are reported
-as significant, but are in fact non-significant. Nuijten et al. (2016)
-found that due to gross inconsistencies, there were 2.2 percentage
-points less significant recalculated \emph{p}-values than significant
-reported \emph{p}-values, while Vermeulen et al. (2015) found that
-76.9\% of gross inconsistencies were results erroneously reported as
-significant. Similarly, research in psychology found that 38.7\%-67.45\%
-of \emph{p}-values reported as \emph{p} = .05 had non-significant
-counterparts (Hartgerink, Van Aert, Nuijten, Wicherts, \& Van Assen,
-2016; Leggett, Thomas, Loetscher, \& Nicholls, 2013). This could point
-to authors using the questionable research practice (QRP) of incorrect
-\emph{p}-value rounding to obtain (false) significance (Hartgerink et
-al., 2016; John, Loewenstein, \& Prelec, 2012). We studied the
-prevalence of statistical reporting errors in a selection of
+\& Wicherts, 2011; Krawczyk, 2015; Nuijten et al., 2016; Veldkamp et
+al., 2014; Vermeulen et al., 2015; Wicherts et al., 2011). Gross
+inconsistencies make up 0.8\%-2.5\% of reported results in psychology
+(Bakker \& Wicherts, 2011; Nuijten et al., 2016; Veldkamp et al., 2014;
+Vermeulen et al., 2015), and occur relatively often in results which are
+reported as significant, but are in fact non-significant. Nuijten et al.
+(2016) found that due to gross inconsistencies, there were 2.2
+percentage points less significant recalculated \emph{p}-values than
+significant reported \emph{p}-values, while Vermeulen et al. (2015)
+found that 76.9\% of gross inconsistencies were results erroneously
+reported as significant. Similarly, research in psychology found that
+38.7\%-67.45\% of \emph{p}-values reported as \emph{p} = .05 had
+non-significant counterparts (Hartgerink et al., 2016; Leggett et al.,
+2013). This could point to authors using the questionable research
+practice (QRP) of incorrect \emph{p}-value rounding to obtain (false)
+significance (Hartgerink et al., 2016; John et al., 2012). We studied
+the prevalence of statistical reporting errors in a selection of
 APA\footnote{In this article, when discussing sociology journals, the
   term `APA journal' does not refer to a journal which belongs to the
   APA organization. Instead, it refers to a journal that requires its
@@ -220,32 +218,31 @@ APA-reported results.\\
 bias occurs when statistically non-significant results are published
 relatively less often than significant ones (Dickersin, 1990). It has
 been found in various scientific fields (e.g., Dickersin, 1990;
-Easterbrook, Gopalan, Berlin, \& Matthews, 1991; Fanelli, 2010, 2011;
-Franco, Malhotra, \& Simonovits, 2014, 2016; Kühberger, Fritz, \&
-Scherndl, 2014; Lakens, 2015a in his reanalysis of De Winter \& Dodou,
-2015). Publication bias is caused by the selection of articles for
-publication based on significant results (Maxwell, 1981; Song et al.,
-2010) combined with the dependence of scientists' career success on
-publishing articles with significant results (Dickersin, 1990; Lawrence,
-2003; Song et al., 2010). This mechanism increases the relative amount
-of published significant results by reducing the amount of published
-non-significant results (Hartgerink et al., 2016). Publication bias is
-problematic because an overrepresentation of significant results limits
-the scientific community's ability to nuance or correct previous
-findings (Knight, 2003). Thereby, it might inhibit scientific progress.
-Potential causes of a high prevalence of significant results are QRPs
-that lead to \emph{p}-hacking, like rounding down \emph{p}-values such
-that they become significant or conducting multiple statistical analyses
-and only reporting the lowest obtained \emph{p}-value (Hartgerink et
-al., 2016; John et al., 2012; Ulrich \& Miller, 2015). In various
-scientific fields, publication bias has been indicated by a low
-prevalence of just nonsignificant \emph{p}-values relative to just
-significant ones (De Winter \& Dodou, 2015; Ginsel, Aggarwal, Xuan, \&
-Harris, 2015). In psychology, Lakens (2015b) found evidence of
-publication bias in his reanalysis of Masicampo \& Lalande (2012), and
-Kühberger et al. (2014) found three times more just significant results
-than just nonsignificant ones in 531 psychology articles using caliper
-tests. In sociology, Gerber \& Malhotra (2008) found evidence of
+Easterbrook et al., 1991; Fanelli, 2010, 2011; Franco et al., 2014,
+2016; Kühberger et al., 2014; Lakens, 2015a in his reanalysis of De
+Winter \& Dodou, 2015). Publication bias is caused by the selection of
+articles for publication based on significant results (Maxwell, 1981;
+Song et al., 2010) combined with the dependence of scientists' career
+success on publishing articles with significant results (Dickersin,
+1990; Lawrence, 2003; Song et al., 2010). This mechanism increases the
+relative amount of published significant results by reducing the amount
+of published non-significant results (Hartgerink et al., 2016).
+Publication bias is problematic because an overrepresentation of
+significant results limits the scientific community's ability to nuance
+or correct previous findings (Knight, 2003). Thereby, it might inhibit
+scientific progress. Potential causes of a high prevalence of
+significant results are QRPs that lead to \emph{p}-hacking, like
+rounding down \emph{p}-values such that they become significant or
+conducting multiple statistical analyses and only reporting the lowest
+obtained \emph{p}-value (Hartgerink et al., 2016; John et al., 2012;
+Ulrich \& Miller, 2015). In various scientific fields, publication bias
+has been indicated by a low prevalence of just nonsignificant
+\emph{p}-values relative to just significant ones (De Winter \& Dodou,
+2015; Ginsel et al., 2015). In psychology, Lakens (2015b) found evidence
+of publication bias in his reanalysis of Masicampo \& Lalande (2012),
+and Kühberger et al. (2014) found three times more just significant
+results than just nonsignificant ones in 531 psychology articles using
+caliper tests. In sociology, Gerber \& Malhotra (2008) found evidence of
 publication bias among results corresponding to hypotheses from the
 2003-2005 volumes of American Sociological Review (\emph{ASR}), American
 Journal of Sociology (\emph{AJS}) and Sociological Quarterly
@@ -269,62 +266,60 @@ in the distribution of significant \emph{p}-values, for instance:
 exclusion of outliers after having conducted analyses (Bakker \&
 Wicherts, 2014), or using a different sample of data if the previous
 one(s) did not provide significant results - also called data peeking,
-see Armitage, McPherson, \& Rowe (1969). Across a variety of
-disciplines, Head, Holman, Lanfear, Khan, \& Jennions (2015) found
-indications of a `bump' in the \emph{p}-value intervals (.045-.05) and
-(.025-.05). However, Hartgerink (2017) found no evidence of a `bump'
-when reanalyzing this study's data with different binwidths. In
-psychology, some studies focusing on the \emph{p}-value interval
+see Armitage et al. (1969). Across a variety of disciplines, Head et al.
+(2015) found indications of a `bump' in the \emph{p}-value intervals
+(.045-.05) and (.025-.05). However, Hartgerink (2017) found no evidence
+of a `bump' when reanalyzing this study's data with different binwidths.
+In psychology, some studies focusing on the \emph{p}-value interval
 (.04-.05{]} also claimed to have found an overrepresentation of just
 significant \emph{p}-values (Hartgerink et al., 2016; Leggett et al.,
 2013; Masicampo \& Lalande, 2012). However, a reanalysis by Lakens
 (2015b) of Masicampo \& Lalande (2012) showed that the
 overrepresentation of just significant \emph{p}-values they found for
-one specific binwidth was likely coincidental. Furthermore, Simonsohn,
-Nelson, \& Simmons (2014) and Hartgerink et al. (2016) argued that data
-peeking does not result in a `bump' if true effect sizes are medium
-(Cohen's \emph{d} = 0.5) or larger. Although this implies that the
-absence of a `bump' is no evidence of absence of QRPs, the presence of a
-`bump' can only be explained by QRPs such as those mentioned above.
-Following Hartgerink et al. (2016), we studied the presence of a `bump'
-using the \emph{p}-value intervals (.04-.05{]} versus (.03-.04{]} and
-(.03-.05{]} versus (.01-.03{]}. Larger intervals were again used because
-they may provide higher testing power, although power may also decrease
-because \emph{p}-values near .01 will be more prevalent than
-\emph{p}-values near .05 in case of true nonzero effects (Hartgerink et
-al., 2016).\\
+one specific binwidth was likely coincidental. Furthermore, Simonsohn et
+al. (2014) and Hartgerink et al. (2016) argued that data peeking does
+not result in a `bump' if true effect sizes are medium (Cohen's \emph{d}
+= 0.5) or larger. Although this implies that the absence of a `bump' is
+no evidence of absence of QRPs, the presence of a `bump' can only be
+explained by QRPs such as those mentioned above. Following Hartgerink et
+al. (2016), we studied the presence of a `bump' using the \emph{p}-value
+intervals (.04-.05{]} versus (.03-.04{]} and (.03-.05{]} versus
+(.01-.03{]}. Larger intervals were again used because they may provide
+higher testing power, although power may also decrease because
+\emph{p}-values near .01 will be more prevalent than \emph{p}-values
+near .05 in case of true nonzero effects (Hartgerink et al., 2016).\\
 \hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}We
 also examined the prevalence of results reported as marginally
 significant in sociology. The reporting of marginally significant
 results occurs when authors argue that statistically non-significant
 results (\emph{p} \textgreater{} .05) provide evidence of nonzero true
 effects, although one can argue they have low evidential value (Benjamin
-et al., 2017; Ohlsson Collentine, Van Assen, \& Hartgerink, 2019;
-Pritschet, Powell, \& Horne, 2016). Thus, assigning marginal
-significance may result in (unwarranted) false positives. Since this can
-lead to audiences assuming a true effect exists while evidence for it is
-slight, marginally significant \emph{p}-values can be considered
-undesirable. \emph{P}-values reported as marginally significant can
-mainly be found in the interval (.05-.10{]}; according to Pritschet et
-al. (2016), 92.6\% of \emph{p}-values reported as marginally significant
-in psychology were found here. Ohlsson Collentine et al. (2019) found
-that almost 40\% of \emph{p}-values in the (.05-.10{]} interval
-retrieved from 44,200 psychology articles published between 1985-2016
-were reported as marginally significant. They also found that almost
-20\% of articles containing \emph{p}-values had at least one
-\emph{p}-value in the (.05-.10{]} interval that was reported as
-marginally significant. In addition, Pritschet et al. (2016) found that
-18\% of articles from three psychology journals published in 1970
-assigned marginal significance at least once, and that in 2010, this had
-increased to 54\%. In sociology, Leahey (2005) found that 10\% of a
-stratified random sample of \emph{ASR} and \emph{AJS} articles published
-between 1995-2000 used a significance level of low evidential value of
-\emph{p} \textless{} .10. We followed Ohlsson Collentine et al. (2019)
-by studying the prevalence of assignment of marginal significance to
-results within the \emph{p}-value interval (.05-.10{]}. Also, following,
-Leahey (2005), Pritschet et al. (2016), and Ohlsson Collentine et al.
-(2019), we examined the percentage of articles with \emph{p}-values in
-which marginal significance was assigned at least once.\\
+et al., 2017; Ohlsson Collentine et al., 2019; Pritschet et al., 2016).
+Thus, assigning marginal significance may result in (unwarranted) false
+positives. Since this can lead to audiences assuming a true effect
+exists while evidence for it is slight, marginally significant
+\emph{p}-values can be considered undesirable. \emph{P}-values reported
+as marginally significant can mainly be found in the interval
+(.05-.10{]}; according to Pritschet et al. (2016), 92.6\% of
+\emph{p}-values reported as marginally significant in psychology were
+found here. Ohlsson Collentine et al. (2019) found that almost 40\% of
+\emph{p}-values in the (.05-.10{]} interval retrieved from 44,200
+psychology articles published between 1985-2016 were reported as
+marginally significant. They also found that almost 20\% of articles
+containing \emph{p}-values had at least one \emph{p}-value in the
+(.05-.10{]} interval that was reported as marginally significant. In
+addition, Pritschet et al. (2016) found that 18\% of articles from three
+psychology journals published in 1970 assigned marginal significance at
+least once, and that in 2010, this had increased to 54\%. In sociology,
+Leahey (2005) found that 10\% of a stratified random sample of
+\emph{ASR} and \emph{AJS} articles published between 1995-2000 used a
+significance level of low evidential value of \emph{p} \textless{} .10.
+We followed Ohlsson Collentine et al. (2019) by studying the prevalence
+of assignment of marginal significance to results within the
+\emph{p}-value interval (.05-.10{]}. Also, following, Leahey (2005),
+Pritschet et al. (2016), and Ohlsson Collentine et al. (2019), we
+examined the percentage of articles with \emph{p}-values in which
+marginal significance was assigned at least once.\\
 \hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}We
 studied statistical reporting errors, publication bias, a `bump' in
 \emph{p}-values, and \emph{p}-values reported as marginally significant
@@ -544,7 +539,7 @@ Number of valid statistical results & 2,960 & 505 & 4,929\\
 \hspace{1em}Descriptive information & 199 (107) & - & 130 (30)\\
 \hspace{1em}\cellcolor{gray!6}{Testing hypothesis marginal significance (H4)} & \cellcolor{gray!6}{199 (107)} & \cellcolor{gray!6}{-} & \cellcolor{gray!6}{-}\\
 \bottomrule
-\multicolumn{4}{l}{\textsuperscript{} Note. Numbers of articles from which statistical results were used in analyses are shown}\\
+\multicolumn{4}{l}{\textsuperscript{} \emph{Note}. Numbers of articles from which statistical results were used in analyses are shown}\\
 \multicolumn{4}{l}{\textsuperscript{} between parentheses.}\\
 \end{tabular}
 \end{table}
@@ -663,9 +658,9 @@ results-related phenomena of interest (see Table 2). Where possible, we
 checked whether statistical results were (grossly) inconsistent by
 recalculating their \emph{p}-values using the following functions from
 the R stats package (R Core Team, 2013): pt() for \emph{t}-values and
-\emph{r}-values\footnote{In order to use the pt() function for results
-  with \emph{r}-values, \emph{r}-values first had to be converted to
-  \emph{t}-values with the following formula:
+\emph{r}-values\footnote{In order to use the pt() function on
+  \emph{r}-values, \emph{r}-values first had to be converted to
+  \emph{t}-values with the formula:
   \[ t = \frac{r\sqrt{df}}{\sqrt{1-r^2}} \] where \emph{df} = \emph{n} -
   2.}, pnorm() for \emph{z}-values, pf() for \emph{F}-values, and
 pchisq() for \(\chi^2\)-values. For detailed information on how this was
@@ -684,7 +679,7 @@ sets.\\
 
 \begin{table}[H]
 
-\caption{\label{tab:Table 3 definition consistencies and gross inconsistencies Hyp}Inconsistencies and gross inconsistencies as determined for different types of reported \emph{p}-values in  ‘Hyp'.}
+\caption{\label{tab:Table 3 definition consistencies and gross inconsistencies Hyp}Inconsistencies and gross inconsistencies as determined for different types of reported p-values in  ‘Hyp'.}
 \centering
 \fontsize{12}{14}\selectfont
 \begin{tabular}[t]{ccc}
@@ -697,7 +692,7 @@ $\geq$ & Cal\emph{P} $<$ Rep\emph{P} & Cal\emph{P} $<$ .05 \& Rep\emph{P} $\geq$
 = & Cal\emph{P} $\neq$ Rep\emph{P} not due to & Cal\emph{P} $\neq$ Rep\emph{P} not due to rounding,\\
  & rounding\textsuperscript{*} & Cal\emph{P} $\leq$ .05 \& Rep\emph{P} $>$ .05 or vice versa\\
 \bottomrule
-\multicolumn{3}{l}{\textsuperscript{} Note. Cal\emph{P} = recalculated \emph{p}-value, Rep\emph{P} = reported \emph{p}-value, ns = non-significant.}\\
+\multicolumn{3}{l}{\textsuperscript{} \emph{Note}. Cal\emph{P} = recalculated \emph{p}-value, Rep\emph{P} = reported \emph{p}-value, ns = non-significant}\\
 \multicolumn{3}{l}{\textsuperscript{*} See Table 4 for methods used to determine whether a difference between recalculated and}\\
 \multicolumn{3}{l}{\textsuperscript{} reported \emph{p}-values could be due to correct rounding or not.}\\
 \end{tabular}
@@ -707,16 +702,16 @@ $\geq$ & Cal\emph{P} $<$ Rep\emph{P} & Cal\emph{P} $<$ .05 \& Rep\emph{P} $\geq$
 \begingroup\fontsize{12}{14}\selectfont
 
 \begin{longtable}[t]{l}
-\caption{\label{tab:Table 4 difference exactly reported and recalculated p-values (not) due to rounding}Ways of determining whether discrepancies between exactly reported \emph{p}-values and their recalculated counterparts from  ‘Hyp' could be due to correct rounding or indicate an inconsistency.}\hspace{1em}\hspace{1em}\\
+\caption{\label{tab:Table 4 difference exactly reported and recalculated p-values (not) due to rounding}Ways of determining whether discrepancies between exactly reported p-values and their recalculated counterparts from  ‘Hyp' could be due to correct rounding or indicate an inconsistency.}\hspace{1em}\hspace{1em}\\
 \toprule
 \endfirsthead
-\caption[]{Ways of determining whether discrepancies between exactly reported \emph{p}-values and their recalculated counterparts from  ‘Hyp' could be due to correct rounding or indicate an inconsistency. \textit{(continued)}}\\
+\caption[]{Ways of determining whether discrepancies between exactly reported p-values and their recalculated counterparts from  ‘Hyp' could be due to correct rounding or indicate an inconsistency. \textit{(continued)}}\\
 \toprule
 \endhead
 
 \endfoot
 \bottomrule
-\multicolumn{1}{l}{\rule{0pt}{1em}Note. Rep\emph{P} = reported \emph{p}-value, Cal\emph{P} = recalculated \emph{p}-value, Cal\emph{P}\textsubscript{lb} = lower bound}\\
+\multicolumn{1}{l}{\rule{0pt}{1em}\emph{Note}. Rep\emph{P} = reported \emph{p}-value, Cal\emph{P} = recalculated \emph{p}-value, Cal\emph{P}\textsubscript{lb} = lower bound}\\
 \multicolumn{1}{l}{\rule{0pt}{1em}recalculated \emph{p}-value, Cal\emph{P}\textsubscript{ub} = upper bound recalculated \emph{p}-value, \emph{b}\textsubscript{lb} = lower bound \emph{b}}\\
 \multicolumn{1}{l}{\rule{0pt}{1em}\emph{b}\textsubscript{ub} = upper bound \emph{b}, SE\textsubscript{lb} = lower bound SE, SE\textsubscript{ub} = upper bound SE.}\\
 \endlastfoot
@@ -840,28 +835,16 @@ thereby, to the APA statistical reporting guidelines. See Table 5 for an
 overview of statistics on sociology journals requesting/allowing
 adherence to different statistical reporting guidelines. \pagebreak
 
-\begingroup\fontsize{10}{12}\selectfont
+\begin{table}[H]
 
-\begin{ThreePartTable}
-\begin{TableNotes}[para]
-\item[*] We were unable to find which guidelines authors publishing in the journal \emph{Society} are required or allowed to use. The link on the journal's website that should have provided access to this information gave a ‘page not found’ error.
-\end{TableNotes}
-\begin{longtable}[t]{lc}
-\caption{\label{tab:Table 5 statistical reporting guidelines}Numbers and percentages of sociology journals in ‘SRG' requesting/allowing adherence to different types of statistical reporting guidelines.}\\
+\caption{\label{tab:Table 5 statistical reporting guidelines}Numbers and percentages of sociology journals in ‘SRG' requesting/allowing adherence to different types of statistical reporting guidelines.}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{threeparttable}
+\begin{tabular}[t]{lc}
 \toprule
   & Number of journals (\% of total)\\
 \midrule
-\endfirsthead
-\caption[]{Numbers and percentages of sociology journals in ‘SRG' requesting/allowing adherence to different types of statistical reporting guidelines. \textit{(continued)}}\\
-\toprule
-  & Number of journals (\% of total)\\
-\midrule
-\endhead
-
-\endfoot
-\bottomrule
-\insertTableNotes
-\endlastfoot
 \addlinespace[0.3em]
 \multicolumn{2}{l}{\textbf{Required}}\\
 \hspace{1em}APA & \\
@@ -887,10 +870,14 @@ adherence to different statistical reporting guidelines. \pagebreak
 \multicolumn{2}{l}{\textbf{Other, namely...}}\\
 \hspace{1em}Multiple allowed & 1 (0.7\%)\\
 \hspace{1em}Unknown* & 1 (0.7\%)\\
-\hspace{1em}Total & 143 (100\%)\\*
-\end{longtable}
-\end{ThreePartTable}
-\endgroup{}
+\hspace{1em}Total & 143 (100\%)\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[para]
+\item[*] We were unable to find which guidelines authors publishing in the journal \emph{Society} are required or allowed to use. The link on the journal's website that should have provided access to this information gave a ‘page not found’ error.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
 
 \hypertarget{statistical-reporting-errors}{%
 \subsection{Statistical reporting
@@ -930,14 +917,21 @@ nonsignificant recalculated \emph{p}-value. For a comprehensive overview
 of statistical reporting errors at the article and results level, see
 Table S2.
 
-\begin{table}[H]
-
-\caption{\label{tab:Table 6 statistical reporting errors}Descriptive statistics on (gross) inconsistencies for ‘APA' and ‘Hyp'.}
-\centering
-\begin{tabular}[t]{lcccc}
+\begin{longtable}[t]{lcccc}
+\caption{\label{tab:Table 6 statistical reporting errors}Descriptive statistics on (gross) inconsistencies for ‘APA' and ‘Hyp'.}\\
 \toprule
   & Articles & Results & Inconsistencies & Gross inconsistencies\\
 \midrule
+\endfirsthead
+\caption[]{Descriptive statistics on (gross) inconsistencies for ‘APA' and ‘Hyp'. \textit{(continued)}}\\
+\toprule
+  & Articles & Results & Inconsistencies & Gross inconsistencies\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
 \addlinespace[0.3em]
 \multicolumn{5}{l}{\textbf{‘APA'}}\\
 \cellcolor{gray!6}{\hspace{1em}Relation to hypothesis} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{}\\
@@ -964,10 +958,8 @@ Table S2.
 \hspace{1em}\hspace{1em}2014 & 11 & 312 & 11 (3.5\%) & 1 (0.3\%)\\
 \cellcolor{gray!6}{\hspace{1em}\hspace{1em}2015} & \cellcolor{gray!6}{3} & \cellcolor{gray!6}{33} & \cellcolor{gray!6}{0 (0\%)} & \cellcolor{gray!6}{0 (0\%)}\\
 \hspace{1em}\hspace{1em}2016 & 5 & 59 & 3 (5.1\%) & 1 (1.7\%)\\
-\cellcolor{gray!6}{\hspace{1em}Total} & \cellcolor{gray!6}{19} & \cellcolor{gray!6}{404} & \cellcolor{gray!6}{14 (3.5\%)} & \cellcolor{gray!6}{2 (0.5\%)}\\
-\bottomrule
-\end{tabular}
-\end{table}
+\cellcolor{gray!6}{\hspace{1em}Total} & \cellcolor{gray!6}{19} & \cellcolor{gray!6}{404} & \cellcolor{gray!6}{14 (3.5\%)} & \cellcolor{gray!6}{2 (0.5\%)}\\*
+\end{longtable}
 
 \hypertarget{publication-bias}{%
 \subsection{Publication bias}\label{publication-bias}}
@@ -994,30 +986,35 @@ explicitly stated hypotheses; we found (slightly) more just significant
 results (64.3\%) for binwidth .01, and 14 out of 26 (53.8\%) for
 binwidth .02 (see Figure 3 and Table 7).
 
+\begin{figure}
+\centering
 \includegraphics{thesis_files/figure-latex/plots publication bias/bump in p-values AllP-1.pdf}
+\caption{Histograms with binwidths .01 and .02 of exactly reported
+p-values in the range {[}.01-.11{]} from `AllP'. Information is provided
+for the totals of exactly reported p-values, and for exactly reported
+p-values (not) related to explicitly stated hypotheses.}
+\end{figure}
+
+\begin{figure}
+\centering
 \includegraphics{thesis_files/figure-latex/plots publication bias/bump in p-values Hyp-1.pdf}
+\caption{Histograms with binwidths .01 (3A) and .02 (3B) of exactly
+reported p-values related to explicitly stated hypotheses in the range
+{[}.01-.11{]} from `Hyp'.}
+\end{figure}
 
-\pagebreak
+\clearpage
+\begin{table}[H]
 
-\begingroup\fontsize{10}{12}\selectfont
-
-\begin{longtable}[t]{lcc>{\centering\arraybackslash}p{5em}>{\centering\arraybackslash}p{5em}>{\centering\arraybackslash}p{5em}c}
-\caption{\label{tab:Table 7 publication bias}Descriptive statistics on publication bias for ‘AllP’ and ‘Hyp’.}\\
+\caption{\label{tab:Table 7 publication bias}Descriptive statistics on publication bias among reported p-values for ‘AllP’ and ‘Hyp’.}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lcc>{\centering\arraybackslash}p{5em}>{\centering\arraybackslash}p{5em}>{\centering\arraybackslash}p{5em}c}
 \toprule
 \multicolumn{1}{c}{ } & \multicolumn{3}{c}{Binwidth .01} & \multicolumn{3}{c}{Binwidth .02} \\
 \cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7}
   & (.04-.05] & (.05-.06] & Total & (.03-.05] & (.05-.07] & Total\\
 \midrule
-\endfirsthead
-\caption[]{Descriptive statistics on publication bias for ‘AllP’ and ‘Hyp’. \textit{(continued)}}\\
-\toprule
-  & (.04-.05] & (.05-.06] & Total & (.03-.05] & (.05-.07] & Total\\
-\midrule
-\endhead
-
-\endfoot
-\bottomrule
-\endlastfoot
 \addlinespace[0.3em]
 \multicolumn{7}{l}{\textbf{‘AllP'}}\\
 \hspace{1em}\cellcolor{gray!6}{Relation to hypothesis} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{}\\
@@ -1044,9 +1041,10 @@ binwidth .02 (see Figure 3 and Table 7).
 \hspace{1em}\hspace{1em}2014 & 4 (66.7\%) & 2 & 6 & 8 (61.5\%) & 5 & 13\\
 \hspace{1em}\hspace{1em}\cellcolor{gray!6}{2015} & \cellcolor{gray!6}{1 (50\%)} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{2} & \cellcolor{gray!6}{1 (50\%)} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{2}\\
 \hspace{1em}\hspace{1em}2016 & 4 (66.7\%) & 2 & 6 & 5 (45.5\%) & 6 & 11\\
-\hspace{1em}\cellcolor{gray!6}{Total} & \cellcolor{gray!6}{9 (64.3\%)} & \cellcolor{gray!6}{5} & \cellcolor{gray!6}{14} & \cellcolor{gray!6}{14 (53.8\%)} & \cellcolor{gray!6}{12} & \cellcolor{gray!6}{26}\\*
-\end{longtable}
-\endgroup{}
+\hspace{1em}\cellcolor{gray!6}{Total} & \cellcolor{gray!6}{9 (64.3\%)} & \cellcolor{gray!6}{5} & \cellcolor{gray!6}{14} & \cellcolor{gray!6}{14 (53.8\%)} & \cellcolor{gray!6}{12} & \cellcolor{gray!6}{26}\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \pagebreak
 
@@ -1072,7 +1070,7 @@ of 37 (37.8\%) results (Figure 3B), respectively.
 
 \begin{table}[H]
 
-\caption{\label{tab:Table 8 bump in p-values}Descriptive statistics on the bump in just significant results for ‘AllP’ and ‘Hyp’.}
+\caption{\label{tab:Table 8 bump in p-values}Descriptive statistics on the bump in just significant reported p-values for ‘AllP' and ‘Hyp'.}
 \centering
 \resizebox{\linewidth}{!}{
 \begin{tabular}[t]{lcc>{\centering\arraybackslash}p{5em}>{\centering\arraybackslash}p{5em}>{\centering\arraybackslash}p{5em}c}
@@ -1083,31 +1081,31 @@ of 37 (37.8\%) results (Figure 3B), respectively.
 \midrule
 \addlinespace[0.3em]
 \multicolumn{7}{l}{\textbf{‘AllP'}}\\
-\hspace{1em}\cellcolor{gray!6}{Relation to hypothesis} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{}\\
+\hspace{1em}Relation to hypothesis &  &  &  &  &  & \\
 \hspace{1em}\hspace{1em}Yes & 7 & 10 (58.8\%) & 17 & 34 & 17 (33.3\%) & 51\\
-\hspace{1em}\hspace{1em}\cellcolor{gray!6}{No} & \cellcolor{gray!6}{25} & \cellcolor{gray!6}{22 (46.8\%)} & \cellcolor{gray!6}{47} & \cellcolor{gray!6}{86} & \cellcolor{gray!6}{47 (35.3\%)} & \cellcolor{gray!6}{133}\\
+\hspace{1em}\hspace{1em}No & 25 & 22 (46.8\%) & 47 & 86 & 47 (35.3\%) & 133\\
 \hspace{1em}Journal &  &  &  &  &  \vphantom{1} & \\
-\hspace{1em}\hspace{1em}\cellcolor{gray!6}{ASR} & \cellcolor{gray!6}{3} & \cellcolor{gray!6}{8 (72.7\%)} & \cellcolor{gray!6}{11} & \cellcolor{gray!6}{25} & \cellcolor{gray!6}{11 (30.6\%)} & \cellcolor{gray!6}{36}\\
+\hspace{1em}\hspace{1em}ASR & 3 & 8 (72.7\%) & 11 & 25 & 11 (30.6\%) & 36\\
 \hspace{1em}\hspace{1em}AJS & 5 & 3 (37.5\%) & 8 & 23 & 8 (25.8\%) & 31\\
-\hspace{1em}\hspace{1em}\cellcolor{gray!6}{SQ} & \cellcolor{gray!6}{2} & \cellcolor{gray!6}{1 (33.3\%)} & \cellcolor{gray!6}{3} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{3 (75\%)} & \cellcolor{gray!6}{4}\\
+\hspace{1em}\hspace{1em}SQ & 2 & 1 (33.3\%) & 3 & 1 & 3 (75\%) & 4\\
 \hspace{1em}\hspace{1em}JMF & 14 & 14 (50\%) & 28 & 44 & 28 (38.9\%) & 72\\
-\hspace{1em}\hspace{1em}\cellcolor{gray!6}{CHQ} & \cellcolor{gray!6}{8} & \cellcolor{gray!6}{6 (42.9\%)} & \cellcolor{gray!6}{14} & \cellcolor{gray!6}{27} & \cellcolor{gray!6}{14 (34.1\%)} & \cellcolor{gray!6}{41}\\
+\hspace{1em}\hspace{1em}CHQ & 8 & 6 (42.9\%) & 14 & 27 & 14 (34.1\%) & 41\\
 \hspace{1em}Year &  &  &  &  &  \vphantom{1} & \\
-\hspace{1em}\hspace{1em}\cellcolor{gray!6}{2014} & \cellcolor{gray!6}{14} & \cellcolor{gray!6}{13 (48.1\%)} & \cellcolor{gray!6}{27} & \cellcolor{gray!6}{51} & \cellcolor{gray!6}{27 (34.6\%)} & \cellcolor{gray!6}{78}\\
+\hspace{1em}\hspace{1em}2014 & 14 & 13 (48.1\%) & 27 & 51 & 27 (34.6\%) & 78\\
 \hspace{1em}\hspace{1em}2015 & 10 & 10 (50\%) & 20 & 41 & 20 (32.8\%) & 61\\
-\hspace{1em}\hspace{1em}\cellcolor{gray!6}{2016} & \cellcolor{gray!6}{8} & \cellcolor{gray!6}{9 (52.9\%)} & \cellcolor{gray!6}{17} & \cellcolor{gray!6}{28} & \cellcolor{gray!6}{17 (37.8\%)} & \cellcolor{gray!6}{45}\\
+\hspace{1em}\hspace{1em}2016 & 8 & 9 (52.9\%) & 17 & 28 & 17 (37.8\%) & 45\\
 \hspace{1em}Total & 32 & 32 (50\%) & 64 & 120 & 64 (34.8\%) & 184\\
 \addlinespace[0.3em]
 \multicolumn{7}{l}{\textbf{‘Hyp'}}\\
-\hspace{1em}\cellcolor{gray!6}{Journal} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{}\\
+\hspace{1em}Journal &  &  &  &  &  & \\
 \hspace{1em}\hspace{1em}ASR & 3 & 2 (40\%) & 5 & 9 & 5 (35.7\%) & 14\\
-\hspace{1em}\hspace{1em}\cellcolor{gray!6}{AJS} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{3 (75\%)} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{11} & \cellcolor{gray!6}{4 (26.7\%)} & \cellcolor{gray!6}{15}\\
+\hspace{1em}\hspace{1em}AJS & 1 & 3 (75\%) & 4 & 11 & 4 (26.7\%) & 15\\
 \hspace{1em}\hspace{1em}SQ & 1 & 4 (80\%) & 5 & 3 & 5 (62.5\%) & 8\\
-\hspace{1em}\cellcolor{gray!6}{Year} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{}\\
+\hspace{1em}Year &  &  &  &  &  & \\
 \hspace{1em}\hspace{1em}2014 & 4 & 4 (50\%) & 8 & 14 & 8 (36.4\%) & 22\\
-\hspace{1em}\hspace{1em}\cellcolor{gray!6}{2015} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{1 (100\%)} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{7} & \cellcolor{gray!6}{1 (12.5\%)} & \cellcolor{gray!6}{8}\\
+\hspace{1em}\hspace{1em}2015 & 0 & 1 (100\%) & 1 & 7 & 1 (12.5\%) & 8\\
 \hspace{1em}\hspace{1em}2016 & 1 & 4 (80\%) & 5 & 2 & 5 (71.4\%) & 7\\
-\hspace{1em}\cellcolor{gray!6}{Total} & \cellcolor{gray!6}{5} & \cellcolor{gray!6}{9 (64.3\%)} & \cellcolor{gray!6}{14} & \cellcolor{gray!6}{23} & \cellcolor{gray!6}{14 (37.8\%)} & \cellcolor{gray!6}{37}\\
+\hspace{1em}Total & 5 & 9 (64.3\%) & 14 & 23 & 14 (37.8\%) & 37\\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -1155,14 +1153,14 @@ for reported \emph{p}-values in `AllP' (35\%) (\emph{z} = 8.33, \emph{p}
 \textless{} .001, \emph{z}-test for two independent proportions).
 
 \begin{longtable}[t]{lcccccc}
-\caption{\label{tab:Table 9 marginal significance}Descriptive statistics on marginal significance for ‘AllP’ and ‘Hyp’.}\\
+\caption{\label{tab:Table 9 marginal significance}Descriptive statistics on marginal significance among reported p-values for ‘AllP’ and ‘Hyp’.}\\
 \toprule
 \multicolumn{1}{c}{ } & \multicolumn{3}{c}{Article level} & \multicolumn{3}{c}{Results level} \\
 \cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7}
   & Yes & No & Total & Yes & No & Total\\
 \midrule
 \endfirsthead
-\caption[]{Descriptive statistics on marginal significance for ‘AllP’ and ‘Hyp’. \textit{(continued)}}\\
+\caption[]{Descriptive statistics on marginal significance among reported p-values for ‘AllP’ and ‘Hyp’. \textit{(continued)}}\\
 \toprule
   & Yes & No & Total & Yes & No & Total\\
 \midrule
@@ -1415,23 +1413,23 @@ automatically extract statistical data from figures and tables will
 enable high-quality non-tedious assessment of statistical reporting
 quality in sociology. Steps towards automatically extracting data from
 figures for meta-analytical purposes have been undertaken in recent
-years. Pick, Nakagawa, \& Noble (2018), e.g., have developed a promising
-R package called metaDigitise, which extracts descriptive statistics
-such as standard deviations, means, correlations, and CIs from several
+years. Pick et al. (2018), e.g., have developed a promising R package
+called metaDigitise, which extracts descriptive statistics such as
+standard deviations, means, correlations, and CIs from several
 often-used types of plots from articles without major problems. While
 metaDigitise does not retrieve all types of individual statistics and
 fully reported results from all types of figures, its applicability can
 probably be broadened. Automatic data extraction from tables, on the
 other hand, seems to have its fair share of problems. In a review
 article of proposals for data extraction from the increasingly popular
-HTML-tables, Roldán, Jiménez, \& Corchuelo (2020) found that extraction
-from tables is inhibited by, e.g., the inability to identify multi-part
-cells, context-data cells, and split headers, and the inability to
-analyze the structure of a cell's contents. This leads to data
-extraction only being possible for certain relatively simple types of
-tables, which is suboptimal in a meta-analytical context. Thus,
-substantial work will have to be done to enable automatic extraction of
-statistical data from tables.\\
+HTML-tables, Roldán et al. (2020) found that extraction from tables is
+inhibited by, e.g., the inability to identify multi-part cells,
+context-data cells, and split headers, and the inability to analyze the
+structure of a cell's contents. This leads to data extraction only being
+possible for certain relatively simple types of tables, which is
+suboptimal in a meta-analytical context. Thus, substantial work will
+have to be done to enable automatic extraction of statistical data from
+tables.\\
 \hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}Finally,
 it would certainly be useful for future research to track the progress
 made in sociology in implementing statistical reporting guidelines. If
@@ -1453,12 +1451,13 @@ improved even more.
 
 \hypertarget{refs}{}
 \leavevmode\hypertarget{ref-APA_numb_stat_guide}{}%
-American Psychological Association. (2022a). APA style numbers and
-statistics guide.
+American Psychological Association. (2022a). \emph{APA style numbers and
+statistics guide}.
 https://apastyle.apa.org/instructional-aids/numbers-statistics-guide.pdf.
 
 \leavevmode\hypertarget{ref-APA_list_journals}{}%
-American Psychological Association. (2022b). Browse journals by title.
+American Psychological Association. (2022b). \emph{Browse journals by
+title}.
 \url{https://www.apa.org/pubs/journals/browse?query=Title:*\&type=journal}.
 
 \leavevmode\hypertarget{ref-Armitage}{}%
@@ -1479,13 +1478,16 @@ with reporting errors and quality of psychological research.
 
 \leavevmode\hypertarget{ref-Benjamin}{}%
 Benjamin, D. J., Berger, J. O., Johannesson, M., Nosek, B. A.,
-Wagenmakers, E. J., Berk, R., \ldots{} Johnson, V. E. (2017). Redefine
-statistical significance. \emph{Nature Human Behaviour}, \emph{2}(1), 6.
+Wagenmakers, E. J., Berk, R., Bollen, K. A., Brembs, B., Brown, L.,
+Camerer, C., Cesarini, D., Chambers, C. D., Clyde, M., Cook, T. D.,
+Boeck, P. D., Dienes, Z., Dreber, A., Easwaran, K., Efferson, C.,
+\ldots{} Johnson, V. E. (2017). Redefine statistical significance.
+\emph{Nature Human Behaviour}, \emph{2}(1), 6.
 \url{https://doi.org/10.1038/s41562-017-0189-z}
 
 \leavevmode\hypertarget{ref-WOS}{}%
-Clarivate Analytics' Web of Science. (2016). Journal citation reports:
-Sociology, 2016. com.proxy.library.uu.nl/JCRJournalHomeAction.
+Clarivate Analytics' Web of Science. (2016). \emph{Journal citation
+reports: Sociology, 2016}. com.proxy.library.uu.nl/JCRJournalHomeAction.
 
 \leavevmode\hypertarget{ref-Cohen}{}%
 Cohen, J. (1992). A power primer. \emph{Psychological Bulletin},
@@ -1500,7 +1502,7 @@ and Practice}, \emph{17}(2), 136--137.
 \leavevmode\hypertarget{ref-DeWinter}{}%
 De Winter, J. C. F., \& Dodou, D. (2015). A surge of p-values between
 0.041 and 0.049 in recent decades (but negative results are increasing
-rapidly too). \emph{PeerJ}, (3), 1--44.
+rapidly too). \emph{PeerJ}, \emph{3}, 1--44.
 \url{https://doi.org/10.7717/peerj.73}
 
 \leavevmode\hypertarget{ref-Dickersin}{}%
@@ -1542,10 +1544,10 @@ Psychological and Personality Science}, \emph{7}(1), 8--12.
 \url{https://doi.org/10.1177/1948550615598377}
 
 \leavevmode\hypertarget{ref-Gerber2006}{}%
-Gerber, A. S., \& Malhotra, N. (2006). Can political science literatures
-be believed? A study of publication bias in the APSR and the AJPS. Paper
-presented at the annual meeting of the Midwest Political Science
-Association.
+Gerber, A. S., \& Malhotra, N. (2006). \emph{Can political science
+literatures be believed? A study of publication bias in the APSR and the
+AJPS}. Paper presented at the annual meeting of the Midwest Political
+Science Association.
 
 \leavevmode\hypertarget{ref-Gerber2008}{}%
 Gerber, A. S., \& Malhotra, N. (2008). Publication bias in empirical
@@ -1561,13 +1563,13 @@ observational study. \emph{BMC Research Notes}, \emph{8}(1), 1--5.
 
 \leavevmode\hypertarget{ref-Hartgerink2017}{}%
 Hartgerink, C. H. J. (2017). Reanalyzing Head et al. (2015):
-Investigating the robustness of widespread p-hac. \emph{PeerJ}, (5),
-1--10. \url{https://doi.org/10.7717/peerj.3068}
+Investigating the robustness of widespread p-hac. \emph{PeerJ},
+\emph{5}, 1--10. \url{https://doi.org/10.7717/peerj.3068}
 
 \leavevmode\hypertarget{ref-Hartgerink2016}{}%
 Hartgerink, C. H. J., Van Aert, R. C. M., Nuijten, M. B., Wicherts, J.
 M., \& Van Assen, M. A. L. M. (2016). Distributions of p-values smaller
-than. 05 in psychology: What is going on? \emph{PeerJ}, (4), 1--28.
+than. 05 in psychology: What is going on? \emph{PeerJ}, \emph{4}, 1--28.
 \url{https://doi.org/10.7717/peerj.1935}
 
 \leavevmode\hypertarget{ref-Head2015}{}%
@@ -1600,7 +1602,7 @@ sample size. \emph{PloS One}, \emph{9}(9), 1--8.
 
 \leavevmode\hypertarget{ref-Lakens2015a}{}%
 Lakens, D. (2015a). On the challenges of drawing conclusions from
-p-values just below 0.05. \emph{PeerJ}, (3), 1--14.
+p-values just below 0.05. \emph{PeerJ}, \emph{3}, 1--14.
 \url{https://doi.org/10.7717/peerj.1142}
 
 \leavevmode\hypertarget{ref-Lakens2015b}{}%
@@ -1613,8 +1615,8 @@ Experimental Psychology}, \emph{68}(4), 829--832.
 Lang, T. A., \& Altman, D. G. (2013). Basic statistical reporting for
 articles published in clinical medical journals: The SAMPL Guidelines.
 In P. Smart, H. Maisonneuve, \& A. Polderman (Eds.), \emph{Science
-editors' handbook} (pp. 24--30). Split, Croatia: European Association of
-Science Editors.
+editors' handbook} (pp. 24--30). European Association of Science
+Editors.
 
 \leavevmode\hypertarget{ref-Lawrence}{}%
 Lawrence, P. A. (2003). The politics of publication - authors, reviewers
@@ -1678,7 +1680,7 @@ decades. \emph{Psychological Science}, \emph{27}(7), 1036--1042.
 
 \leavevmode\hypertarget{ref-Rstats}{}%
 R Core Team. (2013). \emph{R: A language and environment for statistical
-computing}. Vienna, Austria: R Foundation for Statistical Computing;
+computing}. R Foundation for Statistical Computing;
 \url{http://www.R-project.org/}.
 
 \leavevmode\hypertarget{ref-Roldan}{}%
@@ -1705,9 +1707,9 @@ to the file drawer. \emph{Journal of Experimental Psychology: General},
 
 \leavevmode\hypertarget{ref-Song}{}%
 Song, F., Parekh, S., Hooper, L., Ryder, Y. K., Sutton, A. J., Hing, C.,
-\ldots{} Harvey, I. (2010). Dissemination and publication of research
-findings: An updated review of related biases. \emph{Health Technology
-Assessment}, \emph{14}(8), 1--236.
+Kwok, C. S., Pang, C., \& Harvey, I. (2010). Dissemination and
+publication of research findings: An updated review of related biases.
+\emph{Health Technology Assessment}, \emph{14}(8), 1--236.
 \url{https://doi.org/10.3310/hta14080}
 
 \leavevmode\hypertarget{ref-Ulrich}{}%
@@ -1744,7 +1746,7 @@ quality of reporting of statistical results. \emph{PloS One},
 
 \newpage
 
-\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}
+\beginsupplement
 
 \hypertarget{supplement}{%
 \section{Supplement}\label{supplement}}
@@ -1753,18 +1755,18 @@ quality of reporting of statistical results. \emph{PloS One},
 
 \caption{\label{tab:Table S1 logistic regressions statistical reporting errors}Logistic regressions for H1 and H2, which concern the difference in prevalence of (gross) inconsistencies in results related to hypotheses versus results not related to hypotheses.}
 \centering
-\begin{tabular}[t]{lcccc}
+\begin{tabular}[t]{lccccc}
 \toprule
-  & b & SE & p & OR [95\% CI]\\
+  & b & SE & z & p & OR [95\% CI]\\
 \midrule
 \addlinespace[0.3em]
-\multicolumn{5}{l}{\textbf{Inconsistencies (H1)}}\\
-\cellcolor{gray!6}{\hspace{1em}Intercept} & \cellcolor{gray!6}{-1.820} & \cellcolor{gray!6}{.157} & \cellcolor{gray!6}{< .001} & \cellcolor{gray!6}{.162 [.118, .218]}\\
-\hspace{1em}Result hypothesis & -.073 & .278 & .793 & .930 [.531, 1.585]\\
+\multicolumn{6}{l}{\textbf{Inconsistencies (H1)}}\\
+\cellcolor{gray!6}{\hspace{1em}Intercept} & \cellcolor{gray!6}{-1.820} & \cellcolor{gray!6}{.157} & \cellcolor{gray!6}{-11.573} & \cellcolor{gray!6}{< .001} & \cellcolor{gray!6}{.162 [.118, .218]}\\
+\hspace{1em}Result hypothesis & -.073 & .278 & -.262 & .793 & .930 [.531, 1.585]\\
 \addlinespace[0.3em]
-\multicolumn{5}{l}{\textbf{Gross inconsistencies (H2)}}\\
-\cellcolor{gray!6}{\hspace{1em}Intercept} & \cellcolor{gray!6}{-4.422} & \cellcolor{gray!6}{.503} & \cellcolor{gray!6}{< .001} & \cellcolor{gray!6}{.012 [.004, .028]}\\
-\hspace{1em}Result hypothesis & .708 & .714 & .321 & 2.030 [.475, 8.685]\\
+\multicolumn{6}{l}{\textbf{Gross inconsistencies (H2)}}\\
+\cellcolor{gray!6}{\hspace{1em}Intercept} & \cellcolor{gray!6}{-4.422} & \cellcolor{gray!6}{.503} & \cellcolor{gray!6}{-8.791} & \cellcolor{gray!6}{< .001} & \cellcolor{gray!6}{.012 [.004, .028]}\\
+\hspace{1em}Result hypothesis & .708 & .714 & .993 & .321 & 2.030 [.475, 8.685]\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1811,8 +1813,6 @@ quality of reporting of statistical results. \emph{PloS One},
 \hspace{1em}\hspace{1em}2016 & 5 & 2 (40.0\%) & 1 (20.0\%) & 59 & 3 (5.1\%) & 1 (1.7\%)\\
 \cellcolor{gray!6}{\hspace{1em}Total} & \cellcolor{gray!6}{19} & \cellcolor{gray!6}{6 (31.6\%)} & \cellcolor{gray!6}{2 (10.5\%)} & \cellcolor{gray!6}{404} & \cellcolor{gray!6}{14 (3.5\%)} & \cellcolor{gray!6}{2 (0.5\%)}\\
 \bottomrule
-\multicolumn{7}{l}{\textsuperscript{} Note. The numbers of articles for the results (not) related to explicitly stated hypotheses reflect the numbers of articles that}\\
-\multicolumn{7}{l}{\textsuperscript{} contain at least one result that is (not) related to an explicitly stated hypothesis.}\\
 \end{tabular}}
 \end{table}
 
@@ -1823,18 +1823,18 @@ quality of reporting of statistical results. \emph{PloS One},
 
 \caption{\label{tab:Table S3 logistic regressions publication bias}Logistic regressions for H3a and H3b, which concerns the difference in prevalence of publication bias in results related to hypotheses versus results not related to hypotheses.}
 \centering
-\begin{tabular}[t]{lcccc}
+\begin{tabular}[t]{lccccc}
 \toprule
-  & b & SE & p & OR [95\% CI]\\
+  & b & SE & z & p & OR [95\% CI]\\
 \midrule
 \addlinespace[0.3em]
-\multicolumn{5}{l}{\textbf{Binwidth .01 (H3a)}}\\
-\cellcolor{gray!6}{\hspace{1em}Intercept} & \cellcolor{gray!6}{-.205} & \cellcolor{gray!6}{.287} & \cellcolor{gray!6}{.476} & \cellcolor{gray!6}{.815 [.456, 1.428]}\\
-\hspace{1em}Result hypothesis & -.132 & .504 & .794 & .877 [.321, 2.345]\\
+\multicolumn{6}{l}{\textbf{Binwidth .01 (H3a)}}\\
+\cellcolor{gray!6}{\hspace{1em}Intercept} & \cellcolor{gray!6}{-.205} & \cellcolor{gray!6}{.287} & \cellcolor{gray!6}{-.713} & \cellcolor{gray!6}{.476} & \cellcolor{gray!6}{.815 [.456, 1.428]}\\
+\hspace{1em}Result hypothesis & -.132 & .504 & -.261 & .794 & .877 [.321, 2.345]\\
 \addlinespace[0.3em]
-\multicolumn{5}{l}{\textbf{Binwidth .02 (H3b)}}\\
-\cellcolor{gray!6}{\hspace{1em}Intercept} & \cellcolor{gray!6}{.089} & \cellcolor{gray!6}{.211} & \cellcolor{gray!6}{.673} & \cellcolor{gray!6}{1.093 [.723, 1.658]}\\
-\hspace{1em}Result hypothesis & -.251 & .392 & .521 & .778 [.358, 1.674]\\
+\multicolumn{6}{l}{\textbf{Binwidth .02 (H3b)}}\\
+\cellcolor{gray!6}{\hspace{1em}Intercept} & \cellcolor{gray!6}{.089} & \cellcolor{gray!6}{.211} & \cellcolor{gray!6}{.421} & \cellcolor{gray!6}{.673} & \cellcolor{gray!6}{1.093 [.723, 1.658]}\\
+\hspace{1em}Result hypothesis & -.251 & .392 & -.642 & .521 & .778 [.358, 1.674]\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1845,12 +1845,12 @@ quality of reporting of statistical results. \emph{PloS One},
 
 \caption{\label{tab:Table S4 logistic regression marginal significance}Logistic regression for H4, which concerns the difference in prevalence of marginal significance in results related to hypotheses versus results not related to hypotheses.}
 \centering
-\begin{tabular}[t]{lcccc}
+\begin{tabular}[t]{lccccc}
 \toprule
-  & b & SE & p & OR [95\% CI]\\
+  & b & SE & z & p & OR [95\% CI]\\
 \midrule
-\cellcolor{gray!6}{Intercept} & \cellcolor{gray!6}{-.480} & \cellcolor{gray!6}{.177} & \cellcolor{gray!6}{.007} & \cellcolor{gray!6}{.619 [.436, .871]}\\
-Result hypothesis & -.437 & .318 & .170 & .646 [.342, 1.194]\\
+Intercept & -.480 & .177 & -2.718 & .007 & .619 [.436, .871]\\
+Result hypothesis & -.437 & .318 & -1.373 & .170 & .646 [.342, 1.194]\\
 \bottomrule
 \end{tabular}
 \end{table}
