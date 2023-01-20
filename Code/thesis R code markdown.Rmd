@@ -299,7 +299,7 @@ tbl_err_APA %>%
 
 ## 2.2 Hypothesis tests
 ### *2.2.1 Hypothesis test errors (H1)*
-Running a logistic regression with the variable indicating whether a result is an error or not as the outcome variable and a predictor indicating whether a result belongs to an explicitly stated hypothesis or not. There does not seem to be a significant difference in the amount of inconsistencies between results related to hypotheses and results not related to hypotheses, *b* = -.073, SE = .278, *p* = .793, OR(inverse) = 1.076. Thus, we cannot confirm H1. 
+Running a logistic regression with the variable indicating whether a result is an error or not as the outcome variable and a predictor indicating whether a result belongs to an explicitly stated hypothesis or not. There does not seem to be a significant difference in the amount of inconsistencies between results related to hypotheses and results not related to hypotheses, *b* = -.073, SE = .278, *z* = -.262, *p* = .793, OR(inverse) = 1.076. Thus, we cannot confirm H1. 
 ```{r testing H1, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 APA$Error_n <- as.numeric(as.character(APA$Error)) #making 'Error' numeric
 
@@ -313,7 +313,7 @@ exp(cbind(coef(error_hyp), confint(error_hyp))) #odds ratios
 \
 
 ### 2.2.2 *Hypothesis test decision errors (H2)*
-Running a logistic regression with the variable indicating whether a result is a decision error or not as the outcome variable and a predictor indicating whether a results belongs to an explicitly stated hypothesis or not as a predictor. There does not seem to be a significant difference in the amount of grossly inconsistent results between results related to hypotheses and results not related to hypotheses, *b* = .708, SE = .714, *p* = .321, OR = 2.030. Therefore, we cannot confirm H2.  
+Running a logistic regression with the variable indicating whether a result is a decision error or not as the outcome variable and a predictor indicating whether a results belongs to an explicitly stated hypothesis or not as a predictor. There does not seem to be a significant difference in the amount of grossly inconsistent results between results related to hypotheses and results not related to hypotheses, *b* = .708, SE = .714, *z* = .993, *p* = .321, OR = 2.030. Therefore, we cannot confirm H2.  
 ```{r testing H2, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 APA$DecisionError_n <- as.numeric(as.character(APA$DecisionError)) #making 'DecisionError' numeric 
 
@@ -527,7 +527,7 @@ tot_pb_perc  %>%
 \
 
 ### 3.1.3  *Statistical analysis p-value range (.04-.06] (H3a)*
-Logistic regression to study the difference in the prevalence of publication bias between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses for binwidth .01. The prevalence of just significant and just non-significant results does not seem to differ significantly for results related to hypotheses and results not related to hypotheses, b1 = -.132, SE = .504, *p* = .794, OR = .877, 95% CI [.321, 2.345]. Thus, we could not confirm H3a.
+Logistic regression to study the difference in the prevalence of publication bias between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses for binwidth .01. The prevalence of just significant and just non-significant results does not seem to differ significantly for results related to hypotheses and results not related to hypotheses, b1 = -.132, SE = .504, *p* = .794, *z* = -.261, OR = .877, 95% CI [.321, 2.345]. Thus, we could not confirm H3a.
 ```{r testing H3 binwidth .01, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 AllP_exact_0406["pval_04_06"] <- NA #removing all data from variable 'pval_04_06'
 AllP_exact_0406 <- AllP_exact_0406 %>% mutate(pval_04_06 = ifelse(Reported.P.Value <= .05, 1, 0)) #indicating just (non-)significance 
@@ -543,7 +543,7 @@ exp(cbind(coef(pb_0406), confint(pb_0406))) #odds ratios
 \
 
 ### 3.1.4  *Statistical analysis p-value range (.03-.07] (H3b)*
-Logistic regression to study the difference in the prevalence of publication bias between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses for binwidth .02. There does not seem to be a significant difference in the prevalence of just significant results among results related to hypotheses and results not related to hypotheses, b1 = -.251, SE = .392, *p* = .521, OR = .778, 95% CI [.358, 1.674]. Thus, we could not confirm H3b.
+Logistic regression to study the difference in the prevalence of publication bias between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses for binwidth .02. There does not seem to be a significant difference in the prevalence of just significant results among results related to hypotheses and results not related to hypotheses, b1 = -.251, SE = .392, *p* = .521, *z* = -.642, OR = .778, 95% CI [.358, 1.674]. Thus, we could not confirm H3b.
 ```{r testing H3 binwidth .02, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 AllP_exact_0307["pval_03_07"] <- NA #removing all data from variable 'pval_03_07'
 AllP_exact_0307 <- AllP_exact_0307 %>% mutate(pval_03_07 = ifelse(Reported.P.Value <= .05, 1, 0)) #indicating just (non-)significance 
@@ -844,7 +844,7 @@ tbl_marg_AllP %>%
 \
 
 ###  *3.3.5 Statistical analysis marginal significance (H4)*
-Logistic regression to study the difference in the prevalence of marginally significant results between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses. The prevalence of marginally significant results does not seem to differ significantly for results related to hypotheses and results not related to hypotheses. Thus, we cannot confirm H4, b1 = -0.437, SE = .318, *p* = .170, OR = .646, 95% CI [.342, 1.194].
+Logistic regression to study the difference in the prevalence of marginally significant results between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses. The prevalence of marginally significant results does not seem to differ significantly for results related to hypotheses and results not related to hypotheses. Thus, we cannot confirm H4, b1 = -0.437, SE = .318, *z* = -1.373, *p* = .170, OR = .646, 95% CI [.342, 1.194].
 ```{r testing H4, warning=FALSE, message = FALSE, echo = TRUE, results = 'hide'}
 AllP_marg$Marg.Sig <- as.numeric(as.character(AllP_marg$Marg.Sig)) #making 'Marg.Sig' numeric 
 

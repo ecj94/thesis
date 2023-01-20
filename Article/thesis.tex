@@ -94,7 +94,7 @@
 
 \title{The reporting of statistical results in sociology: a systematic review}
 \author{Supervisor: Marcel van Assen}
-\date{18 January 2023}
+\date{20 January 2023}
 
 \begin{document}
 \maketitle
@@ -115,19 +115,19 @@ journals previously studied in research on publication bias by Gerber \&
 Malhotra (2008). We found that only 13 of 143 sociology journals (9.1\%)
 requested authors to adhere to the APA statistical reporting guidelines.
 Using statcheck, we found a slightly higher prevalence of inconsistent
-results (13.7\%) and a prevalence of grossly inconsistent results
-comparable to previous studies in psychology (Nuijten et al., 2016). In
-our manually retrieved statistical results related to explicitly stated
-hypotheses, 3.5\% of results were inconsistent and 0.5\% grossly
-inconsistent. No convincing evidence of publication bias and a `bump' in
-\emph{p}-values was found. Assignment of marginal significance was
-rather prevalent, with 81.5\% of manually retrieved results with
-\emph{p}-values in the interval (.05-.10{]} labelled as such.
-Furthermore, in 43\% (automatically retrieved data) and 63.3\% (manually
-retrieved data related to hypotheses) of articles with \emph{p}-values
-in this interval, marginal significance was assigned at least once.
-Implications of these results for statistical reporting quality in
-sociology are discussed. \pagenumbering{arabic}\\
+results and a prevalence of grossly inconsistent results comparable to
+previous studies in psychology (Nuijten et al., 2016). In our manually
+retrieved statistical results related to explicitly stated hypotheses,
+3.5\% of results were inconsistent and 0.5\% grossly inconsistent. No
+convincing evidence of publication bias and a `bump' in \emph{p}-values
+was found. Assignment of marginal significance was rather prevalent,
+with 81.5\% of manually retrieved results with \emph{p}-values in the
+interval (.05-.10{]} labelled as such. Furthermore, in 43\%
+(automatically retrieved data) and 63.3\% (manually retrieved data
+related to hypotheses) of articles with \emph{p}-values in this
+interval, marginal significance was assigned at least once. Implications
+of these results for statistical reporting quality in sociology are
+discussed. \pagenumbering{arabic}\\
 
 \textbf{Keywords} statcheck, publication bias, statistical reporting
 errors, marginal significance, statistical reporting guidelines
@@ -207,13 +207,12 @@ non-significant counterparts (Hartgerink et al., 2016; Leggett et al.,
 practice (QRP) of incorrect \emph{p}-value rounding to obtain (false)
 significance (Hartgerink et al., 2016; John et al., 2012). We studied
 the prevalence of statistical reporting errors in a selection of
-APA\footnote{In this article, when discussing sociology journals, the
-  term `APA journal' does not refer to a journal which belongs to the
-  APA organization. Instead, it refers to a journal that requires its
-  authors to adhere to the APA manual.} and non-APA sociology journals
-in two ways: manually, and with the R package statcheck (Epskamp \&
-Nuijten, 2016), which automatically checks the consistency of
-APA-reported results.\\
+APA\footnote{In this article, the term `APA journal' does not refer to a
+  sociology journal belonging to the APA organization. Instead, it
+  refers to a journal that requires authors to follow the APA manual.}
+and non-APA sociology journals in two ways: manually, and with the R
+package statcheck (Epskamp \& Nuijten, 2016), which automatically checks
+the consistency of APA-reported results.\\
 \hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}Publication
 bias occurs when statistically non-significant results are published
 relatively less often than significant ones (Dickersin, 1990). It has
@@ -316,10 +315,10 @@ Leahey (2005) found that 10\% of a stratified random sample of
 significance level of low evidential value of \emph{p} \textless{} .10.
 We followed Ohlsson Collentine et al. (2019) by studying the prevalence
 of assignment of marginal significance to results within the
-\emph{p}-value interval (.05-.10{]}. Also, following, Leahey (2005),
-Pritschet et al. (2016), and Ohlsson Collentine et al. (2019), we
-examined the percentage of articles with \emph{p}-values in which
-marginal significance was assigned at least once.\\
+\emph{p}-value interval (.05-.10{]}. Also, we examined the percentage of
+articles with \emph{p}-values in the interval (.05-.01{]} in which
+marginal significance was assigned at least once to a \emph{p}-value in
+this interval.\\
 \hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}We
 studied statistical reporting errors, publication bias, a `bump' in
 \emph{p}-values, and \emph{p}-values reported as marginally significant
@@ -575,12 +574,12 @@ marginal significance was stored manually in a separate column of
 `AllP'. We also obtained descriptive statistics on how many articles
 with \emph{p}-values in the interval (.05-.10{]} had assigned marginal
 significance at least once to such \emph{p}-value. This is different
-from the approach of Pritschet et al. (2016), and Ohlsson Collentine et
-al. (2019), who studied what percentage of articles with reported
-\emph{p}-values in general assigned marginal significance at least once
-to a \emph{p}-value in the interval (.05-.10{]}. We prefer our approach
+from the approach of Pritschet et al. (2016) and Ohlsson Collentine et
+al. (2019), who studied what percentage of articles with any reported
+\emph{p}-values assigned marginal significance at least once to a
+\emph{p}-value in the interval (.05-.10{]}. We prefer our approach
 because it enables us to show how likely sociology authors reporting
-\emph{p}-values in the interval (.05-.10{]} are to (not) assign marginal
+\emph{p}-values in the interval (.05-.10{]} are to assign marginal
 significance while this is likely unwarranted.\\
 \hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}A
 fourth data set, `Hyp', was created to conceptually replicate the study
@@ -990,17 +989,17 @@ binwidth .02 (see Figure 3 and Table 7).
 \centering
 \includegraphics{thesis_files/figure-latex/plots publication bias/bump in p-values AllP-1.pdf}
 \caption{Histograms with binwidths .01 and .02 of exactly reported
-p-values in the range {[}.01-.11{]} from `AllP'. Information is provided
-for the totals of exactly reported p-values, and for exactly reported
-p-values (not) related to explicitly stated hypotheses.}
+p-values in the interval {[}.01-.11{]} from `AllP'. Information is
+provided for the totals of exactly reported p-values, and for exactly
+reported p-values (not) related to explicitly stated hypotheses.}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics{thesis_files/figure-latex/plots publication bias/bump in p-values Hyp-1.pdf}
 \caption{Histograms with binwidths .01 (3A) and .02 (3B) of exactly
-reported p-values related to explicitly stated hypotheses in the range
-{[}.01-.11{]} from `Hyp'.}
+reported p-values related to explicitly stated hypotheses in the
+interval {[}.01-.11{]} from `Hyp'.}
 \end{figure}
 
 \clearpage
@@ -1147,10 +1146,11 @@ or 95.9\%) and least prevalent in 2014 (11 out of 24 results, or
 45.8\%).\\
 \hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}Interestingly,
 the percentage of \emph{p}-values in interval (.05-.10{]} reported as
-marginally significant is much higher for manually retrieved statistical
-results related to explicitly stated hypotheses in `Hyp' (81.5\%) than
-for reported \emph{p}-values in `AllP' (35\%) (\emph{z} = 8.33, \emph{p}
-\textless{} .001, \emph{z}-test for two independent proportions).
+marginally significant was much higher for manually retrieved
+statistical results related to explicitly stated hypotheses in `Hyp'
+(81.5\%) than for reported \emph{p}-values in `AllP' (35\%) (\emph{z} =
+8.33, \emph{p} \textless{} .001, \emph{z}-test for two independent
+proportions).
 
 \begin{longtable}[t]{lcccccc}
 \caption{\label{tab:Table 9 marginal significance}Descriptive statistics on marginal significance among reported p-values for ‘AllP’ and ‘Hyp’.}\\
@@ -1338,7 +1338,7 @@ marginal significance in both fields. Noteworthy is the much higher
 prevalence of marginal significance among manually retrieved results
 related to hypotheses (81.5\%). We mainly attribute this difference to
 authors being aware that \emph{p}-values in the interval (.05-.10{]} are
-of low evidential value, which prevents authors from assigning marginal
+of low evidential value, which prevents them from assigning marginal
 significance to these results in the articles' text (Ohlsson Collentine
 et al., 2019), whereas assigning marginal significance to these results
 in tables and figures may seem less harmful to them. The number of
@@ -1821,7 +1821,7 @@ quality of reporting of statistical results. \emph{PloS One},
 
 \begin{table}[H]
 
-\caption{\label{tab:Table S3 logistic regressions publication bias}Logistic regressions for H3a and H3b, which concerns the difference in prevalence of publication bias in results related to hypotheses versus results not related to hypotheses.}
+\caption{\label{tab:Table S3 logistic regressions publication bias}Logistic regressions for H3a and H3b, which concerns the difference in publication bias between results related to hypotheses versus results not related to hypotheses.}
 \centering
 \begin{tabular}[t]{lccccc}
 \toprule

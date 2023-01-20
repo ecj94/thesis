@@ -3681,7 +3681,7 @@ Total
 <h2>2.2 Hypothesis tests</h2>
 <div id="hypothesis-test-errors-h1" class="section level3">
 <h3><em>2.2.1 Hypothesis test errors (H1)</em></h3>
-<p>Running a logistic regression with the variable indicating whether a result is an error or not as the outcome variable and a predictor indicating whether a result belongs to an explicitly stated hypothesis or not. There does not seem to be a significant difference in the amount of inconsistencies between results related to hypotheses and results not related to hypotheses, <em>b</em> = -.073, SE = .278, <em>p</em> = .793, OR(inverse) = 1.076. Thus, we cannot confirm H1.</p>
+<p>Running a logistic regression with the variable indicating whether a result is an error or not as the outcome variable and a predictor indicating whether a result belongs to an explicitly stated hypothesis or not. There does not seem to be a significant difference in the amount of inconsistencies between results related to hypotheses and results not related to hypotheses, <em>b</em> = -.073, SE = .278, <em>z</em> = -.262, <em>p</em> = .793, OR(inverse) = 1.076. Thus, we cannot confirm H1.</p>
 <pre class="r"><code>APA$Error_n &lt;- as.numeric(as.character(APA$Error)) #making &#39;Error&#39; numeric
 
 #Logistic regression.
@@ -3695,7 +3695,7 @@ exp(cbind(coef(error_hyp), confint(error_hyp))) #odds ratios
 </div>
 <div id="hypothesis-test-decision-errors-h2" class="section level3">
 <h3>2.2.2 <em>Hypothesis test decision errors (H2)</em></h3>
-<p>Running a logistic regression with the variable indicating whether a result is a decision error or not as the outcome variable and a predictor indicating whether a results belongs to an explicitly stated hypothesis or not as a predictor. There does not seem to be a significant difference in the amount of grossly inconsistent results between results related to hypotheses and results not related to hypotheses, <em>b</em> = .708, SE = .714, <em>p</em> = .321, OR = 2.030. Therefore, we cannot confirm H2.</p>
+<p>Running a logistic regression with the variable indicating whether a result is a decision error or not as the outcome variable and a predictor indicating whether a results belongs to an explicitly stated hypothesis or not as a predictor. There does not seem to be a significant difference in the amount of grossly inconsistent results between results related to hypotheses and results not related to hypotheses, <em>b</em> = .708, SE = .714, <em>z</em> = .993, <em>p</em> = .321, OR = 2.030. Therefore, we cannot confirm H2.</p>
 <pre class="r"><code>APA$DecisionError_n &lt;- as.numeric(as.character(APA$DecisionError)) #making &#39;DecisionError&#39; numeric 
 
 #Logistic regression.
@@ -4482,7 +4482,7 @@ Total
 </div>
 <div id="statistical-analysis-p-value-range-.04-.06-h3a" class="section level3">
 <h3>3.1.3 <em>Statistical analysis p-value range (.04-.06] (H3a)</em></h3>
-<p>Logistic regression to study the difference in the prevalence of publication bias between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses for binwidth .01. The prevalence of just significant and just non-significant results does not seem to differ significantly for results related to hypotheses and results not related to hypotheses, b1 = -.132, SE = .504, <em>p</em> = .794, OR = .877, 95% CI [.321, 2.345]. Thus, we could not confirm H3a.</p>
+<p>Logistic regression to study the difference in the prevalence of publication bias between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses for binwidth .01. The prevalence of just significant and just non-significant results does not seem to differ significantly for results related to hypotheses and results not related to hypotheses, b1 = -.132, SE = .504, <em>p</em> = .794, <em>z</em> = -.261, OR = .877, 95% CI [.321, 2.345]. Thus, we could not confirm H3a.</p>
 <pre class="r"><code>AllP_exact_0406[&quot;pval_04_06&quot;] &lt;- NA #removing all data from variable &#39;pval_04_06&#39;
 AllP_exact_0406 &lt;- AllP_exact_0406 %&gt;% mutate(pval_04_06 = ifelse(Reported.P.Value &lt;= .05, 1, 0)) #indicating just (non-)significance 
 
@@ -4496,7 +4496,7 @@ exp(cbind(coef(pb_0406), confint(pb_0406))) #odds ratios
 </div>
 <div id="statistical-analysis-p-value-range-.03-.07-h3b" class="section level3">
 <h3>3.1.4 <em>Statistical analysis p-value range (.03-.07] (H3b)</em></h3>
-<p>Logistic regression to study the difference in the prevalence of publication bias between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses for binwidth .02. There does not seem to be a significant difference in the prevalence of just significant results among results related to hypotheses and results not related to hypotheses, b1 = -.251, SE = .392, <em>p</em> = .521, OR = .778, 95% CI [.358, 1.674]. Thus, we could not confirm H3b.</p>
+<p>Logistic regression to study the difference in the prevalence of publication bias between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses for binwidth .02. There does not seem to be a significant difference in the prevalence of just significant results among results related to hypotheses and results not related to hypotheses, b1 = -.251, SE = .392, <em>p</em> = .521, <em>z</em> = -.642, OR = .778, 95% CI [.358, 1.674]. Thus, we could not confirm H3b.</p>
 <pre class="r"><code>AllP_exact_0307[&quot;pval_03_07&quot;] &lt;- NA #removing all data from variable &#39;pval_03_07&#39;
 AllP_exact_0307 &lt;- AllP_exact_0307 %&gt;% mutate(pval_03_07 = ifelse(Reported.P.Value &lt;= .05, 1, 0)) #indicating just (non-)significance 
 
@@ -5774,7 +5774,7 @@ Total
 </div>
 <div id="statistical-analysis-marginal-significance-h4" class="section level3">
 <h3><em>3.3.5 Statistical analysis marginal significance (H4)</em></h3>
-<p>Logistic regression to study the difference in the prevalence of marginally significant results between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses. The prevalence of marginally significant results does not seem to differ significantly for results related to hypotheses and results not related to hypotheses. Thus, we cannot confirm H4, b1 = -0.437, SE = .318, <em>p</em> = .170, OR = .646, 95% CI [.342, 1.194].</p>
+<p>Logistic regression to study the difference in the prevalence of marginally significant results between results related to explicitly stated hypotheses and results not related to explicitly stated hypotheses. The prevalence of marginally significant results does not seem to differ significantly for results related to hypotheses and results not related to hypotheses. Thus, we cannot confirm H4, b1 = -0.437, SE = .318, <em>z</em> = -1.373, <em>p</em> = .170, OR = .646, 95% CI [.342, 1.194].</p>
 <pre class="r"><code>AllP_marg$Marg.Sig &lt;- as.numeric(as.character(AllP_marg$Marg.Sig)) #making &#39;Marg.Sig&#39; numeric 
 
 #Logistic regression.
@@ -5908,8 +5908,8 @@ grViz(&quot;digraph{
       E -&gt; H
       F -&gt; I
            }&quot;)</code></pre>
-<div id="htmlwidget-ee3b41969810863b4c90" style="width:672px;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ee3b41969810863b4c90">{"x":{"diagram":"digraph{\n\n      graph[rankdir = LR]\n  \n      node[shape = rectangle]\n  \n      subgraph cluster_0 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Total number of articles\\n (n = 322)\"\n        node[shape = rectangle, margin = 0.25]\n        A[label = \"ASR = 139\", fixedsize = true, width = 1.35, height = 0.7]\n        B[label = \"AJS = 105\", fixedsize = true, width = 1.35, height = 0.7]\n        C[label = \"SQ = 78\", fixedsize = true, width = 1.35, height = 0.7]\n      }\n  \n      subgraph cluster_1 {\n         graph[shape = rectangle]\n         style = rounded\n         \n         label = \"Articles with explicitly stated hypotheses\\n (n = 99, 30.7%)\"\n         node[shape = rectangle, margin = 0.25]\n         D[label = \"ASR = 55 (39.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         E[label = \"AJS = 29 (27.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         F[label = \"SQ = 15 (19.2%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      subgraph cluster_2 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Articles with required statistics\\n (n = 91, 28.3%)\"\n        node[shape = rectangle, margin = 0.25]\n        G[label = \"ASR = 52 (37.4%)\", fixedsize = true, width = 1.8, height = 0.7]\n        H[label = \"AJS = 26 (24.8%)\", fixedsize = true, width = 1.8, height = 0.7]\n        I[label = \"SQ = 13 (16.7%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      edge[color = black, arrowhead = vee, arrowsize = 1.25]\n      A -> D\n      B -> E\n      C -> F\n      D -> G\n      E -> H\n      F -> I\n           }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-516c3c8ce8316ba867e3" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-516c3c8ce8316ba867e3">{"x":{"diagram":"digraph{\n\n      graph[rankdir = LR]\n  \n      node[shape = rectangle]\n  \n      subgraph cluster_0 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Total number of articles\\n (n = 322)\"\n        node[shape = rectangle, margin = 0.25]\n        A[label = \"ASR = 139\", fixedsize = true, width = 1.35, height = 0.7]\n        B[label = \"AJS = 105\", fixedsize = true, width = 1.35, height = 0.7]\n        C[label = \"SQ = 78\", fixedsize = true, width = 1.35, height = 0.7]\n      }\n  \n      subgraph cluster_1 {\n         graph[shape = rectangle]\n         style = rounded\n         \n         label = \"Articles with explicitly stated hypotheses\\n (n = 99, 30.7%)\"\n         node[shape = rectangle, margin = 0.25]\n         D[label = \"ASR = 55 (39.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         E[label = \"AJS = 29 (27.6%)\", fixedsize = true, width = 1.8, height = 0.7]\n         F[label = \"SQ = 15 (19.2%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      subgraph cluster_2 {\n        graph[shape = rectangle]\n        style = rounded\n       \n        label = \"Articles with required statistics\\n (n = 91, 28.3%)\"\n        node[shape = rectangle, margin = 0.25]\n        G[label = \"ASR = 52 (37.4%)\", fixedsize = true, width = 1.8, height = 0.7]\n        H[label = \"AJS = 26 (24.8%)\", fixedsize = true, width = 1.8, height = 0.7]\n        I[label = \"SQ = 13 (16.7%)\", fixedsize = true, width = 1.8, height = 0.7]\n      }\n      \n      edge[color = black, arrowhead = vee, arrowsize = 1.25]\n      A -> D\n      B -> E\n      C -> F\n      D -> G\n      E -> H\n      F -> I\n           }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p><br />
 <br />
 <br />
